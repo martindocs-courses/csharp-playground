@@ -6,7 +6,7 @@ Welcome to the **Theory** section of the CSharp Playground! This folder is dedic
 
 Here’s an overview of the topics you’ll find in this folder. Each link will take you to a more in-depth `README.md` covering the selected topic, along with relevant code examples and mini projects:
 
-- [Fundamentals to C#](IntroToCSharp/README.md): Basics of C#, including syntax, data types, and control structures, with introductory examples.
+- [Fundamentals](1_Fundamentals/README.md): Basics of C#, including syntax, data types, and control structures, with introductory examples.
 <!-- 
 
 - - [Object-Oriented Programming (OOP) Concepts](OOPConcepts/README.md): Core OOP principles like classes, objects, inheritance, polymorphism, encapsulation, and abstraction, with sample projects demonstrating each concept.
