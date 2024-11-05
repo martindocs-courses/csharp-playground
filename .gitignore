@@ -1,6 +1,6 @@
 # Ignore build output and other generated files
-bin/
-obj/
+**/bin/
+**/obj/
 *.exe
 *.dll
 *.pdb
