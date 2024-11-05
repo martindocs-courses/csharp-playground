@@ -4,15 +4,15 @@ Welcome to the Theory section of the CSharp Playground! This folder contains the
 
 ## Theory Notes
 
-The following text files contain essential notes on key C# topics:
+The following files contain essential notes on key C# topics:
 
-- **Basics.txt**: Overview of basic C# concepts, including syntax and simple operations.
+- **Basics.cs**: Overview of basic C# concepts, including syntax and simple operations.
 <!--
 - **DataTypes.txt**: Information on different data types in C# and how to use them.
 - **ControlStructures.txt**: Explanation of control structures such as loops, conditionals, and more.
 -->
 
-*More is coming...* – This section will continue to grow as new topics are added.
+*More is coming...* ï¿½ This section will continue to grow as new topics are added.
 
 ## Code Samples
 
@@ -24,7 +24,7 @@ Each subfolder contains example code for hands-on practice related to the corres
 - **Exception Handling**: A guide to handling errors and exceptions in C#.
 - **LINQ (Language Integrated Query)**: Introduction to LINQ for querying collections and data sources.
 - **Asynchronous Programming**: Basics of async and await, plus techniques for responsive applications.
-- **Delegates and Events**: Explores delegates, events, and how they’re used in event-driven programming.
+- **Delegates and Events**: Explores delegates, events, and how theyï¿½re used in event-driven programming.
 - **Memory Management**: Details on how C# handles memory and garbage collection.
 - **File Handling**: Reading from and writing to files in C#.
 
