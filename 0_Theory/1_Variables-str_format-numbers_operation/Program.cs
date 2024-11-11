@@ -2,8 +2,8 @@
     
     Literal values      : line 22 
     Variables           : line 45
-    String formating    : line 76
-    Basic operation     : line 122
+    String formating    : line 91
+    Basic operation     : line 137
  
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -11,6 +11,8 @@
 
 
 // Write to the console output and put the line feed at the end
+using System.Runtime.Intrinsics.X86;
+
 Console.WriteLine("Hello, World!");
 
 // Same as above, but Without line feed
@@ -72,6 +74,19 @@ Console.WriteLine("");
  */
 var msg = "hello"; // => string data type
 Console.WriteLine(msg);
+
+/* Explicit Typing var name = "martin") vs implisit 'var' typing:
+
+    * use Explicit Typing if:
+    - The type isn't obvious from the context.
+    - You want to make the type more explicit for readability or clarity.
+    - The type is not easily inferred, like with complex types or in cases where the type could be ambiguous.
+
+    * use Implicit Typing (for example var dice = new Random();)
+    - The type is clearly defined from the context, like when using new.
+    - The variable is of a complex or long type, such as when working with LINQ queries or anonymous types (where explicit typing would be cumbersome).
+*/
+
 
 /* STRING FORMATING */
 
