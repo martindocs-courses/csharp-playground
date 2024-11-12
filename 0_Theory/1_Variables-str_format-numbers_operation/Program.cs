@@ -1,7 +1,7 @@
 ﻿/* Navigation Notes
     
-    Literal values      : line 22 
-    Variables           : line 45
+    Literal values      : line 25 
+    Variables           : line 49
     String formating    : line 91
     Basic operation     : line 137
  
