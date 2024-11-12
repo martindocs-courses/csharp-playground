@@ -1,11 +1,13 @@
 ﻿/* Navigation Notes
     
-    Stateless methods           : line 12 
-    Stateful methods            : line 20
-    Return values               : line 41
-    Method param and args       : line 58
-    Overloaded methods          : line 76
-    If-Else / If-Else If-Else   : line 109
+    Stateless methods           : line 16 
+    Stateful methods            : line 24
+    Return values               : line 45
+    Method param and args       : line 61
+    Overloaded methods          : line 79
+    If-Else / If-Else If-Else   : line 112
+    Arrays                      : line 183
+    ForEach                     : line 217
     
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -73,6 +75,7 @@ Console.WriteLine($"Rolled number: {roll}");
  - Methods use a 'method signature' to define the number of parameters that the method will accept, as well as the data type of each parameter. The coding statement that calls the method must adhere the requirements specified by the method signature. Some methods provide options for the number and type of parameters that the method accepts.
 */
 
+
 /* OVERLOADED METHODS */
 
 /*
@@ -107,8 +110,6 @@ Console.WriteLine($"The larger value of {firstValue} and {secondValue} is: {larg
 
 
 /* IF-ELSE */
-
-
 
 /*
  
@@ -158,7 +159,6 @@ if ((rollDice1 == rollDice2) || (rollDice2 == rollDice3) || (rollDice1 == rollDi
 }
 
 
-
 if( total >= 15)
 {
     Console.WriteLine("You win!");
@@ -178,3 +178,54 @@ if (message.Contains("C#"))
 {
     Console.WriteLine("Not sure what you like");
 }
+
+
+/* ARRAYS */
+// An array is a special type of variable that can hold multiple values of the same data type. 
+
+// declare arrays 
+string[] orderIDs = new string[3]; // new istance of the abd array that can hold three strings values
+Console.WriteLine($"\n\n{orderIDs.Count()}");
+
+// assign the values to elements of an array
+orderIDs[0] = "A123";
+orderIDs[1] = "B456";
+orderIDs[2] = "C789";
+
+// retrive values from elements of an array
+Console.WriteLine($"First: {orderIDs[0]}");
+Console.WriteLine($"Second: {orderIDs[1]}");
+Console.WriteLine($"Third: {orderIDs[2]}");
+
+// re-assign the values
+orderIDs[0] = "F00";
+Console.WriteLine($"Reassign First: {orderIDs[0]}");
+
+// initalize an array new way
+string[] newOrderIDs = ["A123", "B456", "C789"]; // Collection expression syntax
+Console.WriteLine($"\nnewFirst: {newOrderIDs[0]}");
+Console.WriteLine($"newSecond: {newOrderIDs[1]}");
+Console.WriteLine($"newThird: {newOrderIDs[2]}");
+
+// or older version of syntax to initalize an array
+string[] oldOrderIDs = { "A123", "B456", "C789" };
+
+// Length propperty of an array
+Console.WriteLine($"There are {newOrderIDs.Length} orders to process");
+
+
+/* FOREACH */
+Console.WriteLine("");
+int[] inv = [200, 450, 700, 175, 250];
+
+int totalInv = 0; // sum of products
+int bin = 0; // hold current interation 
+
+foreach (int items in inv)
+{
+    totalInv += items;
+    bin++;
+    Console.WriteLine($"Bin {bin} = {items} items (Running total: {totalInv})");
+}
+
+Console.WriteLine($"We have {totalInv} items in inventory.");
