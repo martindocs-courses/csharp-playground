@@ -1,11 +1,12 @@
 ﻿/* Navigation Notes
     
-    String Helper methods               : line 15 
-    Methods returning boolean value     : line 26
-    Logical negation                    : line 35
-    Ternary conditional operator        : line 42
-    Variable scope                      : line 88
-    Switch statement                    : line 147
+    String Helper methods               : line 16 
+    Methods returning boolean value     : line 27
+    Logical negation                    : line 36
+    Ternary conditional operator        : line 43
+    Variable scope                      : line 89
+    Switch statement                    : line 148
+    For loop                            : line 207
       
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -15,6 +16,7 @@
 /* STRING HELPER METHODS */
 
 // ToUpper() , ToLower() - change strings to upper-case or lower-case
+using System.Diagnostics;
 using System.Security;
 Console.WriteLine("String Helper methods\n------------------------");
 Console.WriteLine("a" == "A".ToLower()); // True
@@ -203,3 +205,25 @@ switch (employeeLevel2)
 Console.WriteLine($"{employeeName}, {title2}");
 
 
+/* FOR LOOP */
+Console.WriteLine("\nFOR loop\n------------------------");
+/*
+    - The for statement should be used when you know the number of times you need to iterate through a block of code ahead of time.
+    - The for statement allows you to control the way in which each iteration is handled.
+    
+    Also:
+    - 'FOR' loop: iterates through a code block a specific number of times
+    - 'FOREACH' loop: iterates through a block of code once for each item in a sequence of data like an array or collection.
+    - 'WHILE' loop: iterates through a block of code until a condition is met. 
+*/
+
+for (int i = 0; i <= 10; i++)
+{
+
+    if(i == 3){
+        break; // exit the loop and allows to continue code after loop
+        //return; // exit the loop and return to the caller 
+        //continue; // go back to top of the loop without executing code belove
+    }
+    Console.WriteLine(i);
+}
