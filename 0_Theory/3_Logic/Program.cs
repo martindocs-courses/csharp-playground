@@ -1,12 +1,13 @@
 ﻿/* Navigation Notes
     
-    String Helper methods               : line 16 
-    Methods returning boolean value     : line 27
-    Logical negation                    : line 36
-    Ternary conditional operator        : line 43
-    Variable scope                      : line 89
-    Switch statement                    : line 148
-    For loop                            : line 207
+    String Helper methods               : line 17 
+    Methods returning boolean value     : line 28
+    Logical negation                    : line 37
+    Ternary conditional operator        : line 44
+    Variable scope                      : line 90
+    Switch statement                    : line 149
+    For loop                            : line 208
+    While loop                          : line 233
       
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -221,9 +222,53 @@ for (int i = 0; i <= 10; i++)
 {
 
     if(i == 3){
-        break; // exit the loop and allows to continue code after loop
+        break; // exit the iteration and allows to continue code after loop or in other words transfers control to the statement that follows the terminated statement.
         //return; // exit the loop and return to the caller 
         //continue; // go back to top of the loop without executing code belove
     }
     Console.WriteLine(i);
 }
+
+
+/* WHILE LOOP */
+Console.WriteLine("\nWhile loop\n------------------------");
+// do-while loop - executes a statement or a block of statements at least one or more times.
+
+Random random = new Random();
+int current = 0;
+
+/* 
+    It's also important to notice that the code inside of the do-while code block is influencing whether to continue iterating through the code block or not. A code block that influences the exit criteria is a primary reason to select a do-while or while statements rather than one of the other iteration statements.  
+*/
+
+// do-while
+do
+{
+    current = random.Next(1, 11);
+    Console.WriteLine($"current - {current}");
+} while (current != 7);
+
+Console.WriteLine("");
+
+// while
+int current2 = random.Next(1, 11);
+while (current2 >= 3){
+    Console.WriteLine($"current2 - {current2}");
+    current2 = random.Next(1, 11);
+}
+Console.WriteLine($"Last number current2: {current2}");
+
+// continue statement - to short-circuit the remainder of the code in the code block and continue to the next iteration / Transfers execution to the end of the current iteration. 
+
+Console.WriteLine("");
+Random random3 = new Random();
+int current3 = random.Next(1, 11);
+
+do
+{
+    current3 = random.Next(1, 11);
+
+    if (current3 >= 8) continue; // the continue key word will transfer control to the end of the code block
+
+    Console.WriteLine($"current3 - {current3}"); // executed only if the values are between 1 and 7
+} while (current3 != 7); // and the while will evaluate (current != 7)
