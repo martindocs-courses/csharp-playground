@@ -1,14 +1,19 @@
 ﻿/* Navigation Notes
     
-    String Helper methods               : line 17 
-    Methods returning boolean value     : line 28
-    Logical negation                    : line 37
-    Ternary conditional operator        : line 44
-    Variable scope                      : line 90
-    Switch statement                    : line 149
-    For loop                            : line 208
-    While loop                          : line 233
-      
+    String Helper methods               : line 22 
+    Methods returning boolean value     : line 34
+    Logical negation                    : line 43
+    Ternary conditional operator        : line 50
+    Variable scope                      : line 96
+    Switch statement                    : line 155
+    For loop                            : line 214
+    While loop                          : line 238
+    User input ( nullable type string)  : line 282
+    Exercises                           : line 330
+        - exercise 1                    : line 323
+        - exercise 2                    : line 370
+        - exercise 3                    : line 418
+
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
 */
@@ -214,7 +219,7 @@ Console.WriteLine("\nFOR loop\n------------------------");
     
     Also:
     - 'FOR' loop: iterates through a code block a specific number of times
-    - 'FOREACH' loop: iterates through a block of code once for each item in a sequence of data like an array or collection.
+    - 'FOREACH' loop: enumerates through a block of code once for each item in a sequence of data like an array or collection.
     - 'WHILE' loop: iterates through a block of code until a condition is met. 
 */
 
@@ -272,3 +277,198 @@ do
 
     Console.WriteLine($"current3 - {current3}"); // executed only if the values are between 1 and 7
 } while (current3 != 7); // and the while will evaluate (current != 7)
+
+
+/* USER INPUT */
+Console.WriteLine("\nUser Input\n------------------------");
+// Console.ReadLine(); - nullable type string (designated string?) 
+string? readResult;
+bool validEntry = false;
+
+Console.WriteLine("Enter a string containing at least three characters: ");
+
+do{
+    readResult = Console.ReadLine();
+    if(readResult != null){
+        
+        if(readResult.Length >= 3){
+            validEntry = true;
+        }else{
+            Console.WriteLine("Invalid input!!");
+        }
+
+    }
+}while(validEntry == false);
+
+// to use Console.ReadLine() for numeric values we nned int.TryParse() method
+string? userInput;
+int numericValue = 0;
+bool validNumber = false;
+
+Console.WriteLine("\nPlease enter a valid number");
+do
+{
+    userInput = Console.ReadLine();
+   
+    if (userInput != null && userInput != ""){
+        validNumber = int.TryParse(userInput, out numericValue);       
+    }
+    else{
+        Console.WriteLine("Invalid entry");            
+    }
+
+    if(!validNumber && userInput != ""){
+        Console.WriteLine("The input need to be a number!!");
+    }
+    
+
+} while (validNumber == false);
+
+Console.WriteLine($"Your number is: {numericValue}");
+
+
+/* EXERCISES */
+
+// EXERCISE 1
+Console.WriteLine("\nExercise 1\n------------------------");
+/*
+    - Solution must include either a do-while or while iteration.
+
+    - Before the iteration block: must use a Console.WriteLine() statement to prompt the user for an integer value between 5 and 10.
+
+    Inside the iteration block:
+
+    - must use a Console.ReadLine() statement to obtain input from the user.
+    - must ensure that the input is a valid representation of an integer.
+    - If the integer value isn't between 5 and 10, your code must use a Console.WriteLine() statement to prompt the user for an integer value between 5 and 10.
+    - must ensure that the integer value is between 5 and 10 before exiting the iteration.
+    - Below (after) the iteration code block: must use a Console.WriteLine() statement to inform the user that their input value has been accepted.  
+*/
+
+bool validNumberExercise1;
+int numericValueExercise1;
+string? userInputExercise1;
+
+Console.WriteLine("\nPlease enter an value between 5 and 10.");
+
+do {
+    userInputExercise1 = Console.ReadLine();
+    validNumberExercise1 = int.TryParse(userInputExercise1, out numericValueExercise1);
+
+    if (!validNumberExercise1) {
+        Console.WriteLine("Please enter the number");
+    }else{
+        if (numericValueExercise1 <= 5 || numericValueExercise1 >= 10){            
+            Console.WriteLine("Invalid value! Please enter value between 5 and 10");
+            validNumberExercise1 = false;      
+        }
+    }
+} while (!validNumberExercise1);
+
+Console.WriteLine($"\nYour input value {numericValueExercise1} has been accepted.");
+
+// EXERCISE 2
+Console.WriteLine("\nExercise 2\n------------------------");
+/*
+    - Solution must include either a do-while or while iteration.
+
+    - Before the iteration block: solution must use a Console.WriteLine() statement to prompt the user for one of three role names: Admin, Manager, or User.
+
+    Inside the iteration block:
+
+    - must use a Console.ReadLine() statement to obtain input from the user.
+    - must ensure that the value entered matches one of the three role options.
+    - should use the Trim() method on the input value to ignore leading and trailing space characters.
+    - should use the ToLower() method on the input value to ignore case.
+    - If the value entered isn't a match for one of the role options, your code must use a Console.WriteLine() statement to prompt the user for a valid entry.
+    - Below (after) the iteration code block: must use a Console.WriteLine() statement to inform the user that their input value has been accepted.
+*/
+
+Console.WriteLine("\nEnter your role name (Admin), Manager, or User");
+string? userInputExercise2 = "";
+bool role = false;
+
+while(!role){
+
+    //userInputExercise2 = Console.ReadLine()?.Trim().ToLower(); // ?. optional chaining or null-conditional operator
+    /*
+     ?. optional chaining - allows you to safely access members (methods, properties, or fields) of an object that might be null. If the object is null, the operation is simply skipped, and null is returned instead of throwing a NullReferenceException.     
+    */
+
+    userInputExercise2 = Console.ReadLine();
+    
+    if (userInputExercise2 != null && userInputExercise2 != ""){
+        if(
+            userInputExercise2.Trim().ToLower().Contains("admin") || 
+            userInputExercise2.Trim().ToLower().Contains("manager") || 
+            userInputExercise2.Trim().ToLower().Contains("user")
+        )
+        {
+            role = true;    
+        }else{
+            Console.WriteLine($"The role name that you entered, \"{userInputExercise2}\" is not valid. Enter your role name (Admin, Manager, or User)");
+        }
+    }else{
+        Console.WriteLine("Please enter a value");
+    }
+}
+
+Console.WriteLine($"\nYour input value ({userInputExercise2}) has been accepted.");
+
+// EXERCISE 3
+Console.WriteLine("\nExercise 3\n------------------------");
+/*
+    - solution must use the following string array to represent the input to your coding logic:
+        
+    string[] myStrings = new string[2] { "I like pizza. I like roast chicken. I like salad", "I like all three of the menu choices" };
+
+    - must declare an integer variable named periodLocation that can be used to hold the location of the period character within a string.
+
+    - must include an outer foreach or for loop that can be used to process each string element in the array. The string variable that you'll process inside the loops should be named myString.
+
+    - In the outer loop, your solution must use the IndexOf() method of the String class to get the location of the first period character in the myString variable. The method call should be similar to: myString.IndexOf("."). If there's no period character in the string, a value of -1 will be returned.
+
+    - must include an inner do-while or while loop that can be used to process the myString variable.
+
+    - In the inner loop, your solution must extract and display (write to the console) each sentence that is contained in each of the strings that are processed.
+
+    - In the inner loop, your solution must not display the period character.
+
+    - In the inner loop, your solution must use the Remove(), Substring(), and TrimStart() methods to process the string information. 
+*/
+
+
+string[] myStrings = new string[2] { "I like pizza. I like roast chicken. I like salad", "I like all three of the menu choices" };
+
+int periodLocation;
+bool periodExistance = true;
+string currentSentence;
+
+foreach (var myString in myStrings)
+{
+    currentSentence = myString;
+    periodLocation = currentSentence.IndexOf(".");
+
+    if (periodLocation > 0)
+    {
+        while (periodExistance)
+        {
+            periodLocation = currentSentence.IndexOf(".");
+
+            if (periodLocation > 0)
+            {
+                Console.WriteLine($"{currentSentence.Substring(0, periodLocation)}");
+                currentSentence = currentSentence.Remove(0, periodLocation + 1).TrimStart();
+            }
+            else
+            {
+                Console.WriteLine(currentSentence);
+                periodExistance = false;
+            }
+        };
+    }
+    else
+    {
+        Console.WriteLine(myString);
+    }
+}
