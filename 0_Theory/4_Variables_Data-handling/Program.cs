@@ -348,7 +348,7 @@ Console.WriteLine($"Divide value3 by value1, display the result as a float: {res
 /* ARRAY HELPER METHODS */
 Console.WriteLine("\nArray methods");
 
-// Sort() & Reverse()
+// SORT() & REVERSE()
 string[] pallets = ["B14", "A11", "B12", "A13"];
 
 Console.WriteLine("Sorted..."); // sort in ASC order
@@ -364,7 +364,7 @@ Console.WriteLine("Reversed..."); // reverse the array order
 Array.Reverse(pallets);
 Console.WriteLine(string.Join(" ", pallets));
 
-// Clear() & Resize()
+// CLEAR() & RESIZE()
 Console.WriteLine("\nClear array");
 
 /* 
@@ -390,6 +390,8 @@ else
 
 // Resize(), allows you to add or remove elements from your array.
 Console.WriteLine("\nResize array");
+
+// Add elements 
 Array.Resize(ref pallets, 3); // we passing reference value
 Console.WriteLine(string.Join(" ", pallets));
 
@@ -397,3 +399,59 @@ pallets[0] = "C01";
 pallets[1] = "C02";
 
 Console.WriteLine(string.Join(" ", pallets));
+
+// Remove elements.
+// We can't just remove null values from array. We need use two steps aproach
+Array.Resize(ref pallets, 7);
+
+// cont non-null values
+int count = 0;
+foreach (var pallet in pallets)
+{
+    if (pallet != null)
+        count++;
+}
+
+Console.WriteLine($"old pallets: {string.Join("-", pallets)}");
+
+// create new array
+string[] newPallets = new string[count];
+
+int index = 0;
+// and copy non-null values to newwly array
+foreach (var pallet in pallets)
+{
+    if(pallet != null)
+        newPallets[index] = pallet;
+    index++;
+}
+
+Console.WriteLine($"new pallets: {string.Join("-", newPallets)}");
+
+/*
+    To perform data transformation, you need to accept incoming data as a string, parse it into smaller data elements, then manipulate it to match different format required.  
+*/
+
+string letters = "abcd123";
+
+// We use ToCharArray() method used to create an array of char, where each element of the array represents one character of the original string.
+char[] lettersArray = letters.ToCharArray();
+Array.Reverse(lettersArray);
+
+/*
+    For non-primitive (reference) types like string, List<T>, or your own classes, casting is not possible unless the types are explicitly compatible (e.g., via inheritance or interfaces). Instead, you typically use constructors or helper methods to convert between types. 
+ */
+string resultArray = new string(lettersArray);
+
+Console.WriteLine(resultArray);
+
+// JOIN()
+string resultArray2 = String.Join(",", lettersArray);
+Console.WriteLine(resultArray2);
+
+// SPLIT() 
+string[] items = resultArray2.Split(',');
+foreach (string item in items)
+{
+    Console.WriteLine(item);
+}
