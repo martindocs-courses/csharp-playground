@@ -1,26 +1,28 @@
 ﻿/* Navigation Notes
     
-    Important concepts                  : line 29
-    - Binary representation of a byte   : line 31 
-    - ASCII                             : line 58
+    Important concepts                  : line 31
+    - Binary representation of a byte   : line 33 
+    - ASCII                             : line 61
     
-    Data type                           : line 68
-    - Value vs Reference types          : line 70
-    - Simple values types               : line 77
-    - Integral types                    : line 82
-    - Floating point types              : line 107
-    - Reference Types                   : line 128
-    - String data type                  : line 153
-    - Example: Value & Reference Types  : line 160
+    Data type                           : line 70
+    - Value vs Reference types          : line 72
+    - Simple values types               : line 79
+    - Integral types                    : line 84
+    - Floating point types              : line 109
+    - Reference Types                   : line 130
+    - String data type                  : line 155
+    - Example: Value & Reference Types  : line 162
 
-    Converting data types               : line 199
-    - widening conversion               : line 226
-    - narrowing conversion              : line 237
-    - use method helpers                : line 248
+    Converting data types               : line 201
+    - widening conversion               : line 228
+    - narrowing conversion              : line 239
+    - use method helpers                : line 250
 
-    Exercise 1                          : line 307
-    Exercise 2                          : line 326
+    Exercise 1                          : line 309
+    Exercise 2                          : line 328
     
+    Array helper methods                : line 348
+
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
 */
@@ -343,3 +345,55 @@ float result33 = value33 / value11;
 Console.WriteLine($"Divide value3 by value1, display the result as a float: {result33}");
 
 
+/* ARRAY HELPER METHODS */
+Console.WriteLine("\nArray methods");
+
+// Sort() & Reverse()
+string[] pallets = ["B14", "A11", "B12", "A13"];
+
+Console.WriteLine("Sorted..."); // sort in ASC order
+Array.Sort(pallets);
+//Console.WriteLine(string.Join(" ", pallets));
+foreach (var pallet in pallets)
+{
+    Console.WriteLine(pallet);
+}
+
+Console.WriteLine();
+Console.WriteLine("Reversed..."); // reverse the array order
+Array.Reverse(pallets);
+Console.WriteLine(string.Join(" ", pallets));
+
+// Clear() & Resize()
+Console.WriteLine("\nClear array");
+
+/* 
+  Clear() method
+
+  Enables you to eliminate the contents of specific elements in your array, replacing them with the array's default value. if you clear an element in a string array, the cleared value is replaced with null. Similarly, when you clear an element in an int array, the replacement is 0 
+
+  Clear values in array has no longer reference a string in memory and it point to nothing. Accesing cleared values will give null value. When displaying null values C# Compiler implicitly converts the null value to an empty string for presentation.
+*/
+Array.Clear(pallets, 0, 2); // start from 0 index and clear two elements
+foreach (var pallet in pallets)  
+{
+    Console.WriteLine($"values: {pallet}");
+    
+}
+
+// You can't use toLower() string meyhod as this give error, bc pallets[0] value is null and not empty string
+// so to avoid error we need add if statement
+if(pallets[0] != null)
+    Console.WriteLine("\nAccessing cleared value: " + pallets[0].ToLower());
+else
+    Console.WriteLine("You can't use ToLower() method on null value.");
+
+// Resize(), allows you to add or remove elements from your array.
+Console.WriteLine("\nResize array");
+Array.Resize(ref pallets, 3); // we passing reference value
+Console.WriteLine(string.Join(" ", pallets));
+
+pallets[0] = "C01";
+pallets[1] = "C02";
+
+Console.WriteLine(string.Join(" ", pallets));
