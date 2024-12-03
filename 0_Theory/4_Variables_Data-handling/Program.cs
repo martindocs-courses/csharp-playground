@@ -1,27 +1,34 @@
 ﻿/* Navigation Notes
     
-    Important concepts                  : line 31
-    - Binary representation of a byte   : line 33 
-    - ASCII                             : line 61
+    Important concepts                  : line 38
+    - Binary representation of a byte   : line 40 
+    - ASCII                             : line 67
     
-    Data type                           : line 70
-    - Value vs Reference types          : line 72
-    - Simple values types               : line 79
-    - Integral types                    : line 84
-    - Floating point types              : line 109
-    - Reference Types                   : line 130
-    - String data type                  : line 155
-    - Example: Value & Reference Types  : line 162
+    Data type                           : line 77
+    - Value vs Reference types          : line 79
+    - Simple values types               : line 86
+    - Integral types                    : line 91
+    - Floating point types              : line 116
+    - Reference Types                   : line 137
+    - String data type                  : line 162
+    - Example: Value & Reference Types  : line 169
 
-    Converting data types               : line 201
-    - widening conversion               : line 228
-    - narrowing conversion              : line 239
-    - use method helpers                : line 250
+    Converting data types               : line 208
+    - widening conversion               : line 235
+    - narrowing conversion              : line 246
+    - use method helpers                : line 257
 
-    Exercise 1                          : line 309
-    Exercise 2                          : line 328
+    Exercise 1                          : line 316
+    Exercise 2                          : line 335
     
-    Array helper methods                : line 348
+    Array helper methods                : line 355
+    - sort() & reverse()                : line 358
+    - clear() & resize()                : line 374
+    - ToCharArray()                     : line 444
+    - join()                            : line 455
+    - split()                           : line 459
+
+    String formating                    : line 469
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -455,3 +462,49 @@ foreach (string item in items)
 {
     Console.WriteLine(item);
 }
+
+
+/* STRING FORMATING */
+
+// COMPOSITE FORMATING - Composite formatting uses numbered placeholders within a string. At run time, everything inside the braces is resolved to a value that is also passed in based on their position.
+Console.WriteLine("\nString formating");
+
+string myName = "Martin";
+int myAge = 35;
+
+string myResult = string.Format("My name is {0} and my age is {1}", name, myAge); // {0}.. {1} etc. are replacement tokens
+Console.WriteLine(myResult);
+
+// STRING INTERPOLATION - use the variable name inside of the curly braces, but must prefix it with the $ directive.
+
+Console.WriteLine($"Hello my name is {myName}."); // string template
+
+//  FORMATING CURRENCY (C), depending on culture (country/region) and language of the end user, a five character code that includes the user's country/region and language
+decimal price = 12.89m;
+int discount = 1;
+Console.WriteLine($"Price: {price:C} (Save {discount:C})");
+
+// FORMATING NUMBERS (N) numeric format, same goes here, formating is diffrent, a five character code that includes the user's country/region and language
+decimal measurment = 12345.43m;
+
+// By default, the N numeric format specifier displays only two digits after the decimal point.
+Console.WriteLine($"Measurment: {measurment:N} units");
+
+// Display four digits after the decimal point
+Console.WriteLine($"Measurment: {measurment:N4} units");
+
+// FORMATING PROCENTAGES (P)
+decimal tax = .245m;
+Console.WriteLine($"Tax rate: {tax:P2}");
+
+// COMBINIG FORMATING
+decimal newPrice = 55.99m;
+decimal salesPrice = 45.99m;
+
+string myDiscount = String.Format("You saved {0:C2} off the regular {1:C2} price. ", (newPrice - salesPrice), newPrice);
+Console.WriteLine(myDiscount);
+myDiscount += $"A discount of {((newPrice - salesPrice)/newPrice):P2}";
+Console.WriteLine(myDiscount);
+
+
+
