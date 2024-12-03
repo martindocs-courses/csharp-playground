@@ -449,7 +449,7 @@ Console.WriteLine(resultArray);
 string resultArray2 = String.Join(",", lettersArray);
 Console.WriteLine(resultArray2);
 
-// SPLIT() 
+// SPLIT() -  designed for variables of type string and creates an array of strings
 string[] items = resultArray2.Split(',');
 foreach (string item in items)
 {
