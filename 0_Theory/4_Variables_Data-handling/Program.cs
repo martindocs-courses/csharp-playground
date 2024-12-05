@@ -1,35 +1,52 @@
 ﻿/* Navigation Notes
     
-    Important concepts                  : line 38
-    - Binary representation of a byte   : line 40 
-    - ASCII                             : line 67
+    Important concepts                  : line 55
+    - Binary representation of a byte   : line 57 
+    - ASCII                             : line 84
     
-    Data type                           : line 77
-    - Value vs Reference types          : line 79
-    - Simple values types               : line 86
-    - Integral types                    : line 91
-    - Floating point types              : line 116
-    - Reference Types                   : line 137
-    - String data type                  : line 162
-    - Example: Value & Reference Types  : line 169
+    Data type                           : line 94
+    - Value vs Reference types          : line 96
+    - Simple values types               : line 103
+    - Integral types                    : line 108
+    - Floating point types              : line 135
+    - Reference Types                   : line 156
+    - String data type                  : line 181
+    - Example: Value & Reference Types  : line 188
 
-    Converting data types               : line 208
-    - widening conversion               : line 235
-    - narrowing conversion              : line 246
-    - use method helpers                : line 257
+    Converting data types               : line 227
+    - widening conversion               : line 254
+    - narrowing conversion              : line 265
+    - use method helpers                : line 276
 
-    Exercise 1                          : line 316
-    Exercise 2                          : line 335
+    Exercise 1                          : line 335
+    Exercise 2                          : line 354
     
-    Array helper methods                : line 355
-    - sort() & reverse()                : line 358
-    - clear() & resize()                : line 374
-    - ToCharArray()                     : line 444
-    - join()                            : line 455
-    - split()                           : line 459
+    Array helper methods                : line 374
+    - sort() & reverse()                : line 377
+    - clear() & resize()                : line 393
+    - ToCharArray()                     : line 463
+    - join()                            : line 474
+    - split()                           : line 478
 
-    String formating                    : line 469
-
+    String formating                    : line 486
+    - composite formating               : line 488    
+    - string interpolation              : line 497
+    - formating currency                : line 501
+    - formating numbers                 : line 506
+    - formating procentage              : line 515
+    - combining formating               : line 519
+      * Exercise 3                      : line 528
+    - padding & alignment               : line 543
+    - other helper methods              : line 549 & 554
+      * Exercise 4                      : line 568
+      * Exercise 5                      : line 601
+    - index of & substring              : line 616
+    - indexof & lastindexof             : line 651
+      * Exercise 6                      : line 665
+      * Exercise 7                      : line 680
+    - indexofany                        : line 703
+      * Exercise 8                      : line 713
+     
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
 */
@@ -97,6 +114,8 @@ Binary Place Value Table:
 */
 
 // Signed type - uses its bytes to represent an equal number of positive and negative numbers.
+using System.Reflection.Metadata;
+
 Console.WriteLine("Signed integral types: ");
 
 Console.WriteLine($"sbyte: {sbyte.MinValue} to {sbyte.MaxValue}");
@@ -506,5 +525,234 @@ Console.WriteLine(myDiscount);
 myDiscount += $"A discount of {((newPrice - salesPrice)/newPrice):P2}";
 Console.WriteLine(myDiscount);
 
+// EXERCISE 3: Display the invoice number using string interpolation
+Console.WriteLine("\nExercise 3");
+
+int invoiceNumber = 1201;
+decimal productShares = 25.4568m;
+decimal subtotal = 2750.00m;
+decimal taxPercentage = .15825m;
+decimal totalValue = 3185.19m;
+
+Console.WriteLine($"Invoice Number: {invoiceNumber}");
+Console.WriteLine($"    Shares: {productShares:N3} Product");
+Console.WriteLine($"        Sub Total: {subtotal:C}");
+Console.WriteLine($"            tax: {taxPercentage:P2}");
+Console.WriteLine($"        Total Billed: {totalValue:C}");
+
+// PADDING AND ALIGNMENT
+Console.WriteLine("\nPadding and Alignment");
+// PadLeft(), PadRight -  add blank spaces for formatting purposes, where PadLeft(number) is counted from the right to the left, PadRight(number) counted from left to the right 
+Console.WriteLine(" Hi my name is Martin ".PadLeft(25, '*').PadRight(28, '*'));
+
+Console.WriteLine("\nOther string helper methods");
+// Trim(), TrimStart(), TrimEnd(), GetHashcode(), Length() - compare two strings or facilitate comparison
+Console.WriteLine("     Hi my name is Martin    ".Trim());
+Console.WriteLine("     Hi my name is Martin    ".Length);
+Console.WriteLine("Hi my name is Martin".Length);
+
+// Contains(), StartsWith(), EndsWith(), Substring() - help determine what's inside of a string, or even retrieve just a part of the string 
+string someName = "Martin";
+if(someName.StartsWith('O'))
+    Console.WriteLine("Is your name Martin?");
+else if(someName.Contains('n'))
+    Console.WriteLine("What is your name?");
+else
+    Console.WriteLine("Hmm not sure what is your name...");
+
+// Replace(), Insert(), Remove() - change the content of the string by replacing, inserting, or removing parts
+Console.WriteLine("My name is Martin".Replace("Martin", "Adam"));
+Console.WriteLine("My name is Martin".Insert(0, "- "));
+Console.WriteLine("My name is Martin".Remove(0, 3));
+
+//  EXERCISE 4: Remove characters in specific locations from a string
+Console.WriteLine("\nExercise 4");
+
+string removeData = "12345John Smith          5000  3  ";
+// The Remove() method works similarly to the Substring() method. You supply a starting position and the length to remove those characters from the string.
+string updateData = removeData.Remove(5, 20);
+Console.WriteLine(updateData);
+
+Console.WriteLine();
+
+// replaces every instance of the given characters, not just the first or last instance.
+string dashes = "This--is--ex-amp-le--da-ta";
+dashes = dashes.Replace("--", " ");
+dashes = dashes.Replace("-", "");
+
+Console.WriteLine(dashes);
+
+// Split(), ToCharArray() - turn a string into an array of strings or characters
+Console.WriteLine("\nSplit() & ToCharArray()");
+string someText = "This is some random text";
+string[] textArray = someText.Split(" ");
+foreach (var text in textArray)
+{
+    Console.WriteLine(text);
+}
+
+char[] charArray = "abc".ToCharArray();
+foreach (var text in charArray)
+{
+    Console.WriteLine(text);
+}
 
 
+// EXERCISE 5: Working with padded strings
+Console.WriteLine("\nExercise 5");
+string paymentID = "769C";
+string payeeName = "Mr. Stephen Ortega";
+var formattedLine = paymentID.PadRight(6);
+string paymentAmount = "$5,000.00";
+
+formattedLine += payeeName.PadRight(24);
+formattedLine += paymentAmount.PadLeft(10);
+
+// line of numbers above the output to more easily count the padding
+Console.WriteLine("1234567890123456789012345678901234567890");
+Console.WriteLine($"{formattedLine}");
+
+
+// INDEXOF() & SUBSTRING()
+Console.WriteLine("\nIndexOf & Substring");
+
+// IndexOf() -  returns the index of the first occurrence of a specified character or substring within a given string. Return -1 if the character or string is not found.
+string messageindex = "Find what is (inside the parentheses)";
+
+int openingPosition = messageindex.IndexOf('(');
+openingPosition += 1; // to remove opening parentheses
+int closingPosition = messageindex.IndexOf(')');
+
+int length = closingPosition - openingPosition;
+Console.WriteLine(messageindex.Substring(openingPosition, length));
+
+// AVOID HARDCODED MAGIC VALUES
+
+/* MAGIC SRINGS & MAGIC NUMBERS
+    Hardcoded strings like "(" in the previous code listing are known as "magic strings" and hardcoded numeric values like openingPosition += 1 are known as "magic numbers". These "Magic" values are undesirable for many reasons and you should try to avoid them if possible. 
+    The compiler doesn't catch "<sapn>" at compile time because the value is in a string. The misspelling leads to problems at run time, and depending on the complexity of your code, it might be difficult to track down.
+*/
+
+/* CONST 
+    A constant allows you to define and initialize a variable whose value can never be changed. You would then use that constant in the rest of the code whenever you needed that value. This ensures that the value is only defined once and misspelling the const variable is caught by the compiler. 
+*/
+
+const string openParentheses = "(";
+const string closingParentheses = ")";
+
+int openingPosition2 = messageindex.IndexOf(openParentheses);
+int closingPosition2 = messageindex.IndexOf(closingParentheses);
+
+openingPosition2 += openParentheses.Length;
+int length2 = closingPosition2 - openingPosition2;
+
+Console.WriteLine(messageindex.Substring(openingPosition2, length2));
+
+// INDEXOF() & LASTINDEXOF()
+Console.WriteLine("\nIndexOf & LastIndexOf");
+
+// LastIndexOf() - returns the index position of the last occurrence of a character or string within a given string. Return -1 if the character or string is not found.
+
+string messageIndexOf = "Hi my name is Martin!";
+
+const char letterN = 'n';
+
+int first_n = messageIndexOf.IndexOf(letterN);
+int last_n = messageIndexOf.LastIndexOf(letterN);
+
+Console.WriteLine($"For the message: {messageIndexOf}, the first 'n' is at position {first_n} and the last 'n' is at position {last_n}");
+
+// EXERCISE 6: Retrieve the last occurrence of a sub string
+Console.WriteLine("\nExercise 6");
+string messageIndexOf2 = "(What if) I am (only interested) in the last (set of parentheses)?";
+
+const string searchedSymbol = "(";
+const string searchedSymbol2 = ")";
+const int shiftBracket = 1;
+
+int openPosition = messageIndexOf2.LastIndexOf(searchedSymbol);
+openPosition += shiftBracket;
+
+int closePosition = messageIndexOf2.LastIndexOf(searchedSymbol2);
+int lengthOfPositions = closePosition - openPosition;
+Console.WriteLine(messageIndexOf2.Substring(openPosition, lengthOfPositions));
+
+// EXERCISE 7: Retrieve all instances of substrings inside parentheses
+Console.WriteLine("\nExercise 7");
+
+string messageIndexOf3 = "(What if) there are (more than) one (set of parentheses)?";
+
+while(true){
+
+    int openPos = messageIndexOf3.IndexOf(searchedSymbol);
+   
+    if (openPos == -1) break;
+
+    openPos += shiftBracket;
+
+    int closePos = messageIndexOf3.IndexOf(searchedSymbol2);
+    int len = closePos - openPos;
+   
+
+    Console.WriteLine(messageIndexOf3.Substring(openPos, len));
+
+    messageIndexOf3 = messageIndexOf3.Substring(closePos + shiftBracket);
+
+}
+
+// INDEXOFANY - reports the index of the first occurrence of any character in a supplied array of characters. Returns -1 if all characters in the array of characters are not found.
+Console.WriteLine("\nIndexOfAny");
+
+string messageIndexOf4 = "Hello my name is Martin!";
+char[] charsToFind = ['e', 'm', 'a'];
+
+int indexChars = messageIndexOf4.IndexOfAny(charsToFind);
+
+Console.WriteLine($"Found '{messageIndexOf4[indexChars]}' at the index: {indexChars}");
+
+// EXERCISE 8: Retrieve all instances of substrings inside parentheses
+Console.WriteLine("\nExercise 8");
+
+string messageIndex5 = "(What if) I have [different symbols] but every {open symbol} needs a [matching closing symbol]?";
+
+// IndexOfAny() helper method requires a char array of characters. 
+char[] symbols = { '[', '{', '(' };
+//char[] symbols = [ '[', '{', '(' ]; // newer way
+
+int clPosition = 0;
+
+while(true){
+
+    int opPosition = messageIndex5.IndexOfAny(symbols, clPosition);
+
+    if(opPosition == -1) break;
+
+    string currentSymbol = messageIndex5.Substring(opPosition, 1); // shift by one so 
+
+    // Now  find the matching closing symbol
+    char machingSymbol = ' ';
+
+    switch (currentSymbol)
+    {
+
+        case "[":
+            machingSymbol = ']';
+            break;
+        case "{":
+            machingSymbol = '}';
+            break;
+        case "(":
+            machingSymbol = ')';
+            break;
+    }
+
+    // To find the clPosition, use an overload of the IndexOf method to specify 
+    // that the search for the matchingSymbol should start at the opPosition in the string. 
+
+    opPosition += 1;
+    clPosition = messageIndex5.IndexOf(machingSymbol, opPosition);
+
+    int len1 = clPosition - opPosition;
+
+    Console.WriteLine(messageIndex5.Substring(opPosition, len1));
+}
