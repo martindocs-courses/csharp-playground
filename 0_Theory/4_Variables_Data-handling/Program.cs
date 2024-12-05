@@ -326,7 +326,7 @@ Console.WriteLine($"Message: {message}");
 Console.WriteLine($"Total: {total}");
 
 // EXERCISE 2: Output math operations as specific number types
-Console.WriteLine("\nExercise 1");
+Console.WriteLine("\nExercise 2");
 
 int value11 = 11;
 decimal value22 = 6.2m;
