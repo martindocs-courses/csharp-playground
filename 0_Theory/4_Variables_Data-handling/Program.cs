@@ -1,52 +1,33 @@
 ﻿/* Navigation Notes
     
-    Important concepts                  : line 55
-    - Binary representation of a byte   : line 57 
-    - ASCII                             : line 84
+    Important concepts                  : line 36
+    - Binary representation of a byte   : line 38 
+    - ASCII                             : line 65
     
-    Data type                           : line 94
-    - Value vs Reference types          : line 96
-    - Simple values types               : line 103
-    - Integral types                    : line 108
-    - Floating point types              : line 135
-    - Reference Types                   : line 156
-    - String data type                  : line 181
-    - Example: Value & Reference Types  : line 188
+    Data type                           : line 75
+    - Value vs Reference types          : line 77
+    - Simple values types               : line 84
+    - Integral types                    : line 89
+    - Floating point types              : line 116
+    - Reference Types                   : line 137
+    - String data type                  : line 162
+    - Example: Value & Reference Types  : line 169
 
-    Converting data types               : line 227
-    - widening conversion               : line 254
-    - narrowing conversion              : line 265
-    - use method helpers                : line 276
+    Converting data types               : line 208
+    - widening conversion               : line 235
+    - narrowing conversion              : line 246
+    - use method helpers                : line 257
 
-    Exercise 1                          : line 335
-    Exercise 2                          : line 354
+    Exercise 1                          : line 316
+    Exercise 2                          : line 335
     
-    Array helper methods                : line 374
-    - sort() & reverse()                : line 377
-    - clear() & resize()                : line 393
-    - ToCharArray()                     : line 463
-    - join()                            : line 474
-    - split()                           : line 478
-
-    String formating                    : line 486
-    - composite formating               : line 488    
-    - string interpolation              : line 497
-    - formating currency                : line 501
-    - formating numbers                 : line 506
-    - formating procentage              : line 515
-    - combining formating               : line 519
-      * Exercise 3                      : line 528
-    - padding & alignment               : line 543
-    - other helper methods              : line 549 & 554
-      * Exercise 4                      : line 568
-      * Exercise 5                      : line 601
-    - index of & substring              : line 616
-    - indexof & lastindexof             : line 651
-      * Exercise 6                      : line 665
-      * Exercise 7                      : line 680
-    - indexofany                        : line 703
-      * Exercise 8                      : line 713
-     
+    Array helper methods                : line 355
+    - sort() & reverse()                : line 358
+    - clear() & resize()                : line 374
+    - ToCharArray()                     : line 444
+    - join()                            : line 455
+    - split()                           : line 459
+       
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
 */
