@@ -1,32 +1,25 @@
 ﻿/* Navigation Notes
     
-    Important concepts                  : line 36
-    - Binary representation of a byte   : line 38 
-    - ASCII                             : line 65
+    Important concepts                  : line 29
+    - Binary representation of a byte   : line 31 
+    - ASCII                             : line 58
     
-    Data type                           : line 75
-    - Value vs Reference types          : line 77
-    - Simple values types               : line 84
-    - Integral types                    : line 89
-    - Floating point types              : line 116
-    - Reference Types                   : line 137
-    - String data type                  : line 162
-    - Example: Value & Reference Types  : line 169
+    Data type                           : line 68
+    - Value vs Reference types          : line 70
+    - Simple values types               : line 77
+    - Integral types                    : line 82
+    - Floating point types              : line 109
+    - Reference Types                   : line 130
+    - String data type                  : line 155
+    - Example: Value & Reference Types  : line 162
 
-    Converting data types               : line 208
-    - widening conversion               : line 235
-    - narrowing conversion              : line 246
-    - use method helpers                : line 257
+    Converting data types               : line 201
+    - widening conversion               : line 228
+    - narrowing conversion              : line 239
+    - use method helpers                : line 250
 
-    Exercise 1                          : line 316
-    Exercise 2                          : line 335
-    
-    Array helper methods                : line 355
-    - sort() & reverse()                : line 358
-    - clear() & resize()                : line 374
-    - ToCharArray()                     : line 444
-    - join()                            : line 455
-    - split()                           : line 459
+    Exercise 1                          : line 309
+    Exercise 2                          : line 328   
        
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -350,115 +343,3 @@ Console.WriteLine($"Divide value2 by value3, display the result as a decimal: {r
 // Your code here to set result33
 float result33 = value33 / value11;
 Console.WriteLine($"Divide value3 by value1, display the result as a float: {result33}");
-
-
-/* ARRAY HELPER METHODS */
-Console.WriteLine("\nArray methods");
-
-// SORT() & REVERSE()
-string[] pallets = ["B14", "A11", "B12", "A13"];
-
-Console.WriteLine("Sorted..."); // sort in ASC order
-Array.Sort(pallets);
-//Console.WriteLine(string.Join(" ", pallets));
-foreach (var pallet in pallets)
-{
-    Console.WriteLine(pallet);
-}
-
-Console.WriteLine();
-Console.WriteLine("Reversed..."); // reverse the array order
-Array.Reverse(pallets);
-Console.WriteLine(string.Join(" ", pallets));
-
-// CLEAR() & RESIZE()
-Console.WriteLine("\nClear array");
-
-/* 
-  Clear() method
-
-  Enables you to eliminate the contents of specific elements in your array, replacing them with the array's default value. if you clear an element in a string array, the cleared value is replaced with null. Similarly, when you clear an element in an int array, the replacement is 0 
-
-  Clear values in array has no longer reference a string in memory and it point to nothing. Accesing cleared values will give null value. When displaying null values C# Compiler implicitly converts the null value to an empty string for presentation.
-*/
-Array.Clear(pallets, 0, 2); // start from 0 index and clear two elements
-foreach (var pallet in pallets)  
-{
-    Console.WriteLine($"values: {pallet}");
-    
-}
-
-// You can't use toLower() string meyhod as this give error, bc pallets[0] value is null and not empty string
-// so to avoid error we need add if statement
-if(pallets[0] != null)
-    Console.WriteLine("\nAccessing cleared value: " + pallets[0].ToLower());
-else
-    Console.WriteLine("You can't use ToLower() method on null value.");
-
-// Resize(), allows you to add or remove elements from your array.
-Console.WriteLine("\nResize array");
-
-// Add elements 
-Array.Resize(ref pallets, 3); // we passing reference value
-Console.WriteLine(string.Join(" ", pallets));
-
-pallets[0] = "C01";
-pallets[1] = "C02";
-
-Console.WriteLine(string.Join(" ", pallets));
-
-// Remove elements.
-// We can't just remove null values from array. We need use two steps aproach
-Array.Resize(ref pallets, 7);
-
-// cont non-null values
-int count = 0;
-foreach (var pallet in pallets)
-{
-    if (pallet != null)
-        count++;
-}
-
-Console.WriteLine($"old pallets: {string.Join("-", pallets)}");
-
-// create new array
-string[] newPallets = new string[count];
-
-int index = 0;
-// and copy non-null values to newwly array
-foreach (var pallet in pallets)
-{
-    if(pallet != null)
-        newPallets[index] = pallet;
-    index++;
-}
-
-Console.WriteLine($"new pallets: {string.Join("-", newPallets)}");
-
-/*
-    To perform data transformation, you need to accept incoming data as a string, parse it into smaller data elements, then manipulate it to match different format required.  
-*/
-
-string letters = "abcd123";
-
-// We use ToCharArray() method used to create an array of char, where each element of the array represents one character of the original string.
-char[] lettersArray = letters.ToCharArray();
-Array.Reverse(lettersArray);
-
-/*
-    For non-primitive (reference) types like string, List<T>, or your own classes, casting is not possible unless the types are explicitly compatible (e.g., via inheritance or interfaces). Instead, you typically use constructors or helper methods to convert between types. 
- */
-string resultArray = new string(lettersArray);
-
-Console.WriteLine(resultArray);
-
-// JOIN()
-string resultArray2 = String.Join(",", lettersArray);
-Console.WriteLine(resultArray2);
-
-// SPLIT() -  designed for variables of type string and creates an array of strings
-string[] items = resultArray2.Split(',');
-foreach (string item in items)
-{
-    Console.WriteLine(item);
-}
