@@ -69,7 +69,7 @@ myDiscount += $"A discount of {((newPrice - salesPrice) / newPrice):P2}";
 Console.WriteLine(myDiscount);
 
 // EXERCISE 1: Display the invoice number using string interpolation
-Console.WriteLine("\nExercise 3");
+Console.WriteLine("\nExercise 1");
 
 int invoiceNumber = 1201;
 decimal productShares = 25.4568m;
@@ -109,7 +109,7 @@ Console.WriteLine("My name is Martin".Insert(0, "- "));
 Console.WriteLine("My name is Martin".Remove(0, 3));
 
 //  EXERCISE 2: Remove characters in specific locations from a string
-Console.WriteLine("\nExercise 4");
+Console.WriteLine("\nExercise 2");
 
 string removeData = "12345John Smith          5000  3  ";
 // The Remove() method works similarly to the Substring() method. You supply a starting position and the length to remove those characters from the string.
@@ -142,7 +142,7 @@ foreach (var text in charArray)
 
 
 // EXERCISE 3: Working with padded strings
-Console.WriteLine("\nExercise 5");
+Console.WriteLine("\nExercise 3");
 string paymentID = "769C";
 string payeeName = "Mr. Stephen Ortega";
 var formattedLine = paymentID.PadRight(6);
@@ -206,7 +206,7 @@ int last_n = messageIndexOf.LastIndexOf(letterN);
 Console.WriteLine($"For the message: {messageIndexOf}, the first 'n' is at position {first_n} and the last 'n' is at position {last_n}");
 
 // EXERCISE 4: Retrieve the last occurrence of a sub string
-Console.WriteLine("\nExercise 6");
+Console.WriteLine("\nExercise 4");
 string messageIndexOf2 = "(What if) I am (only interested) in the last (set of parentheses)?";
 
 const string searchedSymbol = "(";
@@ -221,7 +221,7 @@ int lengthOfPositions = closePosition - openPosition;
 Console.WriteLine(messageIndexOf2.Substring(openPosition, lengthOfPositions));
 
 // EXERCISE 5: Retrieve all instances of substrings inside parentheses
-Console.WriteLine("\nExercise 7");
+Console.WriteLine("\nExercise 5");
 
 string messageIndexOf3 = "(What if) there are (more than) one (set of parentheses)?";
 
@@ -255,7 +255,7 @@ int indexChars = messageIndexOf4.IndexOfAny(charsToFind);
 Console.WriteLine($"Found '{messageIndexOf4[indexChars]}' at the index: {indexChars}");
 
 // EXERCISE 6: Retrieve all instances of substrings inside parentheses
-Console.WriteLine("\nExercise 8");
+Console.WriteLine("\nExercise 6");
 
 string messageIndex5 = "(What if) I have [different symbols] but every {open symbol} needs a [matching closing symbol]?";
 
