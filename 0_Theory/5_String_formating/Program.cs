@@ -34,7 +34,7 @@ Console.WriteLine("\nString formating");
 string myName = "Martin";
 int myAge = 35;
 
-string myResult = string.Format("My name is {0} and my age is {1}", name, myAge); // {0}.. {1} etc. are replacement tokens
+string myResult = string.Format("My name is {0} and my age is {1}", myName, myAge); // {0}.. {1} etc. are replacement tokens
 Console.WriteLine(myResult);
 
 // STRING INTERPOLATION - use the variable name inside of the curly braces, but must prefix it with the $ directive.
