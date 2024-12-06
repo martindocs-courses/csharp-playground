@@ -1,18 +1,20 @@
 ﻿/* Navigation Notes
     
-    String Helper methods               : line 22 
-    Methods returning boolean value     : line 34
-    Logical negation                    : line 43
-    Ternary conditional operator        : line 50
-    Variable scope                      : line 96
-    Switch statement                    : line 155
-    For loop                            : line 214
-    While loop                          : line 238
-    User input ( nullable type string)  : line 282
-    Exercises                           : line 330
-        - exercise 1                    : line 323
-        - exercise 2                    : line 370
-        - exercise 3                    : line 418
+    String Helper methods               : line 24 
+    Methods returning boolean value     : line 36
+    Logical negation                    : line 45
+    Ternary conditional operator        : line 52
+    Variable scope                      : line 98
+    Switch statement                    : line 157
+    For loop                            : line 216
+    While loop                          : line 240
+    Nullable type                       : line 283
+    Optional chaining                   : line 308
+    User input                          : line 333
+    Exercises                           : line 381
+        - exercise 1                    : line 383
+        - exercise 2                    : line 421
+        - exercise 3                    : line 466
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -278,6 +280,55 @@ do
     Console.WriteLine($"current3 - {current3}"); // executed only if the values are between 1 and 7
 } while (current3 != 7); // and the while will evaluate (current != 7)
 
+/* NULLABLE TYPE */
+
+// string? readResult; // In this case, readResult can be assigned either an string (like Martin) or null.
+
+/* 
+    The question mark (?) after a type in C# makes the type nullable, meaning that it can hold either a value of that type (e.g., a string) or a null value. By default, value types in C# (such as int, float, bool) cannot be assigned null, but adding a ? to a value type makes it nullable.
+    - string? means that readResult can be either a string or null.
+    - int? would mean that readResult can be either an integer value or null.
+ 
+    When to Use Nullable Types in C#
+    You would typically use nullable types in C# in situations where:
+    - You need to represent missing or undefined values explicitly.
+    - A field or variable can have a valid value but also needs to support the concept of "no value" (e.g., in databases, nullable columns).
+
+    For example, when working with databases:
+    - If a NULL value is allowed for a column (such as Age in a person table), you would use a nullable type (int?) to represent that the value might be missing.
+
+    Example:
+        int? age = 30; // It can hold an integer or null.
+        age = null; // This is valid.
+
+        DateTime? lastUpdated = null; // Can be null or a valid DateTime. 
+ */
+
+
+/* CONDITIONAL OPERATOR (OPTIONAL CHANING) ? */
+
+/*
+    ?. conditional operator - allows you to safely access members (methods, properties, or fields) of an object that might be null. If the object is null, the operation is simply skipped, and null is returned instead of throwing a NullReferenceException.     
+
+    Example:
+        Person person = null;
+        string name = person?.Name; // Will not throw an exception, 'name' will be null
+
+    - If person is null, the expression person?.Name will return null instead of causing a NullReferenceException.
+    - sIf person is not null, person?.Name will return the value of the Name property.
+
+    Null Conditional with Indexers:
+    - You can also use the null conditional operator with indexers (such as accessing elements of an array or list) to avoid exceptions when the object or collection is null.
+
+    Example:
+        List<string> list = null;
+        string item = list?[0]; // Returns null if the list is null
+        In this case:
+
+        If list is null, list?[0] will return null instead of throwing an exception.
+
+    In JavaScript, optional chaining (?.) is often used to prevent errors when trying to access properties on null or undefined. C#'s null conditional operator (?.) serves a similar purpose, but there are some differences in syntax and usage. The main difference is that in C#, optional chaining does not allow method calls or property accesses to perform any action when the object is null—it simply skips the operation and returns null or default.
+*/
 
 /* USER INPUT */
 Console.WriteLine("\nUser Input\n------------------------");
@@ -391,10 +442,7 @@ bool role = false;
 while(!role){
 
     //userInputExercise2 = Console.ReadLine()?.Trim().ToLower(); // ?. optional chaining or null-conditional operator
-    /*
-     ?. optional chaining - allows you to safely access members (methods, properties, or fields) of an object that might be null. If the object is null, the operation is simply skipped, and null is returned instead of throwing a NullReferenceException.     
-    */
-
+   
     userInputExercise2 = Console.ReadLine();
     
     if (userInputExercise2 != null && userInputExercise2 != ""){
