@@ -1,15 +1,21 @@
 ﻿/* Navigation Notes
     
-    Methods                                     : line 34
-    Foward reference                            : line 36
-    Best practices                              : line 47
-        Example 1                               : line 77
-    Methods with Parameters                     : line 166
-    Methods Scope                               : line 186
-    Value and Reference type parameters         : line 244
-    Methods with named & optional parameters    : line 316
-    - named methods parameters                  : line 327
-    - optional methods parameters               : line 380
+    Methods                                     : line 40
+    Foward reference                            : line 42
+    Best practices                              : line 54
+        Example 1                               : line 84
+    Methods with Parameters                     : line 173
+    Methods Scope                               : line 193
+    Value and Reference type parameters         : line 251
+    Methods with named & optional parameters    : line 323
+    - named methods parameters                  : line 334
+    - optional (default) methods parameters     : line 387
+    Methods with returning values               : line 439
+    - return integer                            : line 491
+    - return double                             : line 506
+    - return string                             : line 519
+    - return booleans                           : line 551
+    - return arrays                             : line 590
          
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -36,6 +42,7 @@
 // FOWRD REFERENCE - to methods within a class, meaning you can reference a method in the code before it is defined, as long as the method declaration is visible within the scope.
 
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 
 Console.WriteLine($"Foward reference");
 Name(); // calling the method
@@ -427,3 +434,233 @@ RSVP_Optional("Tony", allergies: "Jackfruit", inviteOnly: true);
 RSVP_Optional("Noor", 4, inviteOnly: false);
 RSVP_Optional("Jonte", 2, "Stone fruit", false);
 ShowRSVPs_optional();
+
+
+/* METHODS WITH RETURNING VALUES */
+Console.WriteLine($"\nMethods with returning values");
+
+/*
+    Methods can return a value by including the return type in the method signature. Methods can return any data type, or they can return nothing at all. The return type must always be specified before the method name. 
+    
+    VOID - Using void as the return type means the method only performs operations and doesn't return a value. 
+
+    When a data type (such as int, string, bool, etc.) is used, the method performs operations and then returns the specified type upon completion. Inside the method, the keyword return is used to return the result. In void methods, you can also use the return keyword to terminate the method.
+*/
+
+double total = 0;
+double minimumSpend = 30.00;
+
+double[] items = { 15.97, 3.50, 12.25, 22.99, 10.98 };
+double[] discounts = { 0.30, 0.00, 0.10, 0.20, 0.50 };
+
+for (int i = 0; i < items.Length; i++)
+{
+    total += GetDiscountedPrice(i);
+}
+
+Console.WriteLine($"Total: ${total}");
+
+//if(TotalMeetsMinimum()){
+//    total -= 5.00;
+//}
+
+// OR
+
+total -= TotalMeetsMinimum() ? 5.00 : 0.00;
+
+Console.WriteLine($"Total with discount: ${FormatDecimal(total)}");
+
+double GetDiscountedPrice(int itemIndex)
+{
+    // Calculate the discounted price of the item
+    return items[itemIndex] * (1 - discounts[itemIndex]);    
+}
+
+bool TotalMeetsMinimum()
+{
+    // Check if the total meets the minimum
+    return total > minimumSpend;
+}
+
+string FormatDecimal(double input)
+{
+    // Format the double so only 2 decimal places are displayed
+    return input.ToString().Substring(0, 5);
+}
+
+// RETURNING AN INTEGER
+Console.WriteLine($"\nMethods with returning INT");
+
+double usd = 23.73;
+int vnd = UsdToVnd(usd);
+
+Console.WriteLine($"${usd} USD = ${vnd} VND");
+
+// method that converts american currency (USD) to Vietnam currency (VND)
+int UsdToVnd(double usd){
+    int rate = 23500;
+    // We need do implisit cast of the result, because there is data loss occurring as a result of this conversion.    
+    return (int) (usd * rate);
+}
+
+// RETURNING AN DOUBLE
+Console.WriteLine($"\nMethods with returning DOUBLE");
+
+Console.WriteLine($"${vnd} VND = ${VndToUsd(vnd)} USD");
+
+double VndToUsd(int vnd){
+    /*
+        If you set rate to an int instead of double, you'll notice that the compiler doesn't present you with any errors. This happens because the value of vnd / rate is implicitly casted to the double data type specified in the method signature.     
+     */
+    double rate = 23500;
+    return vnd / rate;
+}
+
+// RETURNING STRING
+Console.WriteLine($"\nMethods with returning STRING");
+
+Console.WriteLine(ReverseString("Martin"));
+Console.WriteLine(ReverseSentence("Martin Martin Martin"));
+
+// reverse word
+string ReverseString(string word){
+
+    string result = "";
+
+    for (int i = word.Length - 1; i >= 0; i--)
+    {
+        result += word[i];
+    }
+
+    return result;
+}
+
+// reverse words in a sentence
+string ReverseSentence(string input){
+    string result = "";
+    string[] words = input.Split(" ");
+
+    for (int i = 0; i < words.Length; i++)
+    {   
+        result += ReverseString(words[i]) + " ";
+    }
+
+    return result.Trim();
+}
+
+// RETURNING BOOLEANS
+Console.WriteLine($"\nMethods with returning BOOLEANS");
+
+string[] words = { "racecar", "talented", "deified", "tent", "tenet" };
+
+Console.WriteLine("Is it a palindrome?");
+foreach (var word in words)
+{
+    Console.WriteLine($"{word}: {IsPalindromeV2(word)}");
+}
+
+bool IsPalindromeV1(string word){
+
+    string temp = ReverseString(word);
+  
+    if (word != temp)
+    {
+        return false;
+    }
+  
+    return true;
+}
+
+bool IsPalindromeV2(string word){
+
+    int start = 0;
+    int end = word.Length - 1;
+    while(start < end){
+
+        if (word[start] != word[end])
+            return false;
+
+        start++;
+        end--;
+    }  
+    
+    return true;
+}
+
+// RETURNING ARRAYS
+Console.WriteLine($"\nMethods with returning ARRAYS");
+
+// Find two coins whose sum is equal to a target value. 
+int target1 = 60;
+int[] coins1 = new int[]{ 5, 5, 50, 25, 25, 10, 5 };
+TwoCoins1(coins1, target1);
+
+int[] TwoCoins1(int[] coins, int target){
+   
+    for (int i = 0; i < coins.Length; i++)
+    {   
+        for (int j = i + 1; j < coins.Length; j++)
+        {
+            if (coins[i] + coins[j] == target)
+            {
+                Console.WriteLine($"Matched {coins[i]} and {coins[j]} coins to match the target value: {target}");
+                return new int[]{ coins[i], coins[j]};
+            }
+        }
+
+    }
+
+    Console.WriteLine($"No two coins found to match the target value");
+    return new int[0];
+}
+
+// Find multiple pairs of coins that make change. 
+int target2 = 30;
+int[,] result2 = TwoCoins2(coins1, target2);
+
+if(result2.Length == 0){
+
+    Console.WriteLine("No two coins make change");
+}else{
+
+    Console.WriteLine("Change found at positions:");
+
+    for (int i = 0; i < result2.GetLength(0);i++)
+    {
+        if (result2[i, 0] == -1) {
+            break;
+        }
+        Console.WriteLine($"{result2[i, 0]}, {result2[i, 1]}");
+    }
+}
+
+int[,] TwoCoins2(int[] coins, int target){
+
+    int[,] result = { { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 }, { -1, -1 } };
+    int count = 0;
+
+    for (int curr = 0; curr < coins.Length; curr++)
+    {
+        for(int next = curr + 1; next < coins.Length; next++){
+        
+            if(coins[curr] + coins[next] == target){
+
+                result [count, 0] = curr;
+                result [count, 1] = next;
+                count++;
+            }
+
+            // prevent from out of bound if there is more there are more than five pairs found
+            if (count == result.GetLength(0)){
+                return result;
+            }
+        }
+    }
+    
+    if(count == 0){
+        return new int[0, 0];
+    }
+
+    return result;
+}
+
