@@ -388,7 +388,7 @@ ShowRSVPs_Named();
 Console.WriteLine($"\nMethods with optional parameters");
 
 /*
-    A parameter becomes optional when it's assigned a default value. If an optional parameter is omitted from the arguments, the default value is used when the method executes.  
+    A parameter becomes optional when it's assigned a default value. If an optional parameter is omitted from the arguments, the default value is used when the method executes. Required parameters should be declared first before any optional ones.  
 */
 string[] rsvps_optional = new string[10];
 count = 0;
