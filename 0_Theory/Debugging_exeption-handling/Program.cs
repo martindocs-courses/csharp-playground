@@ -1,15 +1,20 @@
 ﻿/* Navigation Notes
     
-    Testing, Debugging & Exeptions                  : line 19
-    Exeptions                                       : line 41 
-    Exception handling process                      : line 87
-    Compiler-generated exceptions                   : line 114
-        Example 1                                   : line 127
-        Example 2                                   : line 149
-    
-    Exception properties                            : line 186
-    Catch multiple exceptions in a code block       : line 270
-    Catch separate exceptions types in a code block : line 329   
+    Testing, Debugging & Exeptions                  : line 24
+    Exeptions                                       : line 46 
+    Exception handling process                      : line 92
+    Compiler-generated exceptions                   : line 119
+        Example 1                                   : line 132
+        Example 2                                   : line 154    
+    Exception properties                            : line 191
+    Catch multiple exceptions in a code block       : line 275
+    Catch separate exceptions types in a code block : line 334   
+    Throw exception                                 : line 365
+        Create an exception object                  : line 371
+        Configure and throw customized exceptions   : line 388
+        When to throw an exception                  : line 413
+        Re-throwing exceptions                      : line 462
+        Things to avoid when throwing exceptions    : line 579  
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -84,7 +89,7 @@
     The finally code block contains code that executes whether an exception occurs or not. The finally block is often used to clean up any resources that are allocated in a try block. For example, ensuring that a variable has the correct or required value assigned to it.
 */
 
-// EXCEPTION HANDLING PROCESS
+/* EXCEPTION HANDLING PROCESS */
 Console.WriteLine($"Exception handling process");
 Console.WriteLine($"--------------------------");
 
@@ -111,7 +116,7 @@ catch // Step 3: the system finds a catch clause that can handle the exception
     Console.WriteLine("error");
 }
 
-// COMPILER-GENERATED EXCEPTIONS
+/* COMPILER-GENERATED EXCEPTIONS*/
 Console.WriteLine($"\nCompiler-generated exceptions");
 Console.WriteLine($"-----------------------------");
 /*
@@ -183,7 +188,7 @@ static void WriteMessage()
     Console.WriteLine(number1 / number2);
 }
 
-// EXCEPTION PROPERTIES
+/* EXCEPTION PROPERTIES */
 Console.WriteLine($"\nException properties");
 Console.WriteLine($"--------------------");
 /*
@@ -267,7 +272,7 @@ static void WriteMessage2()
     }
 }
 
-// CATCH MULTIPLE EXCEPTIONS IN A CODE BLOCK 
+/* CATCH MULTIPLE EXCEPTIONS IN A CODE BLOCK */
 Console.WriteLine($"\nCatch multiple exceptions in a code block");
 Console.WriteLine($"------------------------------------------");
 
@@ -326,7 +331,7 @@ static void WriteMessage3()
     }
 }
 
-// CATCH SEPARATE EXCEPTIONS TYPES IN A CODE BLOCK
+/* CATCH SEPARATE EXCEPTIONS TYPES IN A CODE BLOCK */
 Console.WriteLine($"\nCatch separate exception types in a code block");
 Console.WriteLine($"-----------------------------------------------");
 
@@ -356,3 +361,218 @@ foreach (string inputValue in inputValues)
     }
 }
 
+
+/* THROW EXCEPTIONS */
+
+/*
+    Exception objects that describe an error are created and then thrown with the throw keyword. When an exception is thrown by your code, the runtime searches for the nearest catch clause that can handle the exception. 
+*/
+
+// CREATE AN EXCEPTION OBJECT
+
+/*
+    Here are some common exception types that you might use when creating an exception:
+
+    * ArgumentException or ArgumentNullException: Use these exception types when a method or constructor is called with an invalid argument value or null reference.
+    * InvalidOperationException: Use this exception type when the operating conditions of a method don't support the successful completion of a particular method call.
+    * NotSupportedException: Use this exception type when an operation or feature is not supported.
+    * IOException: Use this exception type when an input/output operation fails.
+    * FormatException: Use this exception type when the format of a string or data is incorrect.
+    
+    The new keyword is used to create an instance of an exception. For example, you can create an instance of the ArgumentException exception type as follows:
+
+    ArgumentException invalidArgumentException = new ArgumentException(); 
+ 
+*/
+
+// CONFIGURE AND THROW CUSTOMIZED EXCEPTIONS
+
+/*
+    The process for throwing an exception object involves creating an instance of an exception-derived class, optionally configuring properties of the exception, and then throwing the object by using the throw keyword. 
+*/
+
+/*
+     Exception with custom message. The Message property of an exception is readonly. Therefore, a custom Message property must be set when instantiating the object:
+     ...
+        ArgumentException invalidArgumentException = new ArgumentException("ArgumentException: The 'GraphData' method received data outside the expected range.");
+
+        throw invalidArgumentException;
+    
+    An exception object can also be created directly within a throw statement:
+    ...
+        throw new FormatException("FormatException: Calculations in process XYZ have been cancelled due to invalid data format.");
+*/
+
+/*
+    Some considerations to keep in mind when throwing an exception include:
+
+    * The Message property should explain the reason for the exception. However, information that's sensitive, or that represents a security concern shouldn't be put in the message text.
+    * The StackTrace property is often used to track the origin of the exception. This string property contains the name of the methods on the current call stack, together with the file name and line number in each method that's associated with the exception. A StackTrace object is created automatically by the common language runtime (CLR) from the point of the throw statement. Exceptions must be thrown from the point where the stack trace should begin. 
+*/
+
+// WHEN TO THROW AN EXCEPTION
+Console.WriteLine($"\nWhen to throw an exception");
+Console.WriteLine($"---------------------------");
+/*
+    Methods should throw an exception whenever they can't complete their intended purpose. The exception thrown should be based on the most specific exception available that fits the error conditions.
+ */
+
+string[][] userEnteredValues = new string[][]
+{
+        new string[] { "1", "two", "3"},
+        new string[] { "0", "1", "2"}
+};
+
+foreach (string[] userEntries in userEnteredValues)
+{
+    try
+    {
+        BusinessProcess1(userEntries);
+    }
+    catch (Exception ex)
+    {
+        if (ex.StackTrace.Contains("BusinessProcess1") && (ex is FormatException))
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+}
+
+static void BusinessProcess1(string[] userEntries)
+{
+    int valueEntered;
+
+    foreach (string userValue in userEntries)
+    {
+        try
+        {
+            valueEntered = int.Parse(userValue);
+
+            // completes required calculations based on userValue
+            // ...
+        }
+        catch (FormatException)
+        {
+            FormatException invalidFormatException = new FormatException("FormatException: User input values in 'BusinessProcess1' must be valid integers");
+            throw invalidFormatException;
+        }
+    }
+}
+
+// RE-THROWING EXCEPTIONS 
+Console.WriteLine($"\nRe-throwing exceptions");
+Console.WriteLine($"------------------------");
+/*
+    In addition to throwing a new exception, throw can be used re-throw an exception from inside a catch code block.
+    ...
+    catch (Exception ex)
+    {
+        // handle or partially handle the exception
+        // ...
+
+        // re-throw the original exception object for further handling down the call stack
+        throw;
+    }
+
+    When you re-throw an exception, the original exception object is used, so you don't lose any information about the exception. If you want to create a new exception object that wraps the original exception, you can pass the original exception as an argument to the constructor of a new exception object:
+    ...
+    catch (Exception ex)
+    {
+        // handle or partially handle the exception
+        // ...
+
+        // create a new exception object that wraps the original exception
+        throw new ApplicationException("An error occurred", ex);
+    }
+*/
+
+try
+{
+    OperatingProcedure2();
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex.Message);
+    Console.WriteLine("Exiting application.");
+}
+
+static void OperatingProcedure2()
+{
+    string[][] userEnteredValues = new string[][]
+    {
+        new string[] { "1", "two", "3"},
+        new string[] { "0", "1", "2"}
+    };
+
+    foreach (string[] userEntries in userEnteredValues)
+    {
+        try
+        {
+            BusinessProcess2(userEntries);
+        }
+        catch (Exception ex)
+        {
+            if (ex.StackTrace.Contains("BusinessProcess2"))
+            {
+                if (ex is FormatException)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Corrective action taken in OperatingProcedure2");
+                }
+                else if (ex is DivideByZeroException)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.WriteLine("Partial correction in OperatingProcedure2 - further action required");
+
+                    // re-throw the original exception
+                    throw;
+                }
+                else
+                {
+                    // create a new exception object that wraps the original exception
+                    throw new ApplicationException("An error occurred - ", ex);
+                }
+            }
+        }
+
+    }
+}
+
+static void BusinessProcess2(string[] userEntries)
+{
+    int valueEntered;
+
+    foreach (string userValue in userEntries)
+    {
+        try
+        {
+            valueEntered = int.Parse(userValue);
+
+            checked
+            {
+                int calculatedValue = 4 / valueEntered;
+            }
+        }
+        catch (FormatException)
+        {
+            FormatException invalidFormatException = new FormatException("FormatException: User input values in 'BusinessProcess2' must be valid integers");
+            throw invalidFormatException;
+        }
+        catch (DivideByZeroException)
+        {
+            DivideByZeroException unexpectedDivideByZeroException = new DivideByZeroException("DivideByZeroException: Calculation in 'BusinessProcess2' encountered an unexpected divide by zero");
+            throw unexpectedDivideByZeroException;
+
+        }
+    }
+}
+
+// THINGS TO AVOID WHEN THROWING EXCEPTIONS  
+
+/*
+    Practices to avoid when throwing exceptions:
+    * Don't use exceptions to change the flow of a program as part of ordinary execution. Use exceptions to report and handle error conditions.
+    * Exceptions shouldn't be returned as a return value or parameter instead of being thrown.
+    * Don't throw System.Exception, System.SystemException, System.NullReferenceException, or System.IndexOutOfRangeException intentionally from your own source code.
+    * Don't create exceptions that can be thrown in debug mode but not release mode. To identify runtime errors during the development phase, use Debug.Assert instead. 
+ */

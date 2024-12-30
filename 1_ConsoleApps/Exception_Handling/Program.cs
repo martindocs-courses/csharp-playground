@@ -19,7 +19,8 @@ checked
 try
 {
     string? str = null;
-    int length = str.Length;
+    //int length = str.Length; // used when start without debugging 
+    int? length = str?.Length; // used when start with debugging
     Console.WriteLine("String Length: " + length);
 }
 catch (NullReferenceException ex)
@@ -51,11 +52,5 @@ try
 {
     Console.WriteLine("Error: Cannot divide by zero." + ex.Message);
 }
-
-
-
-
-
-
 
 Console.WriteLine("Exiting program.");
