@@ -1,20 +1,23 @@
 ﻿/* Navigation Notes
     
-    Testing, Debugging & Exeptions                  : line 24
-    Exeptions                                       : line 46 
-    Exception handling process                      : line 92
-    Compiler-generated exceptions                   : line 119
-        Example 1                                   : line 132
-        Example 2                                   : line 154    
-    Exception properties                            : line 191
-    Catch multiple exceptions in a code block       : line 275
-    Catch separate exceptions types in a code block : line 334   
-    Throw exception                                 : line 365
-        Create an exception object                  : line 371
-        Configure and throw customized exceptions   : line 388
-        When to throw an exception                  : line 413
-        Re-throwing exceptions                      : line 462
-        Things to avoid when throwing exceptions    : line 579  
+    Testing, Debugging & Exeptions                  : line 27
+    Exeptions                                       : line 49 
+    Exception handling process                      : line 95
+    Compiler-generated exceptions                   : line 122
+        Example 1                                   : line 135
+        Example 2                                   : line 157    
+    Exception properties                            : line 194
+    Catch multiple exceptions in a code block       : line 278
+    Catch separate exceptions types in a code block : line 337   
+    Throw exception                                 : line 368
+        Create an exception object                  : line 374
+        Configure and throw customized exceptions   : line 391
+        When to throw an exception                  : line 416
+        Re-throwing exceptions                      : line 465
+        Things to avoid when throwing exceptions    : line 573  
+    
+        Example 3                                   : line 583
+        Example 4                                   : line 675
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -576,3 +579,237 @@ static void BusinessProcess2(string[] userEntries)
     * Don't throw System.Exception, System.SystemException, System.NullReferenceException, or System.IndexOutOfRangeException intentionally from your own source code.
     * Don't create exceptions that can be thrown in debug mode but not release mode. To identify runtime errors during the development phase, use Debug.Assert instead. 
  */
+
+/* EXAMPLE 3 */
+Console.WriteLine($"\nExample 3");
+Console.WriteLine($"-----------");
+
+// Prompt the user for the lower and upper bounds
+Console.Write("Enter the lower bound: ");
+int lowerBound = int.Parse(Console.ReadLine());
+
+Console.Write("Enter the upper bound: ");
+int upperBound = int.Parse(Console.ReadLine());
+
+decimal averageValue = 0;
+
+// 1. Whenever possible, exceptions should be caught at the call stack level where they can be handled. 
+
+// 3. Continuing to catch the exception requires a loop. Since you want to call the AverageOfEvenNumbers method at least once, a do loop should be used.
+
+bool exit = false;
+
+do
+{
+    try
+    {
+
+        // Calculate the sum of the even numbers between the bounds
+        averageValue = AverageOfEvenNumbers(lowerBound, upperBound);
+
+        // Display the value returned by AverageOfEvenNumbers in the console
+        Console.WriteLine($"The average of even numbers between {lowerBound} and {upperBound} is {averageValue}.");
+
+        exit = true;
+    }
+    catch (ArgumentOutOfRangeException ex)
+    {
+        /*
+            2. To handle this exception, your code needs to do the following:
+            * Explain the issue to the user.
+            * Obtain a new value for upperBound.
+            * Call AverageOfEvenNumbers using the new upperBound.
+            * Continue to catch the exception if the new upperBound provided is still less than or equal to lowerBound.     
+         */
+        Console.WriteLine("An error has occurred.");
+        Console.WriteLine(ex.Message);
+        Console.WriteLine($"The upper bound must be greater than: {lowerBound}");
+
+        //  Give the user needs to exit the loop rather than enter a value
+        Console.Write($"Enter a new upper bound (or enter Exit to quit): ");
+        string? userResponse = Console.ReadLine();
+
+        if (userResponse.ToLower().Contains("exit"))
+        {
+            exit = true;
+        }
+        else
+        {
+            exit = false;
+            upperBound = int.Parse(userResponse);
+        }
+    }
+} while (exit == false);
+
+// Wait for user input
+Console.ReadLine();
+
+static decimal AverageOfEvenNumbers(int lowerBound, int upperBound)
+{
+    if (lowerBound >= upperBound)
+    {
+
+        throw new ArgumentOutOfRangeException("upperBound", "ArgumentOutOfRangeException: upper bound must be greater than lower bound.");
+    }
+
+    int sum = 0;
+    int count = 0;
+    decimal average = 0;
+
+
+
+    for (int i = lowerBound; i <= upperBound; i++)
+    {
+        if (i % 2 == 0)
+        {
+            sum += i;
+            count++;
+        }
+    }
+
+    average = (decimal)sum / count;
+
+    return average;
+}
+
+/* EXAMPLE 4 */
+
+// Replace console log with exceptions
+string[][] userEnteredValues = new string[][]
+{
+            new string[] { "1", "2", "3"},
+            new string[] { "1", "two", "3"},
+            new string[] { "0", "1", "2"}
+};
+
+//string overallStatusMessage = "";
+
+//overallStatusMessage = Workflow1(userEnteredValues);
+
+try
+{
+    Workflow1(userEnteredValues);
+    Console.WriteLine("'Workflow1' completed successfully.");
+}
+catch (DivideByZeroException ex)
+{
+    Console.WriteLine("An error occurred during 'Workflow1'.");
+    Console.WriteLine(ex.Message);
+}
+
+//if (overallStatusMessage == "operating procedure complete")
+//{
+//    Console.WriteLine("'Workflow1' completed successfully.");
+//}
+//else
+//{
+//    Console.WriteLine("An error occurred during 'Workflow1'.");
+//    Console.WriteLine(overallStatusMessage);
+//}
+
+static void Workflow1(string[][] userEnteredValues)
+{
+    //string operationStatusMessage = "good";
+    //string processStatusMessage = "";
+
+    foreach (string[] userEntries in userEnteredValues)
+    {
+        //processStatusMessage = Process1(userEntries);
+
+        try
+        {
+            Process1(userEntries);
+            Console.WriteLine("'Process1' completed successfully.");
+            Console.WriteLine();
+        }
+        catch (FormatException ex)
+        {
+            Console.WriteLine("'Process1' encountered an issue, process aborted.");
+            Console.WriteLine(ex.Message);
+            Console.WriteLine();
+        }
+
+        //if (processStatusMessage == "process complete")
+        //{
+        //    Console.WriteLine("'Process1' completed successfully.");
+        //    Console.WriteLine();
+        //}
+        //else
+        //{
+        //    Console.WriteLine("'Process1' encountered an issue, process aborted.");
+        //    Console.WriteLine(processStatusMessage);
+        //    Console.WriteLine();
+        //    operationStatusMessage = processStatusMessage;
+        //}
+    }
+
+    //if (operationStatusMessage == "good")
+    //{
+    //    operationStatusMessage = "operating procedure complete";
+    //}
+
+    //return operationStatusMessage;
+}
+
+static void Process1(String[] userEntries)
+{
+    //string processStatus = "clean";
+    //string returnMessage = "";
+    int valueEntered;
+
+    foreach (string userValue in userEntries)
+    {
+
+        bool integerFormat = int.TryParse(userValue, out valueEntered);
+
+        if (integerFormat == true)
+        {
+            if (valueEntered != 0)
+            {
+
+                checked
+                {
+                    int calculatedValue = 4 / valueEntered;
+                }
+
+            }
+            else
+            {
+                throw new DivideByZeroException("User input values must be non-zero values.");
+            }
+        }
+        else
+        {
+            throw new FormatException("Invalid data. User input values must be valid integers.");
+        }
+
+
+        //if (integerFormat == true)
+        //{
+        //    if (valueEntered != 0)
+        //    {
+        //        checked
+        //        {
+        //            int calculatedValue = 4 / valueEntered;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        returnMessage = "Invalid data. User input values must be non-zero values.";
+        //        processStatus = "error";
+        //    }
+        //}
+        //else
+        //{
+        //    returnMessage = "Invalid data. User input values must be valid integers.";
+        //    processStatus = "error";
+        //}
+    }
+
+    //if (processStatus == "clean")
+    //{
+    //    returnMessage = "process complete";
+    //}
+
+    //return returnMessage;
+}
