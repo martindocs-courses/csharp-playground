@@ -191,3 +191,10 @@ value++;
 Console.WriteLine($"Fiest value {value}");
 Console.WriteLine($"Second value {value++}"); // still 2
 Console.WriteLine($"Third {++value}"); // change to 4
+
+int x = 5;
+if(x > 0){
+    x += y;
+    console.WriteLine(x);
+    int y = 6;
+}
