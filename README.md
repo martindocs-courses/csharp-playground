@@ -8,14 +8,14 @@ This repository is organized into various folders and files, each focusing on a 
 
 - **APIIntegration**: Small projects or code samples for integrating with third-party APIs.
 - **DataAccess**: Code related to databases, file handling, and data storage.
-- **EducationalDemos**: Demonstrations of fundamental C# concepts and practices, often used for learning purposes.
+- **EducationalDemos** (9 Projects): Demonstrations of fundamental C# concepts and practices, often used for learning purposes.
 - **FileHandling**: Exercises and examples related to file input/output operations.
-- **Games**: Fun mini-games or prototypes using C# game development frameworks like Unity.
+- **Games** (4 Projects): Fun mini-games or prototypes using C# game development frameworks like Unity.
 - **Libraries**: Custom libraries and utility functions that could be reused in different projects.
 - **Networking**: Code related to communication protocols, sockets, and web services.
-- **Productivity**: Tools and utilities aimed at improving efficiency, such as task managers or automation scripts.
+- **Productivity** (1 Project): Tools and utilities aimed at improving efficiency, such as task managers or automation scripts.
 - **Security**: Projects focusing on encryption, secure communication, or other security-related topics in C#.
-- **Utilities**: General-purpose utility programs, such as text manipulation, data converters, or system tools.
+- **Utilities** (4 Projects): General-purpose utility programs, such as text manipulation, data converters, or system tools.
 - **Theory**: Contains markdown files covering important C# concepts. These can include notes, code explanations, and insights into language features.
 
 ## Getting Started
