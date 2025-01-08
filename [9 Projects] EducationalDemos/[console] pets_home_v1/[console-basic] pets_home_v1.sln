@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "[console-basic] pets_home_demo_v2", "[console-basic] pets_home_demo_v2.csproj", "{6BAB8AEF-6971-4D8F-B8BF-A152901B2BA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "[console-basic] pets_home_v1", "[console-basic] pets_home_v1.csproj", "{DD1A2FE0-9BAD-4593-A850-ED546C6EBEF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6BAB8AEF-6971-4D8F-B8BF-A152901B2BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BAB8AEF-6971-4D8F-B8BF-A152901B2BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BAB8AEF-6971-4D8F-B8BF-A152901B2BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BAB8AEF-6971-4D8F-B8BF-A152901B2BA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD1A2FE0-9BAD-4593-A850-ED546C6EBEF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD1A2FE0-9BAD-4593-A850-ED546C6EBEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD1A2FE0-9BAD-4593-A850-ED546C6EBEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD1A2FE0-9BAD-4593-A850-ED546C6EBEF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3FBE1231-6612-46F0-944A-E7D266B4BFDD}
+		SolutionGuid = {43A4E6B3-C002-4D48-8663-A53933CD455E}
 	EndGlobalSection
 EndGlobal
