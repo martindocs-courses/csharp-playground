@@ -37,7 +37,7 @@ Each folder contains projects with a prefix specifying their platform (e.g., con
 
 Example project name:
 ```bash
-[2 Project] Utilities/
+[2 Projects] Utilities/
    ├── [console] calculator/
    │   ├── [basic]/
    │   │   ├── [console-basic] calculator.csproj
