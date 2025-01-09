@@ -27,17 +27,17 @@
         - before exiting the loop check if it's an valid number by using TryParse method
         - if the number is incorrect show the error message to the user and repeat the loop
          
-    * Then ask the user to choose operator:
-        - show to the user list of allow operators ['+', '-', '*', '/']
-        - implement another do while loop for user to enter the allow operator
-        - if the user enters wrong operators show the error message to the user and repeat loop
-   
     * Next ask the user for the second number:
         - steps are the same as for the first number
+
+    * Then ask the user to choose operator:
+        - show to the user list of allow operators ['+', '-', '*', '/']
+        - implement do while loop for user to enter the allow operator
+        - if the user enters wrong operators show the error message to the user and repeat loop   
          
     * Before value is returned to the user:
         - implement divide by zero error handling
-        - for edge case when the user input lower number thatn zero, example: -18. modify value to absolute value 
+        - for edge case when the user input lower number than zero, example: -18. modify value to absolute value 
         - calculate the values with choosen operator 
        
     * Return the value to the user  
@@ -48,7 +48,10 @@
  */
 #endregion
 
-int firstValue = AskUser("Enter the first number: ");
+using System.Reflection.Metadata.Ecma335;
+
+double firstValue = UserInput("Enter the first number: ");
+double secondValue = UserInput("Enter the second number: ");
 
 char[] delimiters = { '+', '-', '*', '/' };
 char operatorResult = ' ';
@@ -59,7 +62,7 @@ do {
     string? inputOperator = Console.ReadLine();
 
     if (inputOperator != null) {
-        char inputChar = inputOperator[0];
+        char inputChar = inputOperator.Trim()[0];
         bool isDelimiter = Array.Exists(delimiters, delimiter => delimiter == inputChar);
                
         if (isDelimiter) {
@@ -71,35 +74,36 @@ do {
     }
 } while (!validOperator);
 
-int secondValue = AskUser("Enter the second number: ");
 
 switch(operatorResult){
     case ('+'):
-        Addition();
+        Console.WriteLine(Addition());
         break;
     case ('-'):
-        Subtraction();
+        Console.WriteLine(Subtraction());
         break;
     case ('*'):
-        Multiplication();
+        Console.WriteLine(Multiplication());
         break;
     case ('/'):
         Division();
         break;
 }
 
-// Function ask user for valid number
-int AskUser(string text){
+// Function to ask user for valid number
+double UserInput(string text){
 
     bool validNumber = false;
-    int result = 0;
+    double result = 0;
+
     do
     {
         Console.Write($"{text}: ");
         string? number = Console.ReadLine();
+
         if (number != null)
         {
-            if (int.TryParse(number, out result))
+            if (double.TryParse(number, out result))
             {
                 validNumber = true;
             }
@@ -110,23 +114,44 @@ int AskUser(string text){
         }
     } while (!validNumber);
 
-    return result;
+    return AbsoluteValue(result);
 }
 
-int Addition(){
-    throw new NotImplementedException("This feature is still under development.");    
+string Addition(){
+    double result = firstValue + secondValue;
+
+    return $"The result of {firstValue} + {secondValue} = {PrecisionChecks(result)}";
+
 }
 
-int Subtraction(){
-    throw new NotImplementedException("This feature is still under development.");
+string Subtraction(){
+    double result = firstValue - secondValue;
+
+    return $"The result of {firstValue} - {secondValue} = {PrecisionChecks(result)}";
 }
 
-int Multiplication(){
+string Multiplication(){
+    double result = firstValue * secondValue;
 
-    throw new NotImplementedException("This feature is still under development.");
+    return $"The result of {firstValue} * {secondValue} = {PrecisionChecks(result)}";
 }
 
 int Division(){
 
     throw new NotImplementedException("This feature is still under development.");
+}
+
+double AbsoluteValue(double vale){
+    return Math.Abs(vale);
+}
+
+string PrecisionChecks(double value){
+    if (value % 1 == 0)
+    {
+        return $"{(value):N0}"; ;
+    }
+    else
+    {
+        return $"{(value):N3}";
+    }
 }
