@@ -40,11 +40,7 @@
         - for edge case when the user input lower number than zero, example: -18. modify value to absolute value 
         - calculate the values with choosen operator 
        
-    * Return the value to the user  
-    * Ask user if he/she wants to proceede with another calculation:
-        - promt the user to enter 'y' or 'n'
-        - use loop to validate the input
-        - if 'y' repeat the calculations, if 'n' exit the program
+    * Return the whole number or decimal value to the user    
  */
 #endregion
 
@@ -57,7 +53,9 @@ char[] delimiters = { '+', '-', '*', '/' };
 char operatorResult = ' ';
 bool validOperator = false;
 
-do {
+// Loop until a valid operator is entered by the user.
+do
+{
     Console.Write("Enter the operator ['+', '-', '*', '/']: ");
     string? inputOperator = Console.ReadLine();
 
@@ -74,28 +72,34 @@ do {
     }
 } while (!validOperator);
 
-
-switch(operatorResult){
+// Perform the operation based on the selected operator.
+switch (operatorResult){
     case ('+'):
-        Console.WriteLine(Addition());
+        Addition();
         break;
     case ('-'):
-        Console.WriteLine(Subtraction());
+        Subtraction();
         break;
     case ('*'):
-        Console.WriteLine(Multiplication());
+        Multiplication();
         break;
     case ('/'):
-        Division();
+        try{
+            Division();
+        }catch(DivideByZeroException ex){
+            Console.WriteLine($"\n{ex.Message}");
+        }
+
         break;
 }
 
-// Function to ask user for valid number
+// Prompts the user to input a valid number and validates the input.
 double UserInput(string text){
 
     bool validNumber = false;
     double result = 0;
 
+    // Invalid input prompts the user to retry.
     do
     {
         Console.Write($"{text}: ");
@@ -114,37 +118,50 @@ double UserInput(string text){
         }
     } while (!validNumber);
 
+    // Return the absolute value of the input to avoid negative values if desired.
     return AbsoluteValue(result);
 }
 
-string Addition(){
+// Performs addition of the two user inputs and displays the result.
+void Addition(){
     double result = firstValue + secondValue;
 
-    return $"The result of {firstValue} + {secondValue} = {PrecisionChecks(result)}";
-
+    Console.WriteLine($"The result of {firstValue} + {secondValue} = {PrecisionChecks(result)}");
 }
 
-string Subtraction(){
+// Performs subtraction of the two user inputs and displays the result.
+void Subtraction(){
     double result = firstValue - secondValue;
 
-    return $"The result of {firstValue} - {secondValue} = {PrecisionChecks(result)}";
+    Console.WriteLine($"The result of {firstValue} - {secondValue} = {PrecisionChecks(result)}");
 }
 
-string Multiplication(){
+// Performs multiplication of the two user inputs and displays the result.
+void Multiplication(){
     double result = firstValue * secondValue;
 
-    return $"The result of {firstValue} * {secondValue} = {PrecisionChecks(result)}";
+    Console.WriteLine($"The result of {firstValue} * {secondValue} = {PrecisionChecks(result)}");
 }
 
-int Division(){
+// Performs division of the two user inputs and displays the result.
+void Division(){
+    // Division by zero with double inputs normally results in infinity
+    double result = firstValue / secondValue;
 
-    throw new NotImplementedException("This feature is still under development.");
+    // Handle divide-by-zero for integer-equivalent second values.
+    // We're explicitly throwing an exception for user feedback if the second number is zero
+    if ((int)secondValue == 0){
+        throw new DivideByZeroException("DivideByZeroException: Calculation in 'Division' method encountered an unexpected divide by zero.");
+    }else{
+        Console.WriteLine($"The result of {firstValue} / {secondValue} = {PrecisionChecks(result)}");
+    }
 }
 
 double AbsoluteValue(double vale){
     return Math.Abs(vale);
 }
 
+// If calculation of two numbers has any digits after the decimal point, the return number display tree digit after decimal point. Othervise the return value is whole number.  
 string PrecisionChecks(double value){
     if (value % 1 == 0)
     {
