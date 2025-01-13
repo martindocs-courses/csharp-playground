@@ -16,9 +16,6 @@
     * division    
  */
 
-// NOTE: This calculator is a work in progress.
-// Currently, operations are not implemented.
-
 #region Pseudocode
 /*
     * Ask user to input first number:
