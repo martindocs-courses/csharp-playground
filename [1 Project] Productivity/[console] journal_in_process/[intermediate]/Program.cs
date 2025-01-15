@@ -20,8 +20,18 @@
 
 using System.Diagnostics;
 
+
 class JournalApp
 {
+    public enum MenuOptions
+    {
+        Add = 1,
+        View = 2,
+        Filter = 3,
+        Export = 4,
+        Exit = 5
+    }
+
     static void Main(){
         Console.ResetColor();
         Console.WriteLine("Welcome to the Journal App!");
@@ -30,8 +40,7 @@ class JournalApp
 
     static void Journal()
     {
-        do
-        {
+        do{
             MainMenu();
 
             Console.Write("Choose an option: ");
@@ -44,19 +53,19 @@ class JournalApp
                 
                 if(int.TryParse(options, out int result)){
                     switch(result){
-                        case 1:
+                        case (int)MenuOptions.Add:
                             AddNewEntry();                        
                             break;
-                        case 2:
+                        case (int)MenuOptions.View:
                             ViewAllEntries();
                             break;
-                        case 3:
-                            FilteringEntries();
+                        case (int)MenuOptions.Filter:
+                            FilterEntries();
                             break;
-                        case 4:
+                        case (int)MenuOptions.Export:
                             ExportEntries();
                             break;
-                        case 5:                            
+                        case (int)MenuOptions.Exit:                            
                             break;
                     }
                 }else{
@@ -81,7 +90,7 @@ class JournalApp
         ClearScreen();
     }
 
-    static void FilteringEntries()
+    static void FilterEntries()
     {
         Console.WriteLine("\nFiltering Entries not implemented yet.");
         ClearScreen();
