@@ -19,50 +19,42 @@
  */
 
 using System.Diagnostics;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 class JournalApp
 {
     static void Main(){
-        Console.ForegroundColor = ConsoleColor.Green;
+        Console.ResetColor();
+        Console.WriteLine("Welcome to the Journal App!");
         Journal();
     }
 
     static void Journal()
     {
-        Console.ResetColor();
-        Console.WriteLine("Welcome to the Journal App!");
-
-        string[] menu = {"Add a new journal entry", "View all entries", "Filter entries by date", "Export entries to a file", "Exit"
-        };
-
-        for (int i = 0;  i < menu.Length; i++)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.Write($"{i + 1}. ");
-            Console.ResetColor();
-            Console.WriteLine(menu[i]);
-        }
-
-        //Console.WriteLine("1.Add a new journal entry");
-        //Console.WriteLine("2.View all entries");
-        //Console.WriteLine("3.Filter entries by date");
-        //Console.WriteLine("4.Export entries to a file");
-        //Console.WriteLine("5.Exit");
-        Console.Write("Choose an option: ");
-
         do
         {
+            string[] mainMenu = {"Add a new journal entry", "View all entries", "Filter entries by date", "Export entries to a file", "Exit"
+            };
+
+            for (int i = 0;  i < mainMenu.Length; i++)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write($"{i + 1}. ");
+                Console.ResetColor();
+                Console.WriteLine(mainMenu[i]);
+            }
+
+            Console.Write("Choose an option: ");
+
             Console.ForegroundColor = ConsoleColor.Red;
-            string? option = Console.ReadLine();
+            string? options = Console.ReadLine();
             Console.ResetColor();
 
-            if (!string.IsNullOrWhiteSpace(option?.Trim())){
+            if (!string.IsNullOrWhiteSpace(options?.Trim())){
                 
-                if(int.TryParse(option, out int result)){
+                if(int.TryParse(options, out int result)){
                     switch(result){
                         case 1:
-                            AddNewEntry();
+                            AddNewEntry();                        
                             break;
                         case 2:
                             ViewAllEntries();
@@ -78,7 +70,7 @@ class JournalApp
                     }
                 }else{
                     Console.Write("Invalid option. Please choose between 1 and 5: ");
-                }
+                }                            
 
                 // exit the loop
                 if (result == 5){
@@ -92,31 +84,62 @@ class JournalApp
         } while (true);        
     }
 
-    private static void ExportEntries()
+    static void ExportEntries()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("\nExport Entries not implemented yet.");
+        ClearScreen();
     }
 
-    private static void FilteringEntries()
+    static void FilteringEntries()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("\nFiltering Entries not implemented yet.");
+        ClearScreen();
     }
 
-    private static void ViewAllEntries()
+    static void ViewAllEntries()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("\nView All Entries not implemented yet.");
+        ClearScreen();
     }
 
-    private static void AddNewEntry()
-    {
-        throw new NotImplementedException();
-    }
+    static void AddNewEntry()
+    {        
+        string entryDescription = NonEmptyInput("Enter your journal entry:");   
 
-    //private static void Menu(string[] text, string color){
+        // add description entry to the file if is not existing, create one 
 
-    //    for (int i = 0; i < text.Length; i++)
-    //    {
+        string entryTag = NonEmptyInput("Would you like to add a tag to this entry? [y/n]: ").ToLower();
+
+        if (entryTag == "y")
+        {
+            string entryTagList = NonEmptyInput("Enter a tag or multiple tags separated by commas: ").ToLower();
             
-    //    }
-    //}
+            // add tags to the entry description / file
+            
+        }
+
+        Console.WriteLine("\nEntry added successfully!");
+        ClearScreen();
+    }
+
+    static string NonEmptyInput(string prompt){
+        do
+        {
+            Console.WriteLine($"\n{prompt}");
+            Console.Write("> ");
+            string? input = Console.ReadLine();
+
+            if(!string.IsNullOrWhiteSpace(input)){
+                return input;
+            }else{
+                Console.WriteLine("Input cannot be empty.");
+            }
+        } while (true);
+    }
+
+    static void ClearScreen(){        
+        Thread.Sleep(1000);
+        Console.Clear();
+    }
+
 }
