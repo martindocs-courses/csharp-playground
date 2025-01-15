@@ -32,16 +32,7 @@ class JournalApp
     {
         do
         {
-            string[] mainMenu = {"Add a new journal entry", "View all entries", "Filter entries by date", "Export entries to a file", "Exit"
-            };
-
-            for (int i = 0;  i < mainMenu.Length; i++)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Write($"{i + 1}. ");
-                Console.ResetColor();
-                Console.WriteLine(mainMenu[i]);
-            }
+            MainMenu();
 
             Console.Write("Choose an option: ");
 
@@ -140,6 +131,19 @@ class JournalApp
     static void ClearScreen(){        
         Thread.Sleep(1000);
         Console.Clear();
+    }
+
+    static void MainMenu(){
+        string[] menu = {"Add a new journal entry", "View all entries", "Filter entries by date", "Export entries to a file", "Exit"
+            };
+
+        for (int i = 0; i < menu.Length; i++)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Write($"{i + 1}. ");
+            Console.ResetColor();
+            Console.WriteLine(menu[i]);
+        }        
     }
 
 }
