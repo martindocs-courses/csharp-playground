@@ -32,22 +32,17 @@ class JournalApp
         Exit = 5
     }
 
-    static void Main(){
-        Console.ResetColor();
-        Console.WriteLine("Welcome to the Journal App!");
+    static void Main(){        
         Journal();
     }
 
     static void Journal()
     {
-        do{
+        do{            
             MainMenu();
 
-            Console.Write("Choose an option: ");
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            string? options = Console.ReadLine();
-            Console.ResetColor();
+            Console.Write("Choose an option: ");                        
+            string? options = Console.ReadLine();           
 
             if (!string.IsNullOrWhiteSpace(options?.Trim())){
                 
@@ -69,16 +64,18 @@ class JournalApp
                             break;
                     }
                 }else{
-                    Console.Write("Invalid option. Please choose between 1 and 5: ");
+                    
+                    FormatMessage("\nInvalid option. Please choose between 1 and 5: ", "red");
                 }                            
 
                 // exit the loop
-                if (result == 5){
+                if (result == (int)MenuOptions.Exit){
+                    FormatMessage("\nGoodbye!!", "green");
                     break;
                 }
 
             }else{
-                Console.WriteLine("Option cannot be empty");
+                FormatMessage("\nOption cannot be empty.", "red");
             }           
 
         } while (true);        
@@ -86,45 +83,44 @@ class JournalApp
 
     static void ExportEntries()
     {
-        Console.WriteLine("\nExport Entries not implemented yet.");
-        ClearScreen();
+        FormatMessage("\nExport Entries not implemented yet.", "red");
     }
 
     static void FilterEntries()
     {
-        Console.WriteLine("\nFiltering Entries not implemented yet.");
-        ClearScreen();
+        FormatMessage("\nFiltering Entries not implemented yet.", "red");
     }
 
     static void ViewAllEntries()
     {
-        Console.WriteLine("\nView All Entries not implemented yet.");
-        ClearScreen();
+        FormatMessage("\nView All Entries not implemented yet." , "red");
     }
 
     static void AddNewEntry()
     {        
-        string entryDescription = NonEmptyInput("Enter your journal entry:");   
+        string entryDescription = NonEmptyInput("Enter your journal entry:", "Entry cannot be empty");   
 
         // add description entry to the file if is not existing, create one 
 
-        string entryTag = NonEmptyInput("Would you like to add a tag to this entry? [y/n]: ").ToLower();
+        string entryTag = NonEmptyInput("Would you like to add a tag to this entry? [y/n]: ", "Please answer the question [Y]es or [N]o.").ToLower();
 
         if (entryTag == "y")
         {
-            string entryTagList = NonEmptyInput("Enter a tag or multiple tags separated by commas: ").ToLower();
+            string entryTagList = NonEmptyInput("Enter a tag or multiple tags separated by commas: ", "You need to have at least one tag.").ToLower();
             
             // add tags to the entry description / file
             
         }
 
-        Console.WriteLine("\nEntry added successfully!");
-        ClearScreen();
+        FormatMessage("\nEntry added successfully!", "green");
     }
 
-    static string NonEmptyInput(string prompt){
+    static string NonEmptyInput(string prompt, string errorMessage){
         do
         {
+            Console.Clear();
+            MainMenu();
+
             Console.WriteLine($"\n{prompt}");
             Console.Write("> ");
             string? input = Console.ReadLine();
@@ -132,25 +128,36 @@ class JournalApp
             if(!string.IsNullOrWhiteSpace(input)){
                 return input;
             }else{
-                Console.WriteLine("Input cannot be empty.");
+                FormatMessage(errorMessage, "red");
             }
         } while (true);
     }
 
     static void ClearScreen(){        
-        Thread.Sleep(1000);
+        Thread.Sleep(1500);
         Console.Clear();
     }
 
+    static void FormatMessage(string message, string colorMessage){
+
+        ConsoleColor setColor;
+        if(Enum.TryParse(colorMessage, true, out setColor)) {
+            Console.ForegroundColor = setColor;
+            Console.WriteLine(message);
+            Console.ResetColor();        
+        }
+        ClearScreen();
+    }
+
     static void MainMenu(){
+        Console.WriteLine("Welcome to the Journal App!");
+
         string[] menu = {"Add a new journal entry", "View all entries", "Filter entries by date", "Export entries to a file", "Exit"
             };
 
         for (int i = 0; i < menu.Length; i++)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
             Console.Write($"{i + 1}. ");
-            Console.ResetColor();
             Console.WriteLine(menu[i]);
         }        
     }
