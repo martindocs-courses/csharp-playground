@@ -40,11 +40,13 @@ class JournalApp
 
     static void Journal()
     {
-        do{
-            // Display the main menu
-            MainMenu();
+        // Display the main menu
+        MainMenu();
+        bool appRunning = true;
 
-            Console.Write("Choose an option: ");                        
+        do{
+            
+            Console.Write("Choose an option: ");
             string? options = Console.ReadLine();
 
             // Validate that the input is not null or whitespace
@@ -68,15 +70,14 @@ class JournalApp
                         case (int)MenuOptions.Exit:                            
                             break; // Exit the loop if Exit is chosen
                     }
-                }else{
+                }else if(result < 1 || result > 5){
                     // Error message if the input is not a valid integer
                     FormatMessage("\nInvalid option. Please choose between 1 and 5: ", "red");
                 }
 
                 // Exit the loop when the Exit option is selected
                 if (result == (int)MenuOptions.Exit){
-                    FormatMessage("\nGoodbye!!", "green");
-                    break;
+                    appRunning = false;
                 }
 
             }else{
@@ -84,7 +85,9 @@ class JournalApp
                 FormatMessage("\nOption cannot be empty.", "red");
             }           
 
-        } while (true);        
+        } while (appRunning);        
+        
+        FormatMessage("\nGoodbye!!", "green");
     }
 
     static void ExportEntries()
@@ -107,29 +110,22 @@ class JournalApp
 
     static void AddNewEntry()
     {        
-        string entryDescription = NonEmptyInput("Enter your journal entry:", "Entry cannot be empty");   
+        string entryDescription = NonEmptyInput("Enter your journal entry:", "\nEntry cannot be empty");
 
         // add description entry to the file if is not existing, create one 
 
-        string entryTag = NonEmptyInput("Would you like to add a tag to this entry? [y/n]: ", "Please answer the question [Y]es or [N]o.").ToLower();
-
-        if (entryTag == "y")
-        {
-            string entryTagList = NonEmptyInput("Enter a tag or multiple tags separated by commas: ", "You need to have at least one tag.").ToLower();
-            
-            // add tags to the entry description / file
-            
-        }
-
+        AddTag();
+        
         FormatMessage("\nEntry added successfully!", "green");
     }
 
     static string NonEmptyInput(string prompt, string errorMessage){
+
         do
         {
             // Clear the console and display the menu before showing the prompt
-            Console.Clear();
-            MainMenu();
+            //Console.Clear();
+            //MainMenu();
 
             // Show the input prompt
             Console.WriteLine($"\n{prompt}");
@@ -148,8 +144,8 @@ class JournalApp
 
     static void ClearScreen(){
         // Wait for 2 seconds before clearing the console
-        Thread.Sleep(2000);
-        Console.Clear();
+        Thread.Sleep(2000);                
+        //Console.Clear();        
     }
 
     static void FormatMessage(string message, string colorMessage){
@@ -162,7 +158,8 @@ class JournalApp
             Console.WriteLine(message);
             Console.ResetColor();        
         }
-        ClearScreen();
+
+        ClearScreen();        
     }
 
     static void MainMenu(){
@@ -184,6 +181,29 @@ class JournalApp
             Console.Write($"{i + 1}. ");
             Console.WriteLine(menu[i]);
         }        
+    }
+
+    static void AddTag(){
+        do
+        {
+            string entryTag = NonEmptyInput("Would you like to add a tag to this entry? [y/n]: ", "\nPlease answer the question [Y]es or [N]o.").ToLower();
+        
+            if (entryTag == "y")
+            {
+                string entryTagList = NonEmptyInput("Enter a tag or multiple tags separated by commas: ", "\nYou need to have at least one tag.").ToLower();
+
+                // add tags to the entry description / file
+
+                break;
+
+            }else if (entryTag == "n"){
+                return;            
+            }else{
+                FormatMessage("\nPlease answer the question [Y]es or [N]o.", "red");
+            }
+            
+        } while (true);   
+        
     }
 
 }
