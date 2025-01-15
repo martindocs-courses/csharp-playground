@@ -23,6 +23,7 @@ using System.Diagnostics;
 
 class JournalApp
 {
+    // Enum to represent menu options for better readability and maintainability
     public enum MenuOptions
     {
         Add = 1,
@@ -32,22 +33,26 @@ class JournalApp
         Exit = 5
     }
 
-    static void Main(){        
+    static void Main(){
+        // Start the Journal application
         Journal();
     }
 
     static void Journal()
     {
-        do{            
+        do{
+            // Display the main menu
             MainMenu();
 
             Console.Write("Choose an option: ");                        
-            string? options = Console.ReadLine();           
+            string? options = Console.ReadLine();
 
+            // Validate that the input is not null or whitespace
             if (!string.IsNullOrWhiteSpace(options?.Trim())){
                 
                 if(int.TryParse(options, out int result)){
-                    switch(result){
+                    // Handle the selected menu option
+                    switch (result){
                         case (int)MenuOptions.Add:
                             AddNewEntry();                        
                             break;
@@ -61,20 +66,21 @@ class JournalApp
                             ExportEntries();
                             break;
                         case (int)MenuOptions.Exit:                            
-                            break;
+                            break; // Exit the loop if Exit is chosen
                     }
                 }else{
-                    
+                    // Error message if the input is not a valid integer
                     FormatMessage("\nInvalid option. Please choose between 1 and 5: ", "red");
-                }                            
+                }
 
-                // exit the loop
+                // Exit the loop when the Exit option is selected
                 if (result == (int)MenuOptions.Exit){
                     FormatMessage("\nGoodbye!!", "green");
                     break;
                 }
 
             }else{
+                // Error message if the input is empty or whitespace
                 FormatMessage("\nOption cannot be empty.", "red");
             }           
 
@@ -83,16 +89,19 @@ class JournalApp
 
     static void ExportEntries()
     {
+        // Placeholder for Export Entries
         FormatMessage("\nExport Entries not implemented yet.", "red");
     }
 
     static void FilterEntries()
     {
+        // Placeholder for Filtering Entries
         FormatMessage("\nFiltering Entries not implemented yet.", "red");
     }
 
     static void ViewAllEntries()
     {
+        // Placeholder for View All Entries
         FormatMessage("\nView All Entries not implemented yet." , "red");
     }
 
@@ -118,29 +127,36 @@ class JournalApp
     static string NonEmptyInput(string prompt, string errorMessage){
         do
         {
+            // Clear the console and display the menu before showing the prompt
             Console.Clear();
             MainMenu();
 
+            // Show the input prompt
             Console.WriteLine($"\n{prompt}");
             Console.Write("> ");
             string? input = Console.ReadLine();
 
-            if(!string.IsNullOrWhiteSpace(input)){
+            // Validate that the input is not empty or whitespace
+            if (!string.IsNullOrWhiteSpace(input)){
                 return input;
             }else{
+                // Show an error message if the input is invalid
                 FormatMessage(errorMessage, "red");
             }
         } while (true);
     }
 
-    static void ClearScreen(){        
-        Thread.Sleep(1500);
+    static void ClearScreen(){
+        // Wait for 2 seconds before clearing the console
+        Thread.Sleep(2000);
         Console.Clear();
     }
 
     static void FormatMessage(string message, string colorMessage){
 
+        // Change the console text color based on the specified color message
         ConsoleColor setColor;
+
         if(Enum.TryParse(colorMessage, true, out setColor)) {
             Console.ForegroundColor = setColor;
             Console.WriteLine(message);
@@ -150,11 +166,19 @@ class JournalApp
     }
 
     static void MainMenu(){
+        // Display a welcome message
         Console.WriteLine("Welcome to the Journal App!");
 
-        string[] menu = {"Add a new journal entry", "View all entries", "Filter entries by date", "Export entries to a file", "Exit"
-            };
+        // Define the menu options
+        string[] menu = {
+            "Add a new journal entry", 
+            "View all entries", 
+            "Filter entries by date", 
+            "Export entries to a file", 
+            "Exit"
+        };
 
+        // Display the menu options
         for (int i = 0; i < menu.Length; i++)
         {
             Console.Write($"{i + 1}. ");
