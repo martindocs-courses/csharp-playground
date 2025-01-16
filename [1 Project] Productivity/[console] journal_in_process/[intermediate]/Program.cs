@@ -19,6 +19,7 @@
  */
 
 using System.Diagnostics;
+using System.Threading.Channels;
 
 class JournalApp
 {
@@ -196,24 +197,32 @@ class JournalApp
 
     static void AddTag(){
 
+        Console.WriteLine("\nWould you like to add a tag to this entry? [y/n]:");
+        Console.Write("> ");
+
         do
         {
-            string entryTag = NonEmptyInput("Would you like to add a tag to this entry? [y/n]: ", "Please answer the question [Y]es or [N]o.").ToLower();
-        
-            if (entryTag == "y")
-            {
+            string? entryTag = Console.ReadLine()?.ToLower();
+
+            if(string.IsNullOrWhiteSpace(entryTag)){
+                FormatMessage("Please answer the question [Y]es or [N]o.", "red");
+                continue;
+            }
+
+            if(entryTag == "y"){
                 string entryTagList = NonEmptyInput("Enter a tag or multiple tags separated by commas: ", "You need to have at least one tag.").ToLower();
 
                 // add tags to the entry description / file
 
-                break;
-
-            }else if (entryTag == "n"){
-                return;            
-            }else{
+                break; // Exit the loop after valid input
+            }
+            else if(entryTag == "n"){
+                break; // If the user enters "n", exit the loop
+            }
+            else{
                 FormatMessage("Please answer the question [Y]es or [N]o.", "red");
             }
-            
+
         } while (true);   
         
     }
