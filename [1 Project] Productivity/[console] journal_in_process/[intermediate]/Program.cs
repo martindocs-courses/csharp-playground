@@ -20,7 +20,6 @@
 
 using System.Diagnostics;
 
-
 class JournalApp
 {
     // Enum to represent menu options for better readability and maintainability
@@ -46,7 +45,6 @@ class JournalApp
 
         do{
             
-            Console.Write("Choose an option: ");
             string? options = Console.ReadLine();
 
             // Validate that the input is not null or whitespace
@@ -70,9 +68,9 @@ class JournalApp
                         case (int)MenuOptions.Exit:                            
                             break; // Exit the loop if Exit is chosen
                     }
-                }else if(result < 1 || result > 5){
+                }else{
                     // Error message if the input is not a valid integer
-                    FormatMessage("\nInvalid option. Please choose between 1 and 5: ", "red");
+                    FormatMessage("Invalid option. Please choose between 1 and 5: ", "red");
                 }
 
                 // Exit the loop when the Exit option is selected
@@ -82,7 +80,7 @@ class JournalApp
 
             }else{
                 // Error message if the input is empty or whitespace
-                FormatMessage("\nOption cannot be empty.", "red");
+                FormatMessage("Option cannot be empty.", "red");
             }           
 
         } while (appRunning);        
@@ -93,73 +91,83 @@ class JournalApp
     static void ExportEntries()
     {
         // Placeholder for Export Entries
-        FormatMessage("\nExport Entries not implemented yet.", "red");
+        FormatMessage("Export Entries not implemented yet.", "red");
     }
 
     static void FilterEntries()
     {
         // Placeholder for Filtering Entries
-        FormatMessage("\nFiltering Entries not implemented yet.", "red");
+        FormatMessage("Filtering Entries not implemented yet.", "red");
     }
 
     static void ViewAllEntries()
     {
         // Placeholder for View All Entries
-        FormatMessage("\nView All Entries not implemented yet." , "red");
+        FormatMessage("View All Entries not implemented yet." , "red");
     }
 
     static void AddNewEntry()
     {        
-        string entryDescription = NonEmptyInput("Enter your journal entry:", "\nEntry cannot be empty");
-
+        string entryDescription = NonEmptyInput("Enter your journal entry:", "Entry cannot be empty");
+        
         // add description entry to the file if is not existing, create one 
-
         AddTag();
         
         FormatMessage("\nEntry added successfully!", "green");
+
+        Console.Clear();
+        MainMenu();
     }
 
     static string NonEmptyInput(string prompt, string errorMessage){
 
-        do
-        {
-            // Clear the console and display the menu before showing the prompt
-            //Console.Clear();
-            //MainMenu();
+        Console.WriteLine($"\n{prompt}");
+        Console.Write("> ");
 
+        do
+        {  
             // Show the input prompt
-            Console.WriteLine($"\n{prompt}");
-            Console.Write("> ");
             string? input = Console.ReadLine();
 
             // Validate that the input is not empty or whitespace
             if (!string.IsNullOrWhiteSpace(input)){
                 return input;
             }else{
+               
                 // Show an error message if the input is invalid
                 FormatMessage(errorMessage, "red");
+                
             }
         } while (true);
     }
 
-    static void ClearScreen(){
-        // Wait for 2 seconds before clearing the console
-        Thread.Sleep(2000);                
-        //Console.Clear();        
-    }
+    //static void ClearScreen(string msg)
+    //{
+    //    // Wait for 2 seconds before clearing the console
+    //    Thread.Sleep(2000);
+    //    Console.Clear();  
+    //}
 
     static void FormatMessage(string message, string colorMessage){
+        // Save the current cursor position
+        int currentLeft = Console.CursorLeft;
+        int currentTop = Console.CursorTop;
 
         // Change the console text color based on the specified color message
         ConsoleColor setColor;
-
-        if(Enum.TryParse(colorMessage, true, out setColor)) {
+        if (Enum.TryParse(colorMessage, true, out setColor)) {
             Console.ForegroundColor = setColor;
-            Console.WriteLine(message);
+            Console.Write(message);
             Console.ResetColor();        
         }
-
-        ClearScreen();        
+                    
+        // Display messsage for 2000ms
+        Thread.Sleep(2000);
+       
+        Console.SetCursorPosition(currentLeft, currentTop);
+        Console.Write(new string(' ', message.Length));
+        Console.SetCursorPosition(currentLeft, currentTop);
+        Console.Write("> ");
     }
 
     static void MainMenu(){
@@ -180,17 +188,21 @@ class JournalApp
         {
             Console.Write($"{i + 1}. ");
             Console.WriteLine(menu[i]);
-        }        
+        }
+
+        Console.WriteLine("Choose an option:");
+        Console.Write("> ");
     }
 
     static void AddTag(){
+
         do
         {
-            string entryTag = NonEmptyInput("Would you like to add a tag to this entry? [y/n]: ", "\nPlease answer the question [Y]es or [N]o.").ToLower();
+            string entryTag = NonEmptyInput("Would you like to add a tag to this entry? [y/n]: ", "Please answer the question [Y]es or [N]o.").ToLower();
         
             if (entryTag == "y")
             {
-                string entryTagList = NonEmptyInput("Enter a tag or multiple tags separated by commas: ", "\nYou need to have at least one tag.").ToLower();
+                string entryTagList = NonEmptyInput("Enter a tag or multiple tags separated by commas: ", "You need to have at least one tag.").ToLower();
 
                 // add tags to the entry description / file
 
@@ -199,7 +211,7 @@ class JournalApp
             }else if (entryTag == "n"){
                 return;            
             }else{
-                FormatMessage("\nPlease answer the question [Y]es or [N]o.", "red");
+                FormatMessage("Please answer the question [Y]es or [N]o.", "red");
             }
             
         } while (true);   
