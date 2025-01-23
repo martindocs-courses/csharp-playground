@@ -1,13 +1,17 @@
 ﻿/* Navigation Notes
     
-    Stateless methods           : line 16 
-    Stateful methods            : line 24
-    Return values               : line 45
-    Method param and args       : line 61
-    Overloaded methods          : line 79
-    If-Else / If-Else If-Else   : line 112
-    Arrays                      : line 183
-    ForEach                     : line 217
+    Stateless methods                       : line 20 
+    Stateful methods                        : line 28
+    Return values                           : line 49
+    Method param and args                   : line 65
+    Overloaded methods                      : line 83
+    If-Else / If-Else If-Else               : line 116
+    Arrays                                  : line 187
+    - one dimensional                       : line 190
+    - multidimensional                      : line 228
+    - looping through one dimensional array : line 235
+    - looping through two dimensional array : line 244
+    ForEach                                 : line 253
     
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -183,7 +187,15 @@ if (message.Contains("C#"))
 /* ARRAYS */
 // An array is a special type of variable that can hold multiple values of the same data type. 
 
-// declare arrays 
+// ONE DIMENSIONAL ARRAY WAY TO DECLARE 
+string[] oneDimStringArray1 = new string[5];
+string[] oneDimStringArray2 = ["Martin", "Adam"];
+string[] oneDimStringArray3 = new string[] { "Martin", "Adam" };
+string[] oneDimStringArray4 = new[] { "Martin", "Adam" };
+string[] oneDimStringArray5 = { "Martin", "Adam" };
+string[] oneDimStringArray6 = ["Martin", "Adam"];
+
+// declare empty array
 string[] orderIDs = new string[3]; // new istance of the abd array that can hold three strings values
 Console.WriteLine($"\n\n{orderIDs.Count()}");
 
@@ -213,6 +225,29 @@ string[] oldOrderIDs = { "A123", "B456", "C789" };
 // Length propperty of an array
 Console.WriteLine($"There are {newOrderIDs.Length} orders to process");
 
+// TWO DIMENSIONAL ARRAY
+int[,] twoDimNumberArray1 = new int[2, 2] // 2 rows , 2 columns
+{
+    { 45, 63 },
+    { 1, 89 },
+};
+
+// LOOPING1 with for loop - multidimensinal array, is single contiguous block of memory and data arranged grid like structure. For loop we have acces to indexes and have more control over array, as we can skip over rows or columns , ajusting the bounds etc.
+for (int i = 0; i < twoDimNumberArray1.GetLength(0); i++) // loop through rows{
+{
+    for (int j = 0; j < twoDimNumberArray1.GetLength(1); j++) // loop through each number
+    {
+        //Console.WriteLine(twoDimNumberArray1[i, j]);
+    }
+}
+
+// LOOPING2 with Foreach loop on 2d array it treats the array as a whole collection, not a 2D structure. This means it will iterate through each individual element in the entire 2D array, not giving you direct access to row and column indices.
+// USING LENGTH for mulidimensional array witll show total length, for example int[,] numbers = new in[2,4] will show length 8.
+
+foreach (var num in twoDimNumberArray1)
+{
+    //Console.WriteLine(num);
+}
 
 /* FOREACH */
 Console.WriteLine("");
