@@ -249,7 +249,6 @@ foreach (var num in twoDimNumberArray1)
     //Console.WriteLine(num);
 }
 
-
 /* FOREACH */
 Console.WriteLine("");
 int[] inv = [200, 450, 700, 175, 250];
