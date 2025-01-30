@@ -488,6 +488,34 @@ string FormatDecimal(double input)
     return input.ToString().Substring(0, 5);
 }
 
+// OUT KEYWORD, to return two results from a method
+Console.WriteLine($"\nMethods with returning value and OUT keyword");
+var outValues = new[] {10, -8, 2, -10, 15 };
+var values = GetPositiveNumbers(outValues, out int value);
+foreach (var item in values)
+{
+    Console.WriteLine($"Positive numbers - {item}");
+}
+Console.WriteLine($"Count of negatives numbers is: {value}");
+
+List<int> GetPositiveNumbers(int[] numbers, out int sumOfNegatives)
+{
+
+    sumOfNegatives = 0; // when using out keyword we need asign a value
+    var positiveNumbers = new List<int>();
+
+    foreach (var number in numbers)
+    {
+        if(number > 0){
+            positiveNumbers.Add(number);
+        }else{
+            sumOfNegatives++; // non positives numbers count       
+        }
+    }
+
+    return positiveNumbers;
+}
+
 // RETURNING AN INTEGER
 Console.WriteLine($"\nMethods with returning INT");
 
