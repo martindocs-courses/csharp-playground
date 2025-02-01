@@ -62,20 +62,78 @@ bool userAsnwer = false;
 Console.Write(firstName + " is " + age + " years old, " + "and his lucky number is " + luckyNumber);
 Console.WriteLine("");
 
-// Implicityly typed local variables, by using 'var' keyword
+// Implicityly typed local variables, when use 'var' keyword
 /*
-    - it needs to be initialized right after declaring
+    Primary rule of thumb:
+    * USE var when it increases readability or makes the code less verbose without sacrificing clarity.
+      
+    Examples: 
+    -------------
+    1. The Type Is Obvious from the Assignment
+
+    If the type is immediately clear to any developer reading the code, using var is acceptable and often preferred for brevity.
+
+        var count = 10; // Clearly an int
+        var name = "Alice"; // Clearly a string
+        var numbers = new List<int>(); // Clearly a List<int>
+
+    2. The Type Is Long or Complex
+
+    When explicitly writing out the type would make the code unnecessarily verbose, var improves readability.
+
+        var lookup = new Dictionary<string, List<int>>(); // More readable than explicitly declaring the type
+
+    3. When Using Anonymous Types
+
+    You must use var for anonymous types because they have no named type.
+
+        var person = new { Name = "John", Age = 30 }; // Compiler infers the anonymous type
+
+    4. When Using LINQ or Similar APIs
+
+    LINQ often involves complex return types that are cumbersome to write explicitly.
+
+        var results = myList.Where(x => x > 10).Select(x => x * 2);
+  
+
+    * AVOID var when it makes the code harder to understand or when the type is not obvious.
+    
+    1.The Type Is Not Immediately Obvious
+
+    If the type of the variable is not clear at a glance, avoid using var to make the code more readable.
+
+        var result = ProcessData(); // What does ProcessData return? Unclear.
+
+        Instead:
+
+        int result = ProcessData(); // Explicit type improves clarity.
+
+    2. When Working with Primitive Types
+
+    While var works fine for primitives, explicitly typing them can make the code more self-documenting.
+
+        int age = 30; // Explicitly indicates the variable is an integer.
+
+    3. When Explicit Typing Improves Readability
+
+    If using var makes the code harder to understand, prefer explicit typing.
+
+        List<string> names = new List<string>(); // Clearer than var names = new List<string>();
+    
+
+    Also the var keyword:
+    - needs to be initialized right after declaring
     - data type is implied by the assigend value 
     - practical used
     * when a variable is obvious from its initialization
     * developing application and we may not immediately know what data type to use 
-    
+    * 
     - in most cases you should use the actuall data type when possible.
  */
 var msg = "hello"; // => string data type
 Console.WriteLine(msg);
 
-/* Explicit Typing var name = "martin") vs implisit 'var' typing:
+/* Explicit Typing var name = "martin" vs implisit 'var' typing:
 
     * use Explicit Typing if:
     - The type isn't obvious from the context.
@@ -194,7 +252,9 @@ Console.WriteLine($"Third {++value}"); // change to 4
 
 int x = 5;
 if(x > 0){
-    x += y;
-    console.WriteLine(x);
     int y = 6;
+    x += y;
+    Console.WriteLine(x);
 }
+
+Console.ReadLine();
