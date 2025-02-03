@@ -15,6 +15,15 @@
     - field initalization                               : line 292
     - Constructor initalization                         : line 314
          
+    Overloading                                         
+    - create constructor with shortcut                  : line 
+    - methods                                           : line 
+    - constructor                                       : line 
+
+    Expression bodied (shorter) methods                 : line 
+    THIS keyword                                        : line 
+    Optional parameter                                  : line 
+
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
 */
@@ -221,6 +230,8 @@
  */
 
 /* EXAMPLE OF OOP WITH DATATIME CLASS */
+using System.Threading.Channels;
+
 Console.WriteLine("Example of OOP with DataTime class");
 
 // Create an object (instance) of data type
@@ -239,26 +250,38 @@ Console.WriteLine(pizzaDay2025);
 /* CREATE A CLASS */
 Console.WriteLine("\nCreate a class");
 
-var rectangle1 = new Rectangle1();
-Console.WriteLine(rectangle1.Width);
+var oopTheory = new OOPTheory();
+Console.WriteLine(oopTheory.Width);
 
 /* CREATE A NEW CONSTRUCTOR */
 Console.WriteLine("\nCreate a constructor");
 
-var rectangle2 = new Rectangle2(10, 10);
-Console.Write(rectangle2.Width + " ");
-Console.Write(rectangle2.Height);
+var createConstructor1 = new CreateConstructor(10, 10);
+Console.Write(createConstructor1.Width + " ");
+Console.Write(createConstructor1.Height);
 
 Console.WriteLine();
 
-var rectangle3 = new Rectangle2(30, 30);
-Console.Write(rectangle3.Width + " ");
-Console.Write(rectangle3.Height);
+var createConstructor2 = new CreateConstructor(30, 30);
+Console.Write(createConstructor2.Width + " ");
+Console.Write(createConstructor2.Height);
+
+/* USE THIS keyword in a class */
+var someRandomClass = new SomeRandomClass(new DateTime(2025, 2, 3));
+someRandomClass.Reschedule(new DateTime(2025, 5, 21));
+
+/* OPTIONSL PARAMS */
+var optionalParams = new OptionalParam();
+optionalParams.OptionalParams("Martin"); // if we have the same methods name the method with no optional parameters will be used first, othervise used default value of 7
+optionalParams.OptionalParams("Martin", 14); // override the optional parameter
 
 Console.ReadKey();
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 // declare a class
-class Rectangle1{
+class OOPTheory{
     // declare a FIELD/ATTRIBUTE, which is a variable that belongs to an object of a class
     public int Width; // if we dont initialize the field it will be automatically set to the default value for its type, in our case int is '0' (zero). For normal variables that are not belong to class they still be not initialize.
     int height;
@@ -280,7 +303,7 @@ class Rectangle1{
     }
 }
 
-class Rectangle2{
+class CreateConstructor{
 
     // Declare fields with as public. it should start with capital letter
     public int Width;
@@ -305,7 +328,7 @@ class Rectangle2{
         * no void or any returning type 
         * constructor canr only be declared in the class and can't called in the method
      */
-    public Rectangle2(int width, int height)
+    public CreateConstructor(int width, int height)
     {
         // Most of the time that all we do in the constructor is to assign field to parameters.
         // You can pass values to the constructor, perform validation, or even have different ways of initializing the object based on conditions.
@@ -319,6 +342,136 @@ class Rectangle2{
          */
         Width = width;
         Height = height;
+    }
+}
+
+class MethodsOverLoading
+{
+    private string _someText; // to add parameters to constructor, highlight fields and right click -> Add Actions..
+    private DateTime _date;
+
+    // SHORTCUT TO CREATE CONTRUCTOR
+    // ctor + TAB
+    public MethodsOverLoading(string someText, DateTime date)
+    {
+        _someText = someText;
+        _date = date;
+    }
+
+    // CONSTRUCTOR OVERLOADING - we can cave as many as we want, but as with methods they need to be distinguishable by parameters.
+    public MethodsOverLoading(string someText): this(someText, 7) // 'THIS' keyword using in this context means to refer to another contructor (1) which first the code executed an then this one, becasue teh value match used above: this(someText, 7) match (string someText, int days). Doing that allow code duplication
+    {
+        //_someText = someText;
+        //_date = DateTime.Now.AddDays(7); // gets current date
+    }
+
+
+    public MethodsOverLoading(string someText, int days) // (1)
+    {
+        _someText = someText;
+        _date = DateTime.Now.AddDays(days); // gets current date
+    }
+
+    // METHOS OVERLOADING - named methods with the same name, but they have difrent type, order of parameters
+    public void SomeMethod(DateTime date)
+    {
+        _date = date;
+    }
+
+    public void SomeMethod(int month, int day) { 
+        _date = new DateTime(_date.Year, month, day);
+    }
+
+    // It won't compile as the method has indetical name, type and parameters
+    //public void SomeMethod(int monthsInAYear, int daysInAMonth) {
+
+    //}
+}
+
+// EXPRESSION-BODIED METHODS - use when methods has only single statement or expression 
+// expression - evaluate to a value, example: if(1 > 2)
+// statement - do not evaluate to a value, example: Console.WriteLine("Hi");
+class ExpressionBodiedMethod
+{
+    public int Width;
+    public int Height;
+    public ExpressionBodiedMethod()
+    {
+        
+    }
+
+    public ExpressionBodiedMethod(int height, int width)
+    {
+        Height = height;
+        Width = width;
+    }
+
+    // Turn to method to expression-bodied methods 
+    //public int CalculateValue()
+    //{
+    //    return 2 * Height * Width;
+    //}
+
+    public int CalculateValue() => 2 * Height * Width;
+
+    //public int CalculateArea()
+    //{
+    //    return Width * Height;
+    //}
+
+    public int CalculateArea() => Height * Width;
+}
+
+// THIS - keyword is refering to the current imstance of a class 
+class THISKeyword
+{
+    public void Print(SomeRandomClass someRandomClass)
+    {
+        Console.WriteLine($"\n\nUsing the THIS keyword in a class {someRandomClass.GetDate()}");
+    }
+}
+
+class SomeRandomClass
+{    
+    private DateTime _date;
+
+    public SomeRandomClass(DateTime date)
+    {        
+        _date = date;
+    }
+
+    public DateTime GetDate() => _date; 
+
+    public void Reschedule(DateTime date)
+    {
+        _date = date;
+        var printer = new THISKeyword();
+        printer.Print(this); // we nned to use THIS keyword to refer to instance
+    }
+}
+
+// OPTIONAL PARAMETER
+class OptionalParam
+{
+    public string name;
+    public int days;
+
+    /*
+        * the default values of optional parameters must be compile-time constant (must evaluate before compilation before program is run) aka. need to be a simple type like: string, int or bool 
+        * optional parameters must appear after all required parameters aka: '(string name, int days = 7)' NOT=> '(int days = 7, string name)'
+        * in case of ambiguity, the methods with no optional parameters are used first
+        * when using multiple optional parameters, we must remember that if we provide some of them, we must also provide all preceding optional parameters, so if we have optionalParams.OptionalParams(string name = "Martin", int days = 7) we cant use new OptionalParams(12) as we nned also include preceding optional parameter
+     */
+
+    // this method will be used when called: 'optionalParams.OptionalParams("Martin")', as it has precedence over metthod with optional parameters
+    public void OptionalParams(string name)
+    {
+        Console.WriteLine("Optionl params: " + name);
+    }
+
+    public void OptionalParams(string name, int days = 7)
+    {
+        Console.WriteLine("Optionl params: " + name + " " + days);
     }
 }
 
