@@ -1,28 +1,30 @@
 ﻿/* Navigation Notes
     
-    OOP theory                                          : line 23
-    - Inheritance                                       : line 32
-    - Encapsulation                                     : line 68
-    - Polymorphism                                      : line 141
-    - Abstraction                                       : line 183
-    - Interface                                         : line 200
+    OOP theory                                          : line 32
+    - Inheritance                                       : line 41
+    - Encapsulation                                     : line 77
+    - Polymorphism                                      : line 150
+    - Abstraction                                       : line 192
+    - Interface                                         : line 209
 
-    Example of OOP with DataTime                        : line 223
-    Create a class                                      : line 239
-    - field/attibute                                    : line 262
-    - contructor (theory)                               : line 266 
-    - data hiding                                       : line 269
-    - field initalization                               : line 292
-    - Constructor initalization                         : line 314
+    Example of OOP with DataTime                        : line 232
+    Create a class                                      : line 250
+    - field/attribute                                   : line 285
+    - constructor (theory)                              : line 289 
+    - data hiding                                       : line 292
+    - field initialization                              : line 315
+    - Constructor initialization                        : line 337
          
     Overloading                                         
-    - create constructor with shortcut                  : line 
-    - methods                                           : line 
-    - constructor                                       : line 
+    - create constructor with shortcut                  : line 353
+    - methods                                           : line 375
+    - constructor                                       : line 361
 
-    Expression bodied (shorter) methods                 : line 
-    THIS keyword                                        : line 
-    Optional parameter                                  : line 
+    Expression bodied (shorter) methods                 : line 391
+    THIS keyword                                        : line 425
+    Optional parameter                                  : line 453
+
+    Validate the constructor parameters                 : line 
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -34,7 +36,7 @@
     * We define data and methods objects of some type will contain by defining classes. Class is a blueprint for objects of the same type, which can be used to create many objects as instance
     * Class 
     * We can have many objects (instances) of the same class
-    * Code is modular, which is easier to mantain, reuse and modify and is more flexible
+    * Code is modular, which is easier to maintain, reuse and modify and is more flexible
     * Code is easier to understand and easy to control and less error-prone
     * Object-oriented programming heavily relies on four fundamental concepts: 
     * 
@@ -88,7 +90,7 @@
             {
                 private double _balance; // Private field (hidden from outside)
 
-                public void Deposit(double amount) // Method to modify
+                public void SetDeposit(double amount) // Method to modify
                 {
                     if (amount > 0)
                     {
@@ -272,8 +274,13 @@ someRandomClass.Reschedule(new DateTime(2025, 5, 21));
 
 /* OPTIONSL PARAMS */
 var optionalParams = new OptionalParam();
-optionalParams.OptionalParams("Martin"); // if we have the same methods name the method with no optional parameters will be used first, othervise used default value of 7
+optionalParams.OptionalParams("Martin"); // if we have the same methods name the method with no optional parameters will be used first, otherwise used default value of 7
 optionalParams.OptionalParams("Martin", 14); // override the optional parameter
+
+/* VALIDATE CONSTRUCTOR */
+Console.WriteLine("\nValidate a constructor");
+var validateConstructor = new ValidateContructor(-1, 3);
+validateConstructor.DisplayValues();
 
 Console.ReadKey();
 
@@ -283,21 +290,21 @@ Console.ReadKey();
 // declare a class
 class OOPTheory{
     // declare a FIELD/ATTRIBUTE, which is a variable that belongs to an object of a class
-    public int Width; // if we dont initialize the field it will be automatically set to the default value for its type, in our case int is '0' (zero). For normal variables that are not belong to class they still be not initialize.
+    public int Width; // if we don't initialize the field it will be automatically set to the default value for its type, in our case int is '0' (zero). For normal variables that are not belong to class they still be not initialize.
     int height;
 
     // CONSTRUCTOR is a method for instantiate object of the class. It needs have the same name as class and it cannot have return type 
-    // If we dont define any constructor we only can use default parametrless constructor, which is automatically created when crate a class and you are not able to set initial values for fields.
+    // If we don't define any constructor we only can use default parameterless constructor, which is automatically created when crate a class and you are not able to set initial values for fields.
 
     /* DATA HIDING - making the members of a class non-public. 
-     * Class 'members' are anything thta a class contains, especially fields and methods. 
-     * We should only make a member public if it is necessery.    
-     * To control who can access componets of a class, we use the access modifiers (public, privite or protected)
-       - 'privite' method can only be acess within class not avialble outside. They are deault modifier for any new fileds.
+     * Class 'members' are anything that a class contains, especially fields and methods. 
+     * We should only make a member public if it is necessary.    
+     * To control who can access components of a class, we use the access modifiers (public, private or protected)
+       - 'private' method can only be access within class not available outside. They are default modifier for any new fields.
        - 'public' can be access outside
     */
 
-    // class method that can use privite fields
+    // class method that can use private fields
     void SomeMethod(){
         Console.WriteLine($"The height is: {height}");
     }
@@ -309,10 +316,10 @@ class CreateConstructor{
     public int Width;
     public int Height;
 
-    // privite variable should start with underscore and folow by small letter
+    // private variable should start with underscore and follow by small letter
     private int _length;
 
-    /* FIELD INITIALIZATION. We could also declare and initialize values without constractor, but in this case we can only crate new object with already defined (DEFAULT) values;
+    /* FIELD INITIALIZATION. We could also declare and initialize values without constructors, but in this case we can only crate new object with already defined (DEFAULT) values;
         public int Width = 15;
         public int Height = 15;
 
@@ -326,7 +333,7 @@ class CreateConstructor{
         Define a constructor:
         * which need to be named the same as the class
         * no void or any returning type 
-        * constructor canr only be declared in the class and can't called in the method
+        * constructor can only be declared in the class and can't called in the method
      */
     public CreateConstructor(int width, int height)
     {
@@ -358,8 +365,8 @@ class MethodsOverLoading
         _date = date;
     }
 
-    // CONSTRUCTOR OVERLOADING - we can cave as many as we want, but as with methods they need to be distinguishable by parameters.
-    public MethodsOverLoading(string someText): this(someText, 7) // 'THIS' keyword using in this context means to refer to another contructor (1) which first the code executed an then this one, becasue teh value match used above: this(someText, 7) match (string someText, int days). Doing that allow code duplication
+    // CONSTRUCTOR OVERLOADING - we can have as many as we want, but as with methods they need to be distinguishable by parameters.
+    public MethodsOverLoading(string someText): this(someText, 7) // 'THIS' keyword using in this context means to refer to another constructor (1) which first the code executed an then this one, because the value match used above: this(someText, 7) match (string someText, int days). Doing that allow code duplication
     {
         //_someText = someText;
         //_date = DateTime.Now.AddDays(7); // gets current date
@@ -372,7 +379,7 @@ class MethodsOverLoading
         _date = DateTime.Now.AddDays(days); // gets current date
     }
 
-    // METHOS OVERLOADING - named methods with the same name, but they have difrent type, order of parameters
+    // METHOS OVERLOADING - named methods with the same name, but they have different type, order of parameters
     public void SomeMethod(DateTime date)
     {
         _date = date;
@@ -382,7 +389,7 @@ class MethodsOverLoading
         _date = new DateTime(_date.Year, month, day);
     }
 
-    // It won't compile as the method has indetical name, type and parameters
+    // It won't compile as the method has identical name, type and parameters
     //public void SomeMethod(int monthsInAYear, int daysInAMonth) {
 
     //}
@@ -422,7 +429,7 @@ class ExpressionBodiedMethod
     public int CalculateArea() => Height * Width;
 }
 
-// THIS - keyword is refering to the current imstance of a class 
+// THIS - keyword is referring to the current instance of a class 
 class THISKeyword
 {
     public void Print(SomeRandomClass someRandomClass)
@@ -446,7 +453,7 @@ class SomeRandomClass
     {
         _date = date;
         var printer = new THISKeyword();
-        printer.Print(this); // we nned to use THIS keyword to refer to instance
+        printer.Print(this); // we need to use THIS keyword to refer to instance
     }
 }
 
@@ -460,18 +467,46 @@ class OptionalParam
         * the default values of optional parameters must be compile-time constant (must evaluate before compilation before program is run) aka. need to be a simple type like: string, int or bool 
         * optional parameters must appear after all required parameters aka: '(string name, int days = 7)' NOT=> '(int days = 7, string name)'
         * in case of ambiguity, the methods with no optional parameters are used first
-        * when using multiple optional parameters, we must remember that if we provide some of them, we must also provide all preceding optional parameters, so if we have optionalParams.OptionalParams(string name = "Martin", int days = 7) we cant use new OptionalParams(12) as we nned also include preceding optional parameter
+        * when using multiple optional parameters, we must remember that if we provide some of them, we must also provide all preceding optional parameters, so if we have optionalParams.OptionalParams(string name = "Martin", int days = 7) we cant use new OptionalParams(12) as we need also include preceding optional parameter
      */
 
-    // this method will be used when called: 'optionalParams.OptionalParams("Martin")', as it has precedence over metthod with optional parameters
+    // this method will be used when called: 'optionalParams.OptionalParams("Martin")', as it has precedence over method with optional parameters
     public void OptionalParams(string name)
     {
-        Console.WriteLine("Optionl params: " + name);
+        Console.WriteLine("Optional params: " + name);
     }
 
     public void OptionalParams(string name, int days = 7)
     {
-        Console.WriteLine("Optionl params: " + name + " " + days);
+        Console.WriteLine("Optional params: " + name + " " + days);
+    }
+}
+
+class ValidateContructor{
+    public int Height;
+    public int Width;
+
+    public ValidateContructor(int height, int width)
+    {
+        Height = CheckValue(height, nameof(height)); // nameof will return string equal to height
+        Width = CheckValue(width, nameof(width)); // nameof will return string equal to width       
+    }
+
+    // only used in this class
+    private int CheckValue(int number, string name){
+
+        int defaultValue = 1;
+        if (number > 0) {
+            return number;
+        }
+
+        Console.WriteLine($"The {name} need to be bigger that 0");
+        return defaultValue;
+    }
+
+
+    public void DisplayValues(){
+        Console.WriteLine($"Height: {Height}, Width: {Width}");
     }
 }
 
