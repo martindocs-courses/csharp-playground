@@ -1,30 +1,39 @@
 ﻿/* Navigation Notes
     
-    OOP theory                                          : line 32
-    - Inheritance                                       : line 41
-    - Encapsulation                                     : line 77
-    - Polymorphism                                      : line 150
-    - Abstraction                                       : line 192
-    - Interface                                         : line 209
+    OOP theory                                                                      : line 43
+    - Inheritance                                                                   : line 52
+    - Encapsulation                                                                 : line 88
+    - Polymorphism                                                                  : line 161
+    - Abstraction                                                                   : line 203
+    - Interface                                                                     : line 220
 
-    Example of OOP with DataTime                        : line 232
-    Create a class                                      : line 250
-    - field/attribute                                   : line 285
-    - constructor (theory)                              : line 289 
-    - data hiding                                       : line 292
-    - field initialization                              : line 315
-    - Constructor initialization                        : line 337
+    Example of OOP with DataTime                                                    : line 243
+    Create a class                                                                  : line 263 & 330
+    - field/attribute                                                               : line 232
+    - constructor                                                                   : line 336 
+    - data hiding                                                                   : line 339
+    - field initialization                                                          : line 363
+    - Constructor initialization                                                    : line 269 & 385
          
-    Overloading                                         
-    - create constructor with shortcut                  : line 353
-    - methods                                           : line 375
-    - constructor                                       : line 361
+    Overloading                                                                     : line 396
+    - create constructor with shortcut                                              : line 402
+    - methods                                                                       : line 422
+    - constructor                                                                   : line 409
 
-    Expression bodied (shorter) methods                 : line 391
-    THIS keyword                                        : line 425
-    Optional parameter                                  : line 453
+    Expression-bodied (shorter) methods                                             : line 439
+    THIS keyword                                                                    : line 282 & 473
+    Optional parameter                                                              : line 286 & 501
 
-    Validate the constructor parameters                 : line 
+    Validate the constructor parameters                                             : line 291 & 526
+    Readonly and const                                                              : line 296 & 555
+    Limitation of fields and use of properties                                      : line 301 & 585
+    Getters and Setters properties                                                  : line 305 & 612
+    - shorter syntax                                                                : line 668
+    
+    Difference between auto-properties and custom properties with backing fields    : line 678
+    Object initializers                                                             : line 311 & 746
+    
+
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -232,6 +241,8 @@
  */
 
 /* EXAMPLE OF OOP WITH DATATIME CLASS */
+using System.Runtime.Intrinsics.X86;
+using System;
 using System.Threading.Channels;
 
 Console.WriteLine("Example of OOP with DataTime class");
@@ -255,7 +266,7 @@ Console.WriteLine("\nCreate a class");
 var oopTheory = new OOPTheory();
 Console.WriteLine(oopTheory.Width);
 
-/* CREATE A NEW CONSTRUCTOR */
+// CONSTRUCTOR INITIALIZATION 
 Console.WriteLine("\nCreate a constructor");
 
 var createConstructor1 = new CreateConstructor(10, 10);
@@ -268,7 +279,7 @@ var createConstructor2 = new CreateConstructor(30, 30);
 Console.Write(createConstructor2.Width + " ");
 Console.Write(createConstructor2.Height);
 
-/* USE THIS keyword in a class */
+/* THIS keyword */
 var someRandomClass = new SomeRandomClass(new DateTime(2025, 2, 3));
 someRandomClass.Reschedule(new DateTime(2025, 5, 21));
 
@@ -279,15 +290,44 @@ optionalParams.OptionalParams("Martin", 14); // override the optional parameter
 
 /* VALIDATE CONSTRUCTOR */
 Console.WriteLine("\nValidate a constructor");
-var validateConstructor = new ValidateContructor(-1, 3);
+var validateConstructor = new ValidateConstructor(-1, 3);
 validateConstructor.DisplayValues();
+
+/* READONLY AND CONST */
+var readOnlyConst = new ReadOnlyConst(2, 3);
+//readOnlyConst.Width = -10; // is not possible to reassign
+readOnlyConst.DisplayData();
+
+/* LIMITATION OF FIELDS */
+var fieldLimitation = new FieldsLimitation(5, 6);
+Console.WriteLine($"\nField Limitations: {fieldLimitation.GetHeight()}");
+
+/* GETTERS AND SETTERS PROPERTIES */
+var getterSetter = new GettersSettersProp(4, 5);
+Console.WriteLine($"\nGetter: {getterSetter.Width}");
+//getterSetter.Width = 20; // we can't use outside the class as setter is private
+Console.WriteLine($"\nSetter: {getterSetter.Width}");
+
+/* OBJECT INITIALIZERS */
+//var objectInit = new ObjectInitalizer("Martin", 1986); // Normally we use constructor for creating new object
+
+// but we could use object initializer, which gave the same result as creating constructor with values as above
+var objectInit = new ObjectInitalizer(1986)
+{
+    Name = "Martin",
+    //YearOfBirth = 1986 // if not set the value of YearOfBirth will be zero (0) or we could use in the creating new object with constructor and mix it 
+
+    YearOfBirth = 2000 // if we set prop in both places (constructor and object initializer) the value that is used is in object initializer as first constructor is called and then object initializer 
+};
+
+Console.WriteLine($"\nObject initializer: {objectInit.YearOfBirth}");
 
 Console.ReadKey();
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// declare a class
+// CREATE A CLASS
 class OOPTheory{
     // declare a FIELD/ATTRIBUTE, which is a variable that belongs to an object of a class
     public int Width; // if we don't initialize the field it will be automatically set to the default value for its type, in our case int is '0' (zero). For normal variables that are not belong to class they still be not initialize.
@@ -310,7 +350,8 @@ class OOPTheory{
     }
 }
 
-class CreateConstructor{
+class CreateConstructor
+{
 
     // Declare fields with as public. it should start with capital letter
     public int Width;
@@ -352,28 +393,27 @@ class CreateConstructor{
     }
 }
 
-class MethodsOverLoading
+// OVERLOADING
+class OverLoadingTypes
 {
     private string _someText; // to add parameters to constructor, highlight fields and right click -> Add Actions..
     private DateTime _date;
 
-    // SHORTCUT TO CREATE CONTRUCTOR
-    // ctor + TAB
-    public MethodsOverLoading(string someText, DateTime date)
+    // SHORTCUT TO CREATE CONTRUCTOR - ctor + TAB
+    public OverLoadingTypes(string someText, DateTime date)
     {
         _someText = someText;
         _date = date;
     }
 
     // CONSTRUCTOR OVERLOADING - we can have as many as we want, but as with methods they need to be distinguishable by parameters.
-    public MethodsOverLoading(string someText): this(someText, 7) // 'THIS' keyword using in this context means to refer to another constructor (1) which first the code executed an then this one, because the value match used above: this(someText, 7) match (string someText, int days). Doing that allow code duplication
+    public OverLoadingTypes(string someText): this(someText, 7) // 'THIS' keyword using in this context means to refer to another constructor (1) which first the code executed an then this one, because the value match used above: this(someText, 7) match (string someText, int days). Doing that allow code duplication
     {
         //_someText = someText;
         //_date = DateTime.Now.AddDays(7); // gets current date
     }
 
-
-    public MethodsOverLoading(string someText, int days) // (1)
+    public OverLoadingTypes(string someText, int days) // (1)
     {
         _someText = someText;
         _date = DateTime.Now.AddDays(days); // gets current date
@@ -395,9 +435,11 @@ class MethodsOverLoading
     //}
 }
 
-// EXPRESSION-BODIED METHODS - use when methods has only single statement or expression 
-// expression - evaluate to a value, example: if(1 > 2)
-// statement - do not evaluate to a value, example: Console.WriteLine("Hi");
+/* 
+ * EXPRESSION-BODIED METHODS - use when methods has only single statement or expression 
+    expression - evaluate to a value, example: if(1 > 2)
+    statement - do not evaluate to a value, example: Console.WriteLine("Hi");
+*/
 class ExpressionBodiedMethod
 {
     public int Width;
@@ -406,14 +448,13 @@ class ExpressionBodiedMethod
     {
         
     }
-
     public ExpressionBodiedMethod(int height, int width)
     {
         Height = height;
         Width = width;
     }
 
-    // Turn to method to expression-bodied methods 
+    // Switch to expression-bodied methods when there is only one statement
     //public int CalculateValue()
     //{
     //    return 2 * Height * Width;
@@ -429,7 +470,7 @@ class ExpressionBodiedMethod
     public int CalculateArea() => Height * Width;
 }
 
-// THIS - keyword is referring to the current instance of a class 
+/* THIS keyword - is referring to the current instance of a class */
 class THISKeyword
 {
     public void Print(SomeRandomClass someRandomClass)
@@ -457,7 +498,7 @@ class SomeRandomClass
     }
 }
 
-// OPTIONAL PARAMETER
+/* OPTIONAL PARAMETER */
 class OptionalParam
 {
     public string name;
@@ -482,11 +523,12 @@ class OptionalParam
     }
 }
 
-class ValidateContructor{
+/* VALIDATE THE CONSTRUCTOR PARAMETERS */
+class ValidateConstructor{
     public int Height;
     public int Width;
 
-    public ValidateContructor(int height, int width)
+    public ValidateConstructor(int height, int width)
     {
         Height = CheckValue(height, nameof(height)); // nameof will return string equal to height
         Width = CheckValue(width, nameof(width)); // nameof will return string equal to width       
@@ -507,6 +549,217 @@ class ValidateContructor{
 
     public void DisplayValues(){
         Console.WriteLine($"Height: {Height}, Width: {Width}");
+    }
+}
+
+/* READONLY AND CONST */
+class ReadOnlyConst{
+
+    /*
+        READONLY:
+        * Readonly field can only be assigned (NOT REQUIRED) at the declaration or in constructor. If not assigned the default values will be assigned.        
+        * When making all fields READ ONLY will make whole object IMMUTABLE, so once object created it will never be modified.
+        * It's a good practice to make fields readonly if possible if we do not plan to modify after it set in the constructor.
+        
+        CONST:
+        * const modifier can be applied to both variables and fields. 
+        * Those variables and fields must be assigned (REQUIRED) at declaration and can never be modified afterward. 
+        * They must be given a compile-time constant value, so a value that can be evaluated during the compilation, before the application is run, so not result of a method: const int number = GetNumber(); or Math.Random() as those are evaluated at run time. 
+        * const should always start with capital letter, const int SomeField = 10; and we shouldn't use for fields underscore for private fields.
+     */
+    const int NumberOfSides = 4;
+    public int Height;
+    readonly int Width;
+        
+    public ReadOnlyConst(int height, int width)
+    {
+        Height = height;
+        Width = width;
+    }
+
+    public void DisplayData(){
+        Console.WriteLine($"\nRead only and const, values: {Height} and {Width}");
+    }
+}
+
+/* LIMITATION OF FIELDS AND USE OF PROPERTIES */
+class FieldsLimitation{
+    /*
+        Make the fields public for reading, but private for writing using methods.     
+     */
+    public readonly int Width;
+    private int _height; // as private
+
+    public FieldsLimitation(int width, int height)
+    {
+        Width = width;
+        _height = height;
+    }
+
+    // using public method to get private field
+    public int GetHeight() => _height;
+
+    // adding extra logic if the fields are set or get
+    public void SetHeight(int number){
+        if(number < 0)
+        {
+            _height = number;
+        }
+    }
+
+}
+
+/* GETTERS AND SETTERS PROPERTIES */
+class GettersSettersProp{
+
+    private int _height;
+    private int _width;
+
+    /*
+        * Properties:
+        - should always start with capital letter. 
+        - it has accessors: getter & setter
+        - properties are differ from fields as we can use access modifiers, for example: public getter and private setter
+
+        * Backing field - is the field that property is wrapping          
+        
+        * Difference between fields and properties:
+        - Fields
+        * they are like variables
+        * single access modifier
+        * no separate getter and setter
+        * they should always be private
+        
+        - Properties
+        * they are like methods
+        * separate access modifier: getter & setter
+        * getter and setter may be removed
+        * can safely be public
+        
+        When 
+     */
+
+    // properties for getting & setting width
+    //public int Width{
+    //    get{
+    //        return _width;
+    //    }   
+
+    //    private set{ // we can use private setter inside the class
+    //        if(value > 0){
+    //          _width = value; // 'value' is special variable that is assign to the property            
+    //        }
+    //    }
+    //}
+
+    // properties for getting & setting height
+    //public int Height{        
+    //    get
+    //    {
+    //        return _height;
+    //    }
+
+    //    set
+    //    {
+    //        _height = value;
+    //    }
+    //}
+
+    // GETTER & SETTER SHORTER SYNTAX (AUTO-PROPERTIES) - we can use if the only thing we doing is setting and getting without complicated validation
+    public int Width { get; } // we could remove setter, so we can only read value but not setting it outside, only in constructor or at declaration, like this: public int Width { get; } = 12;
+    public int Height { get; set; }
+
+    public GettersSettersProp(int height, int width)
+    {
+        Height = height;
+        Width = width;
+    }
+
+    // DIFFRENCE BETWEEN AUTO-PROPERTIES aka: private int _width { get; set; } and CUSTOM PROPERTIES WITH BACKING FIELDS aka: private int _width 
+    /*
+        AUTO-PROPERTIES:
+        * When we use auto-properties, C# automatically generates the backing field for us. 
+        * We can access and modify the property directly, without needing to refer to a backing field manually in the constructor or methods.
+   
+        Example using auto-properties:                
+            public class Person
+            {
+                public int Age { get; set; }  // Auto-property, no backing field declared manually
+
+                public Person(int age)
+                {
+                    Age = age;  // We use the property directly
+                }
+
+                public void UpdateAge(int newAge)
+                {
+                    Age = newAge;  // We use the property directly
+                }
+            }
+        
+        - Constructor: We can use the property (Age) directly to set the value.
+        - Methods: Similarly, we can use the property directly (e.g., Age = newAge).
+        - The backing field is automatically managed by C#.
+        
+
+       CUSTOM PROPERTIES WITH BACKING FIELDS:
+        * When we write custom properties with backing fields, we're responsible for the backing field, the getter, and the setter.
+        * We must refer to the backing field when setting and getting values in the property, but we can use the property in the constructor or class methods.
+
+        Example with backing field and custom logic:       
+            public class Person
+            {
+                private int _age;  // Backing field
+
+                public int Age
+                {
+                    get { return _age; }
+                    set
+                    {
+                        if (value < 0)
+                        {
+                            throw new ArgumentException("Age cannot be negative");
+                        }
+                        _age = value;  // We assign to the backing field
+                    }
+                }
+
+                public Person(int age)
+                {
+                    Age = age;  // We use the property, not the backing field, in the constructor
+                }
+
+                public void UpdateAge(int newAge)
+                {
+                    Age = newAge;  // We use the property, not the backing field, in methods
+                }
+            }
+        
+        - Constructor: In the constructor, we use the property (Age = age) to set the value. We do not need to access the backing field directly. The setter will handle the logic for us (e.g., validation).
+
+        - Methods: In methods, we use the property as well (Age = newAge). The setter will again run the validation and update the backing field (_age) when we assign a value to the property.
+
+        - Backing Field: The backing field (_age) is used only inside the setter to store the value. We don't manually access or modify the backing field from other parts of the class unless we’re directly working with it.
+    */
+}
+
+/* OBJECT INITIALIZERS */
+class ObjectInitalizer{
+
+    public string Name { get; set; }
+    public int YearOfBirth { get; set; }
+
+    /*
+        * If the properties of a class are publicly settable, we can use object initializers when creating new objects.
+        * Instead of using constructor to create an object with object initializers 
+        * We do not have to initialize all values as not-initialized value will get default value for their type
+        * Object initializer only works if fields are public and have setters
+     */
+
+    public ObjectInitalizer(int yearOfBirth)
+    {
+        //Name = name;
+        YearOfBirth = yearOfBirth;
     }
 }
 
