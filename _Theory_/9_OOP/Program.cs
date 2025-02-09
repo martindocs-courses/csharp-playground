@@ -1,39 +1,47 @@
 ﻿/* Navigation Notes
     
-    OOP theory                                                                      : line 43
-    - Inheritance                                                                   : line 52
-    - Encapsulation                                                                 : line 88
-    - Polymorphism                                                                  : line 161
-    - Abstraction                                                                   : line 203
-    - Interface                                                                     : line 220
+    OOP theory                                                                      : line 51
+    - Inheritance                                                                   : line 60
+    - Encapsulation                                                                 : line 96
+    - Polymorphism                                                                  : line 169
+    - Abstraction                                                                   : line 211
+    - Interface                                                                     : line 228
 
-    Example of OOP with DataTime                                                    : line 243
-    Create a class                                                                  : line 263 & 330
-    - field/attribute                                                               : line 232
-    - constructor                                                                   : line 336 
-    - data hiding                                                                   : line 339
-    - field initialization                                                          : line 363
-    - Constructor initialization                                                    : line 269 & 385
+    Example of OOP with DataTime                                                    : line 251
+    Create a class                                                                  : line 274 & 397
+    - field/attribute                                                               : line 399
+    - constructor                                                                   : line 403 
+    - data hiding                                                                   : line 406
+    - field initialization                                                          : line 430
+    - Constructor initialization                                                    : line 280 & 452
          
-    Overloading                                                                     : line 396
-    - create constructor with shortcut                                              : line 402
-    - methods                                                                       : line 422
-    - constructor                                                                   : line 409
+    Overloading                                                                     : line 463
+    - create constructor with shortcut                                              : line 469
+    - methods                                                                       : line 489
+    - constructor                                                                   : line 476
 
-    Expression-bodied (shorter) methods                                             : line 439
-    THIS keyword                                                                    : line 282 & 473
-    Optional parameter                                                              : line 286 & 501
+    Expression-bodied (shorter) methods                                             : line 506
+    THIS keyword                                                                    : line 293 & 540
+    Optional parameter                                                              : line 297 & 568
 
-    Validate the constructor parameters                                             : line 291 & 526
-    Readonly and const                                                              : line 296 & 555
-    Limitation of fields and use of properties                                      : line 301 & 585
-    Getters and Setters properties                                                  : line 305 & 612
-    - shorter syntax                                                                : line 668
+    Validate the constructor parameters                                             : line 302 & 593
+    Readonly and const                                                              : line 307 & 622
+    Limitation of fields and use of properties                                      : line 312 & 585
+    Getters and Setters properties                                                  : line 316 & 679
+    - shorter syntax (auto-properties)                                              : line 735
+    - difference between auto-properties and custom properties with backing field   : line 745
     
-    Difference between auto-properties and custom properties with backing fields    : line 678
-    Object initializers                                                             : line 311 & 746
-    
+    Object initializers                                                             : line 322 & 813
+    Computed properties                                                             : line 336 & 833
+    - computed properties key points                                                : line 841
+    - benefits of computed properties                                               : line 856
 
+    Static class and methods                                                        : line 349 & 881
+    - good practice                                                                 : line 913
+
+    Static fields, properties and constructors                                      : line 383 & 920
+
+    Top-level statements                                                            : line 959
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -244,6 +252,9 @@
 using System.Runtime.Intrinsics.X86;
 using System;
 using System.Threading.Channels;
+using System.Reflection.Metadata.Ecma335;
+using System.Collections.Generic;
+using System.Reflection.Emit;
 
 Console.WriteLine("Example of OOP with DataTime class");
 
@@ -321,6 +332,62 @@ var objectInit = new ObjectInitalizer(1986)
 };
 
 Console.WriteLine($"\nObject initializer: {objectInit.YearOfBirth}");
+
+/* COMPUTED PROPERIES */
+Console.WriteLine("\nComputed properties");
+var computedProp = new ComputedProperties("Martin", 25)
+// use object initializer if no constructor
+{
+    Weight = 72,
+    Height = 1.82
+};
+//computedProp.Weight = 72;
+//computedProp.Height = 1.82;
+Console.WriteLine(computedProp.GetAge());
+Console.WriteLine(computedProp.BMI.ToString("N2"));
+
+/* STATIC CLASS AND METHODS */
+// Without data in the class the objects we creating will be no different from each other. 
+// As class is static we can't instantiate new object wit it. 
+
+//var staticClassMethods = new StaticClassMethod();
+//var staticClassMethods2 = new StaticClassMethod(); // the object is still the same as above
+
+/*
+    As there is no really a point to create new object if there is no data in the class, we could use methods of the class without creating new object.
+    To do that we make method as STATIC which means:
+    * methods belong to a class as a whole, not to specific instance.
+    * methods can't use the instance data (values and fields or returned by properties)  
+ */
+
+//Console.WriteLine($"1 + 2 is: {staticClassMethods.Add(1, 2)}");
+//Console.WriteLine($"1 - 2 is: {staticClassMethods.Substract(1, 2)}");
+//Console.WriteLine($"1 * 2 is: {staticClassMethods.Multiply(1, 2)}");
+
+// Instead of using object to access the methods, we use class name itself
+Console.WriteLine($"Static class and methods: 1 + 2 is: {StaticClassMethod.Add(1, 2)}");
+Console.WriteLine($"Static class and methods:1 - 2 is: {StaticClassMethod.Substract(1, 2)}");
+Console.WriteLine($"Static class and methods:1 * 2 is: {StaticClassMethod.Multiply(1, 2)}");
+Console.WriteLine();
+
+// If we have non-static class we can have static and non-static methods.
+var nonStaticClassStaticMethod = new NonStaticClassStaticMethod();
+Console.WriteLine($"Non-static class and method: 1 + 2 is: {nonStaticClassStaticMethod.Add(1, 2)}");
+Console.WriteLine($"Non-static class and method:1 - 2 is: {nonStaticClassStaticMethod.Substract(1, 2)}");
+Console.WriteLine($"Non-static class and static method:1 * 2 is: {NonStaticClassStaticMethod.Multiply(1, 2)}");
+
+// All CONST fields in the class are implicit STATIC
+//Console.WriteLine(nonStaticClassStaticMethod.SomeVariable); // can't do that way
+Console.WriteLine(NonStaticClassStaticMethod.SomeVariable);
+
+/* STATIC FILEDS, PROPERTIES AND CONSTRUCTORS */
+var staticFieldPropConstructor1 = new StaticFieldsPropConstructor("Martin", 25);
+Console.WriteLine(staticFieldPropConstructor1.DisplayName());
+
+var staticFieldPropConstructor2 = new StaticFieldsPropConstructor("Alan", 37);
+Console.WriteLine(staticFieldPropConstructor2.DisplayName());
+
+Console.WriteLine(StaticFieldsPropConstructor.Counter);
 
 Console.ReadKey();
 
@@ -763,9 +830,134 @@ class ObjectInitalizer{
     }
 }
 
+/* COMPUTED PROPERIES */
+class ComputedProperties{
+
+    public string Name { get; set; }
+    public int Weight { get; set; }
+    public double Height { get; set; }
+    private int _age;
+
+    // COMPUTED PROPERTY (key points)
+    /*
+        * No Backing Field: Computed properties don't store data directly. Instead, they compute their value each time they are accessed.
+        * Getters with Logic: We can define custom logic inside the get accessor to calculate the value dynamically.
+        * Read-Only: Computed properties are usually read-only, meaning you typically don't provide a set accessor, because the value is derived from other properties or fields.     
+     */
+    public double BMI
+    {
+        get
+        {            
+            return Weight / (Height * Height);
+        }
+    }
+
+    /*
+        BENEFITS OF COMPUTED PROPERTIES:
+        * Encapsulation: You can hide complex calculations or data transformations from the user of the class.
+        * Dynamic Calculation: Computed properties always return up-to-date values without requiring manual updates.
+        * Readability: They make your code easier to read by providing meaningful names for calculated values.
+        
+        Note:
+         Properties should never be performance heavy.
+     */
+
+    // Constructor
+    public ComputedProperties(string name, int age)
+    {
+        Name = name;
+        _age = age;
+    }
+
+    // Parameter-less method
+    public int GetAge() => _age;
+
+    /*
+        When use should use parameterless methods and when computed properties:
+        * methods represent actions while properties represent data.
+     */
+}
+
+/* STATIC CLASS AND METHODS - the class is stateless */
+// Usually objects are containers for data and methods. This class contains only methods and no data
+// If all methods of the class are static we can make class as static too, which mean that it CANNOT be instantiated. It works as a container for methods.
+static class StaticClassMethod{
+
+    //public int Add(int x, int y) => x + y;
+    //public int Substract(int x, int y) => x - y;
+    //public int Multiply(int x, int y) => x * y;
+    
+    public static int Add(int x, int y) => x + y;
+    public static int Substract(int x, int y) => x - y;
+    public static int Multiply(int x, int y) => x * y;
+
+}
+
+// Static class can't have any other methods that are not static, but non static class can have static methods.
+class NonStaticClassStaticMethod
+{
+    // All CONST fields are inexplicit STATIC
+    public const int SomeVariable = 5;
+
+    public int Add(int x, int y) => x + y;
+    public int Substract(int x, int y) => x - y;
+
+    // We can mix non-static methods with non-static
+    public int Substract2(int x, int y) => Add(x, y) + (x - y); 
+
+    // but we can't mix static methods with non-static
+    //public static int Multiply2(int x, int y) => Substract(x, y) + x * y;
+    public static int Multiply(int x, int y) => x * y;
+
+    /*
+       GOOD PRACTICE:
+       * If a private method doesn't use instance of data, make it static. This way we clearly show that those methods do not use or change any state of the object.
+       * Another benefit of making methods static is that they work slightly faster.     
+     */
+}
+
+
+/* STATIC FILEDS, PROPERTIES AND CONSTRUCTORS */
+// Both static and non-static classes can contain static fields and properties.
+// Such a field or property belongs to a class as a whole, not to any specific instance.
+class StaticFieldsPropConstructor{
+
+    /* 
+        * If this field was not static, the value would be incremented only once when the object was created and then it would always be one.
+        * Static fields and properties are used when we need to share a single member between all class instances.
+        * If we don't initialize a static field or property, it will be automatically initialized to the default value, just like its non-static counterpart.
+     */
+    public static int Counter { get; private set; } // static prop do not belong to any of instance
+    
+    // If we want to have a static field that will store the date and time of the first usage of this class.
+    private static DateTime _firstUsed;
+    // We can either assign it at declaration: private static DateTime _firstUsed = DateTime.Now;
+    // or in static constructor which is just like a regular constructor, but it doesn't have any access   modifier. Instead it has the static modifier.
+    static StaticFieldsPropConstructor(){
+        _firstUsed = DateTime.Now; // the value of _firstUsed may be not precise as initialization of the static fields is ontrolled by very low-level mechanisms of.NET.
+    }
+    // Which one we use does not really matter.
+    // Both the initialization of the static fields and the calling of the static constructor happen before the first instance of the containing class is created.
+    // Unfortunately, we don't have any certainty when exactly that will be, as it is controlled by very low-level mechanisms of.NET.
+
+    //  NOTE: Having static fields and properties is a risky and it should be avoided as much as possible.
+  
+    private string _name;
+    private int _age;
+
+    public StaticFieldsPropConstructor(string name, int age)
+    {
+        _name = name;
+        _age = age;
+        ++Counter; // it increments whatever instance of the object is created
+    }
+
+    public string DisplayName() => $"My name is {_name} and I'm {_age} years old.";
+}
+
 /* 
+    * Top-level statements can only appear before any class or namespace declaration. Once you declare a class (or namespace), the compiler expects that all executable code should be inside methods, constructors, or other members of those classes.
+   
     * When defining a class we can't put any executable (top-level statements) code below class declaration, as it won't work:
         Console.WriteLine("Hello"); // that wont work it needs to before the class definition
-
-    * Top-level statements can only appear before any class or namespace declaration. Once you declare a class (or namespace), the compiler expects that all executable code should be inside methods, constructors, or other members of those classes.
 */
