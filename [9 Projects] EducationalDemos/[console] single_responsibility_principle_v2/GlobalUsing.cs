@@ -1,1 +1,1 @@
-﻿global using System.Diagnostics;
+﻿global using System.Diagnostics; // for measuring file performance
