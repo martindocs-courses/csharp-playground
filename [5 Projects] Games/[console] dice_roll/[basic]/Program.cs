@@ -16,12 +16,15 @@
 #endregion
 
 // Entry point of application
+using dice_roll.Game;
+using dice_roll.UserCommunication;
+
 Random random = new (); // Create the Random object to inject
 RollDice roll = new (random); // Inject Random into RollDice
 InputValidator validator = new (); // Create InputValidator
 
 // Create the Game object, injecting its dependencies and pass RollDice and InputValidator into the Game
-Game game = new (roll, validator);
+PlayGame game = new (roll, validator);
 
 // Create the UI object and inject Game into it and pass Game into GameConsoleUI
 var user = new GameConsoleUI(game);
