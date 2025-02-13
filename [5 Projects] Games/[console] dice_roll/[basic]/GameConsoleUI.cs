@@ -1,7 +1,12 @@
 ﻿// GameConsoleUI handles the user interface and interaction with the game
 class GameConsoleUI
-{    
-    private readonly Game _game = new Game(); // Game instance to handle game logic     
+{
+    private readonly Game _game; // Game instance to handle game logic     
+
+    public GameConsoleUI(Game game)
+    {
+        _game = game;
+    }
 
     public void GameUI()
     {
