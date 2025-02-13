@@ -2,9 +2,15 @@
 class Game{
     private int _tries = 0; // Tracks the number of attempts the user has made
     private const string _exitCommand = "exit"; // Command to exit the game
-    private readonly RollDice _roll = new RollDice(); // Instance to handle dice rolling
-    private readonly InputValidator _number = new InputValidator(); // Instance to validate user input
+    private readonly RollDice _roll; // handle dice rolling    
+    private readonly InputValidator _number; // validate user input
     public bool IsExitGame { get; private set; } = false; // Set the flag when exit the game to omit asking user to play again
+
+    public Game(RollDice roll, InputValidator number)
+    {
+        _roll = roll;
+        _number = number;
+    }
 
     // Method to reset the tries counter (called when starting a new game)
     public void ResetTries()
@@ -14,7 +20,7 @@ class Game{
 
     // Core method that handles user input and game flow
     public void UserInput(){       
-
+        
         var roll = _roll.Roll(); // Roll the dice at the start of the game
 
         // Loop that allows up to MaxTries attempts for the user to guess the number
