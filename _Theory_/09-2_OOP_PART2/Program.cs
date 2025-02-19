@@ -1,13 +1,14 @@
 ﻿/* Navigation Notes
     
-    OOP PART 2                                                                      
-    Inheritance                                                                 : line 18
-    Encapsulation                                                               : line 54
-    Polymorphism                                                                : line 127
-    Abstraction                                                                 : line 171
-    Interface                                                                   : line 188
-    - Access to methods                                                         : line 218
-    - Access to fields                                                          : line 226
+    OOP PART 2                                                                  : line 18           
+    Polymorphism                                                                : line 20
+    - one object for different types                                            : line 104 & 140
+    Inheritance                                                                 : line 65 & 183
+    - Access to methods                                                         : line 112
+    - Access to fields                                                          : line 120
+
+    Abstraction                                                                 : line 251
+    Interface                                                                   : line 268
         
 
     Tips:
@@ -15,116 +16,8 @@
 */
 /*
     * Object-oriented programming heavily relies on four fundamental concepts: 
-    - INHERITANCE (: symbol) - inherit fields and methods from one class to another. Inheritance enables us to create new classes that reuse, extend and modify the behavior defined in other classes. The class whose members are inherited is called the base class, and the class that inherits those members is called the derived class.
-        
-        Derived Class (child) - the class that inherits from another class
-        Base Class (parent) - the class being inherited from
-            
-        class Vehicle  // base class (parent) 
-        {
-          public string brand = "Ford";  // Vehicle field
-          public void honk()             // Vehicle method 
-          {                    
-            Console.WriteLine("Tuut, tuut!");
-          }
-        }
-
-        class Car : Vehicle  // derived class (child)
-        {
-          public string modelName = "Mustang";  // Car field
-        }
-
-        class Program
-        {
-          static void Main(string[] args)
-          {
-            // Create a myCar object
-            Car myCar = new Car();
-
-            // Call the honk() method (From the Vehicle class) on the myCar object
-            myCar.honk();
-
-            // Display the value of the brand field (from the Vehicle class) and the value of the modelName from the Car class
-            Console.WriteLine(myCar.brand + " " + myCar.modelName);
-          }
-        }
-
-        Note: If you don't want other classes to inherit from a class, use the 'sealed' keyword
-
-    - ENCAPSULATION - bundling data with methods that operate on this data in single class,
-        Two Ways to Encapsulate Data:
-        * Using Methods - More control, but longer.
-        * Using Properties (get and set) → Cleaner and recommended for most cases.
-        
-        - Use properties (get and set) when data should be easily accessible.
-        - Use methods when you need more control (e.g., extra logic before modifying the value).
-        - In real-world applications, properties are preferred because they keep the code cleaner.
-        
-       * Encapsulation Using Methods: This approach hides the field and allows access only through methods.
-            class BankAccount
-            {
-                private double _balance; // Private field (hidden from outside)
-
-                public void SetDeposit(double amount) // Method to modify
-                {
-                    if (amount > 0)
-                    {
-                        _balance += amount;
-                    }
-                }
-
-                public double GetBalance() // Method to read
-                {
-                    return _balance;
-                }
-            }
-
-            class Program
-            {
-                static void Main()
-                {
-                    BankAccount account = new BankAccount();
-                    account.Deposit(100); // ✅ Allowed
-                    Console.WriteLine(account.GetBalance()); // ✅ Allowed
-                }
-            }
-
-        ✅ Good when you need more control (e.g., complex calculations inside Deposit()).
-        ❌ Longer and not ideal for simple data access.            
-
-
-        * Encapsulation Using Properties (get and set):
-            class BankAccount
-            {
-                private double _balance; // Private field
-
-                public double Balance // Property with get and set
-                {
-                    get { return _balance; } // Allows reading
-                    set
-                    {
-                        if (value >= 0) // Only allow positive values
-                            _balance = value;
-                    }
-                }
-            }
-
-            class Program
-            {
-                static void Main()
-                {
-                    BankAccount account = new BankAccount();
-                    account.Balance = 100; // ✅ Allowed (calls set)
-                    Console.WriteLine(account.Balance); // ✅ Allowed (calls get)
-                }
-            }
-
-        ✅ Shorter and cleaner than using methods
-        ✅ Better for simple read/write access
-        ❌ Less control if complex logic is needed
-
-
-    - POLYMORPHISM - means "many forms", and it occurs when we have many classes that are related to each other by inheritance. Polymorphism uses those methods to perform different tasks. This allows us to perform a single action in different ways.
+    
+    POLYMORPHISM - means "many forms", and it occurs when we have many classes that are related to each other by inheritance. Polymorphism uses those methods to perform different tasks. This allows us to perform a single action in different ways.
         
         The base class method overrides the derived class method, when they share the same name. But we can override the base class method, by adding the virtual keyword to the method inside the base class, and by using the override keyword for each derived class methods
     
@@ -168,6 +61,193 @@
           }
         }
 
+
+    INHERITANCE (: symbol) - inherit fields and methods from one class to another. Inheritance enables us to create new classes that reuse, extend and modify the behavior defined in other classes. The class whose members are inherited is called the base class, and the class that inherits those members is called the derived class.
+        
+        Derived Class (child) - the class that inherits from another class
+        Base Class (parent) - the class being inherited from
+            
+        class Vehicle  // base class (parent) 
+        {
+          public string brand = "Ford";  // Vehicle field
+          public void honk()             // Vehicle method 
+          {                    
+            Console.WriteLine("Tuut, tuut!");
+          }
+        }
+
+        class Car : Vehicle  // derived class (child)
+        {
+          public string modelName = "Mustang";  // Car field
+        }
+
+        class Program
+        {
+          static void Main(string[] args)
+          {
+            // Create a myCar object
+            Car myCar = new Car();
+
+            // Call the honk() method (From the Vehicle class) on the myCar object
+            myCar.honk();
+
+            // Display the value of the brand field (from the Vehicle class) and the value of the modelName from the Car class
+            Console.WriteLine(myCar.brand + " " + myCar.modelName);
+          }
+        }
+
+        Note: If you don't want other classes to inherit from a class, use the 'sealed' keyword
+ */
+using polyMorphism = PolymorphismTheory;
+using inheritAnce = InheritanceTheory;
+
+// ONE OBJECT (interface) to entities of different types 
+Console.WriteLine("Polymorphism: One object (interface) to entities of different types:");
+var pizza = new polyMorphism.Pizza();
+pizza.AddIngredients(new polyMorphism.Cheddar());
+pizza.AddIngredients(new polyMorphism.Mozzarella());
+var showUs = pizza.Describe(); 
+Console.WriteLine(showUs); // Cheddar
+
+// ACCESS TO METHODS - Derived class have access to base class public and protected methods, but not private ones.
+Console.WriteLine("\nAccess to Methods");
+var cheddar = new inheritAnce.Cheddar();
+Console.WriteLine(cheddar.PublicMethod()); // Even if this method is not defined directly in the general class, we can still call it on a cheddar object because it is inherited from the base Ingredient class.
+cheddar.UseMethodFromBaseClass(); // or we could also use it directly within the cheddar class.
+//cheddar.PrivateMethod(); // not accessible
+//cheddar.ProtectedMethod(); // not accessible
+
+// ACCESS to FIELDS - Inherited fields have independent values from base class
+Console.WriteLine("\nAccess to Fields");
+var ingridient = new inheritAnce.Ingredient();
+ingridient.PublicField = 10;
+cheddar.PublicField = 2;
+
+Console.WriteLine("Value of ingredient: " + ingridient.PublicField);
+Console.WriteLine("Value of cheddar: " + cheddar.PublicField);
+
+Console.WriteLine("\nAccess to public fields form derived class");
+var newCheddar1 = new inheritAnce.Cheddar(); // implicit type of Cheddar
+inheritAnce.Cheddar newCheddar2 = new inheritAnce.Cheddar(); // explicit type of Cheddar
+Console.WriteLine(newCheddar1.Name);
+
+// We can assign an object of type Cheddar to a variable of type Ingredient
+inheritAnce.Ingredient cheddarIngredient = new inheritAnce.Cheddar();
+Console.WriteLine(cheddarIngredient.Name); // if we want to be able to use the Name property on any Ingredient object, we must have this property in the Ingredient class.
+
+Console.ReadKey();
+
+namespace PolymorphismTheory
+{
+    public class Pizza
+    {
+        // Each instance of this class will hold a list of ingredients it is composed of
+        private List<Ingredient> _ingridients = new List<Ingredient>();
+
+        // A method that adds a new ingredient to a pizza.
+        public void AddIngredients(Ingredient ingredient) => _ingridients.Add(ingredient);
+
+        // Describe method listing all the ingredients.
+        public string Describe() => $"This pizza is with a {string.Join(',', _ingridients)}";
+    }
+
+    // base class
+    public class Ingredient
+    {
+                
+    }
+
+    // derived class
+    public class Cheddar : Ingredient
+    {
+
+        public string Name => "Cheddar cheese";
+        public int AgedForMonths { get; }                
+    }
+
+    // derived class
+    public class TomatoSauce : Ingredient
+    {
+        public string Name => "Tomato sauce";
+        public int TomatoIn100Grams { get; }
+    }
+
+    // derived class
+    public class Mozzarella : Ingredient
+    {
+        public string Name => "Mozzarella";
+        public bool IsLight { get; }
+    }
+}
+
+namespace InheritanceTheory
+{
+    public class Pizza
+    {
+        // Each instance of this class will hold a list of ingredients it is composed of
+        private List<Ingredient> _ingredients = new List<Ingredient>();
+
+        // A method that adds a new ingredient to a pizza.
+        public void AddIngredients(Ingredient ingredient) => _ingredients.Add(ingredient);
+
+        // Describe method listing all the ingredients.
+        public string Describe() => $"This pizza is with a {string.Join(',', _ingredients)}";
+    }
+
+    // base class
+    public class Ingredient
+    {
+
+        public string Name { get; } = "Some ingredient";
+
+        public int PublicField; // derived class have access to base public fields
+
+        public string PublicMethod() => "This method is PUBLIC in the Ingredient class.";
+
+        // Unlike public methods, private ones are not inherited.
+        private string PrivateMethod() => "This method is PRIVATE in the Ingredient class.";
+
+        // Protected members can be used in the derived classes, but they can't be used outside.
+        protected string ProtectedMethod() => "This method is PROTECTED in the Ingredient class.";
+    }
+
+    // derived class
+    public class Cheddar : Ingredient
+    {
+
+        // Fields that are public or protected also get inherited by derived classes.
+        /*
+            It is not like the value of this field is shared. If we have an object of the Ingredient type, and it will have its own field. At the same time objects of classes derived from this base class will also have such fields, but the values will be independent.     
+         */
+        public string Name => "Cheddar cheese";
+        public int AgedForMonths { get; }
+
+        // use Ingredient method directly within the cheddar class.
+        public void UseMethodFromBaseClass()
+        {
+            Console.WriteLine(PublicMethod());
+            //Console.WriteLine(PrivateMethod()); // wont work
+            Console.WriteLine(ProtectedMethod());
+
+        }
+    }
+
+    // derived class
+    public class TomatoSauce : Ingredient
+    {
+        public string Name => "Tomato sauce";
+        public int TomatoIn100Grams { get; }
+    }
+
+    // derived class
+    public class Mozzarella : Ingredient
+    {
+        public string Name => "Mozzarella";
+        public bool IsLight { get; }
+    }
+}
+
+/* 
     - ABSTRACTION - classes only exposes essential data and methods and hide the underlying details,
 
         The abstract keyword is used for classes and methods: 
@@ -205,103 +285,9 @@
         * On implementation of an interface, you must override all of its methods
         * Interfaces can contain properties and methods, but not fields/variables
         * Interface members are by default abstract and public
-        * An interface cannot contain a constructor (as it cannot be used to create objects)
+        * An interface cannot contain a constructor (as it cannot be used to create objects) 
+ 
+ 
+ 
  */
-
-// ONE OBJECT TO Pizza class
-var pizza = new Pizza();
-pizza.AddIngredients(new Cheddar());
-pizza.AddIngredients(new Mozzarella());
-var showUs = pizza.Describe(); 
-Console.WriteLine(showUs); // Cheddar
-
-// ACCESS TO METHODS - Derived class have access to base class public and protected methods, but not private ones.
-Console.WriteLine("\nAccess to Methods");
-var cheddar = new Cheddar();
-Console.WriteLine(cheddar.PublicMethod()); // Even if this method is not defined directly in the general class, we can still call it on a cheddar object because it is inherited from the base Ingredient class.
-cheddar.UseMethodFromBaseClass(); // or we could also use it directly within the cheddar class.
-//cheddar.PrivateMethod(); // not accessible
-//cheddar.ProtectedMethod(); // not accessible
-
-// ACCESS to FIELDS - Inherited fields have independent values from base class
-Console.WriteLine("\nAccess to Fields");
-var ingridient = new Ingredient();
-ingridient.PublicField = 10;
-cheddar.PublicField = 2;
-
-Console.WriteLine("Value of ingredient: " + ingridient.PublicField);
-Console.WriteLine("Value of cheddar: " + cheddar.PublicField);
-
-Console.WriteLine("\nAccess to public fields form derived class");
-var newCheddar1 = new Cheddar(); // implicit type of Cheddar
-Cheddar newCheddar2 = new Cheddar(); // explicit type of Cheddar
-Console.WriteLine(newCheddar1.Name);
-
-// We can assign an object of type Cheddar to a variable of type Ingredient
-Ingredient cheddarIngredient = new Cheddar();
-Console.WriteLine(cheddarIngredient.Name); // if we want to be able to use the Name property on any Ingredient object, we must have this property in the Ingredient class.
-
-Console.ReadKey();
-
-public class Pizza{
-    // Each instance of this class will hold a list of ingredients it is composed of
-    private List<Ingredient> _ingridients = new List<Ingredient>();
-
-    // A method that adds a new ingredient to a pizza.
-    public void AddIngredients(Ingredient ingredient) => _ingridients.Add(ingredient);
-
-    // Describe method listing all the ingredients.
-    public string Describe() => $"This pizza is with a {string.Join(',', _ingridients)}";
-}
-
-// base class
-public class Ingredient{
-
-    public string Name { get; } = "Some ingredient";
-
-    public int PublicField; // derived class have access to base public fields
-
-    public string PublicMethod() => "This method is PUBLIC in the Ingredient class.";
-
-    // Unlike public methods, private ones are not inherited.
-    private string PrivateMethod() => "This method is PRIVATE in the Ingredient class.";
-
-    // Protected members can be used in the derived classes, but they can't be used outside.
-    protected string ProtectedMethod() => "This method is PROTECTED in the Ingredient class.";
-}
-
-// derived class
-public class Cheddar : Ingredient{
-
-    // Fields that are public or protected also get inherited by derived classes.
-    /*
-        It is not like the value of this field is shared. If we have an object of the Ingredient type, and it will have its own field. At the same time objects of classes derived from this base class will also have such fields, but the values will be independent.     
-     */
-    public string Name => "Cheddar cheese";
-    public int AgedForMonths{ get; }
-
-    // use Ingredient method directly within the cheddar class.
-    public void UseMethodFromBaseClass() {
-        Console.WriteLine(PublicMethod());
-        //Console.WriteLine(PrivateMethod()); // wont work
-        Console.WriteLine(ProtectedMethod());
-       
-    }
-}
-
-// derived class
-public class TomatoSauce : Ingredient
-{
-    public string Name => "Tomato sauce";
-    public int TomatoIn100Grams{ get; }    
-}
-
-// derived class
-public class Mozzarella : Ingredient
-{
-    public string Name => "Mozzarella";
-    public bool IsLight{ get; }    
-}
-
-
 
