@@ -1,41 +1,42 @@
 ﻿/* Navigation Notes
     
-    OOP PART 1                                                                      
-    Example of OOP with DataTime                                                    : line 251
-    Create a class                                                                  : line 274 & 397
-    - field/attribute                                                               : line 399
-    - constructor                                                                   : line 403 
-    - data hiding                                                                   : line 406
-    - field initialization                                                          : line 430
-    - Constructor initialization                                                    : line 280 & 452
+    OOP PART 1                                                                      : line 46
+    - Encapsulation                                                                 : line 53
+    Example of OOP with DataTime                                                    : line 126
+    Create a class                                                                  : line 149 & 272
+    - field/attribute                                                               : line 274
+    - constructor                                                                   : line 278 
+    - data hiding                                                                   : line 281
+    - field initialization                                                          : line 305
+    - Constructor initialization                                                    : line 155 & 327
          
-    Overloading                                                                     : line 463
-    - create constructor with shortcut                                              : line 469
-    - methods                                                                       : line 489
-    - constructor                                                                   : line 476
+    Overloading                                                                     : line 338
+    - create constructor with shortcut                                              : line 344
+    - methods                                                                       : line 364
+    - constructor                                                                   : line 351
 
-    Expression-bodied (shorter) methods                                             : line 506
-    THIS keyword                                                                    : line 293 & 540
-    Optional parameter                                                              : line 297 & 568
+    Expression-bodied (shorter) methods                                             : line 381
+    THIS keyword                                                                    : line 168 & 415
+    Optional parameter                                                              : line 172 & 443
 
-    Validate the constructor parameters                                             : line 302 & 593
-    Readonly and const                                                              : line 307 & 622
-    Limitation of fields and use of properties                                      : line 312 & 585
-    Getters and Setters properties                                                  : line 316 & 679
-    - shorter syntax (auto-properties)                                              : line 735
-    - difference between auto-properties and custom properties with backing field   : line 745
+    Validate the constructor parameters                                             : line 177 & 468
+    Readonly and const                                                              : line 182 & 497
+    Limitation of fields and use of properties                                      : line 187 & 527
+    Getters and Setters properties                                                  : line 191 & 554
+    - shorter syntax (auto-properties)                                              : line 609
+    - difference between auto-properties and custom properties with backing field   : line 619
     
-    Object initializers                                                             : line 322 & 813
-    Computed properties                                                             : line 336 & 833
-    - computed properties key points                                                : line 841
-    - benefits of computed properties                                               : line 856
+    Object initializers                                                             : line 197 & 687
+    Computed properties                                                             : line 211 & 707
+    - computed properties key points                                                : line 715
+    - benefits of computed properties                                               : line 730
 
-    Static class and methods                                                        : line 349 & 881
-    - good practice                                                                 : line 913
+    Static class and methods                                                        : line 224 & 755
+    - good practice                                                                 : line 787
 
-    Static fields, properties and constructors                                      : line 383 & 920
+    Static fields, properties and constructors                                      : line 258 & 794
 
-    Top-level statements                                                            : line 959
+    Top-level statements                                                            : line 833
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -48,6 +49,78 @@
     * We can have many objects (instances) of the same class
     * Code is modular, which is easier to maintain, reuse and modify and is more flexible
     * Code is easier to understand and easy to control and less error-prone    
+    
+    ENCAPSULATION - bundling data with methods that operate on this data in single class,
+        Two Ways to Encapsulate Data:
+        * Using Methods - More control, but longer.
+        * Using Properties (get and set) → Cleaner and recommended for most cases.
+        
+        - Use properties (get and set) when data should be easily accessible.
+        - Use methods when you need more control (e.g., extra logic before modifying the value).
+        - In real-world applications, properties are preferred because they keep the code cleaner.
+        
+       * Encapsulation Using Methods: This approach hides the field and allows access only through methods.
+            class BankAccount
+            {
+                private double _balance; // Private field (hidden from outside)
+
+                public void SetDeposit(double amount) // Method to modify
+                {
+                    if (amount > 0)
+                    {
+                        _balance += amount;
+                    }
+                }
+
+                public double GetBalance() // Method to read
+                {
+                    return _balance;
+                }
+            }
+
+            class Program
+            {
+                static void Main()
+                {
+                    BankAccount account = new BankAccount();
+                    account.Deposit(100); // ✅ Allowed
+                    Console.WriteLine(account.GetBalance()); // ✅ Allowed
+                }
+            }
+
+        ✅ Good when you need more control (e.g., complex calculations inside Deposit()).
+        ❌ Longer and not ideal for simple data access.            
+
+
+        * Encapsulation Using Properties (get and set):
+            class BankAccount
+            {
+                private double _balance; // Private field
+
+                public double Balance // Property with get and set
+                {
+                    get { return _balance; } // Allows reading
+                    set
+                    {
+                        if (value >= 0) // Only allow positive values
+                            _balance = value;
+                    }
+                }
+            }
+
+            class Program
+            {
+                static void Main()
+                {
+                    BankAccount account = new BankAccount();
+                    account.Balance = 100; // ✅ Allowed (calls set)
+                    Console.WriteLine(account.Balance); // ✅ Allowed (calls get)
+                }
+            }
+
+        ✅ Shorter and cleaner than using methods
+        ✅ Better for simple read/write access
+        ❌ Less control if complex logic is needed    
  */
 
 /* EXAMPLE OF OOP WITH DATATIME CLASS */
@@ -505,7 +578,6 @@ class GettersSettersProp{
         * getter and setter may be removed
         * can safely be public
         
-        When 
      */
 
     // properties for getting & setting width
