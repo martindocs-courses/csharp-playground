@@ -1,14 +1,14 @@
 ﻿/* Navigation Notes
     
-    OOP PART 2                                                                  : line 17           
-    Polymorphism                                                                : line 19
-    * one object for different types
-    Inheritance                                                                 : line 56
+    OOP PART 2                                                                  : line 18           
+    Polymorphism                                                                : line 20
+    - one object for different types                                            : line 104 & 140
+    Inheritance                                                                 : line 65 & 183
+    - Access to methods                                                         : line 112
+    - Access to fields                                                          : line 120
 
-    Abstraction                                                                 : line 171
-    Interface                                                                   : line 188
-    - Access to methods                                                         : line 218
-    - Access to fields                                                          : line 226
+    Abstraction                                                                 : line 251
+    Interface                                                                   : line 268
         
 
     Tips:
