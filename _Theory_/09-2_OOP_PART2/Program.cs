@@ -105,7 +105,10 @@ using System.Xml.Linq;
 using inherit = Inheritance;
 using inheritMemberProp = InheritanceMembersProps;
 using overridingMembers = OverridingBaseMembers;
-using InheritanceHierarchy;
+using inheritHierarchy = InheritanceHierarchy;
+using objectToString1 = ObjectToString1;
+using iheritConstructors = InheritedConstructors;
+using System.Collections.Generic;
 
 /* INHERITANCE */
 // ONE OBJECT (interface) to entities of different types 
@@ -199,7 +202,7 @@ foreach (overridingMembers.Ingredient ingredient in ingredients) // loop of Ingr
 
 /* INHERITANCE HIERARCHY */
 Console.WriteLine("\nInheritance hierarchy");
-var inheritHierarchy = new Pizza();
+var inheritHierarchy = new overridingMembers.Pizza();
 
 /*
 We can still pass Mozzarella and Cheddar to the AddIngredient method, taking an Ingredient as a parameter. This is because both Mozzarella and Cheddar still inherit from the Ingredient class. So they are ingredients.
@@ -209,14 +212,62 @@ The only difference is that the inheritance is no longer direct.
     Before:             Cheddar => Ingredient
 
 */
-inheritHierarchy.AddIngredients(new Cheddar()); 
-inheritHierarchy.AddIngredients(new Mozzarella()); 
+inheritHierarchy.AddIngredients(new overridingMembers.Cheddar()); 
+inheritHierarchy.AddIngredients(new overridingMembers.Mozzarella()); 
 
-//inheritHierarchy.AddIngredients(new TomatoSauce());
+//inheritHierarchy.AddIngredients(new overridingMembers.TomatoSauce()); // Tomato Sauce is no Cheese so it wont compile
 
 Console.WriteLine(inheritHierarchy.Describe());
 
+/* SYSTEM OBEJCT AND TO_STRING METHOD */
+Console.WriteLine("\nSystem.Object and ToString()");
+/*
+    SYSTEM.OBJECT - Defined in the System namespace is the ultimate base class of all .NET classes. It is the root of the type hierarchy.
+ */
+
+var objectToString = new objectToString1.Cheddar(); // all classes are derived from System.Object class
+
+Console.WriteLine(new ObjectToString2()); // => before overriding global ToString() method the name of class "ObjectToString2" is in the global namespace (unnamed)).  
+Console.WriteLine(new objectToString1.Cheddar()); // before overriding global ToString() method is with the namespace "ObjectToString1.Cheese". After overriding => "Cheese"
+Console.WriteLine(new objectToString1.TomatoSauce()); // before overriding global ToString() method is with the namespace "ObjectToString1.TomatoSauce". After overriding => "Tomato sauce"
+Console.WriteLine(new List<int>()); // => System.Collections.Generic.List`1[System.Int32]
+
+// after overriding the global ToString method and assign Name prop we are getting actual value
+var objectToString2 = new objectToString1.Pizza();
+objectToString2.AddIngredients(new objectToString1.TomatoSauce()); 
+
+Console.WriteLine(objectToString2.ToString()); // => "Tomato Sauce"
+
+/* INHERITED CONSTRUCTORS */
+Console.WriteLine("\nInherited constructors");
+/*
+    When we create a Cheddar object like this, the constructor from the base class will be called first with 2 as an argument. Then the constructor from the Cheddar class will be called.
+ */
+var inheritConstructor = new iheritConstructors.Cheddar(2, 10); // => first is called "Constructor from base class -> Ingredient class" , then  "Constructor from derived class -> Cheddar class."
+Console.WriteLine(inheritConstructor.PriceIfExtraToppings);
+
+/*
+    Explanation:
+    * The derived class extends the base class.
+    * The base class constructor may set the values of fields and properties belonging to the base class, so common to all derived types, or do any other initialization.
+    * If the derived class has some extra steps to perform in its constructor, it can still do it.
+    * Its constructor will be executed after the base constructor. 
+ */
+
+var inheritConstructor2 = new iheritConstructors.Ingredient(10);
+Console.Write(inheritConstructor2.PriceIfExtraToppings);
+
+// he Name property for the Cheddar class now uses the Name property from the base class and adds a couple more words from itself.
+Console.WriteLine();
+Console.WriteLine(inheritConstructor);
+
 Console.ReadKey();
+
+class ObjectToString2{
+    public string Name { get; } = "Some Ingredient";
+
+    public string Display2() => Name;
+}
 
 namespace Inheritance
 {
@@ -440,10 +491,183 @@ namespace InheritanceHierarchy{
     {
         public override string Name => "Tomato sauce";
         public int TomatoIn100Grams { get; }
+    }   
+}
+
+namespace MultipleInheritance{
+
+    /*  MULTIPLE INHERITANCE 
+     
+        We cannot derive directly from two or more base classes:            
+             Mozzarella
+        Cheese      Ingredient
+
+        Is more linear:
+        Mozzarella => Cheese => Ingredient
+        Mozzarella => Mozzarella derived directly from Cheese => and indirectly from Ingredient
+        
+        One class cannot derive from multiple classes:
+        public class Mozzarella: Cheese, Ingredient - wrong!!!
+     */
+
+    // ....
+}
+
+namespace ObjectToString1{
+
+    public class Pizza
+    {
+        
+        private List<Ingredient> _ingredients = new List<Ingredient>();
+                
+        public void AddIngredients(Ingredient ingredient) => _ingredients.Add(ingredient);
+
+        
+        public override string ToString() => $"This pizza is with a {string.Join(',', _ingredients)}.";
     }
 
-   
+    // base class
+    public class Ingredient
+    {
+        // By overriding the ToString method to get the actual Name of each type
+        public override string ToString() => Name;
+        public virtual string Name => "Other ingredients";
+        public int PublicField; 
+                
+        public string PublicMethod() => "This method is PUBLIC in the Ingredient class.";
+                
+        private string PrivateMethod() => "This method is PRIVATE in the Ingredient class.";
+                
+        protected string ProtectedMethod() => "This method is PROTECTED in the Ingredient class.";
+    }
+
+    // derived class 
+    public class Cheese : Ingredient
+    {
+
+    }
+
+    // derived class
+    public class Cheddar : Cheese
+    {
+
+        public override string Name => "Cheddar cheese";
+        public int AgedForMonths { get; }
+
+
+        public void UseMethodFromBaseClass()
+        {
+            Console.WriteLine(PublicMethod());
+
+        }
+    }
+
+
+    // derived class
+    public class Mozzarella : Cheese
+    {
+        public override string Name => "Mozzarella";
+        public bool IsLight { get; }
+    }
+
+    // derived class
+    public class TomatoSauce : Ingredient
+    {
+        public override string Name => "Tomato sauce";
+        public int TomatoIn100Grams { get; }
+    }
 }
+
+namespace InheritedConstructors{
+   
+    // The constructor is a special method that is executed at the moment of the object's creation.
+    
+    public class Pizza
+    {        
+        private List<Ingredient> _ingredients = new List<Ingredient>();
+      
+        public void AddIngredients(Ingredient ingredient) => _ingredients.Add(ingredient);
+      
+        public string Describe() => $"This pizza is with a {string.Join(',', _ingredients)}";
+    }
+
+    // base class
+    public class Ingredient
+    {
+        public int PublicField;
+        public virtual string Name { get; } = "Some ingredients";
+
+        public override string ToString() => Name;
+        public int PriceIfExtraToppings{ get; }
+
+        /*
+            If Cheddar is an Ingredient, which constructor is called when we create a cheddar object? The one from the Cheddar class or the one from the Ingredient class?
+            The answer is that first Ingredient constructor, then Cheddar constructor
+         */
+
+        // This constructor does not set the value of the PriceIfExtraTopping property, which means it leaves  it initialized with the default value for integers, which is zero.
+        //public Ingredient() {...} 
+        public Ingredient(int priceIfExtraToppings) 
+        {
+            Console.Write("Constructor from Ingredient class: ");
+            PriceIfExtraToppings = priceIfExtraToppings; // to set the value of the prop we declare in the constructor 
+        }
+
+        public string PublicMethod() => "This method is PUBLIC in the Ingredient class.";
+        private string PrivateMethod() => "This method is PRIVATE in the Ingredient class.";       
+        protected string ProtectedMethod() => "This method is PROTECTED in the Ingredient class.";
+    }
+        
+    // derived class
+    public class Cheddar : Ingredient
+    {
+
+        // the 'base' class constructor is responsible for initializing the fields and properties that all ingredients have in common. the constructor from the Cheddar class initializes the property that is specific to Cheddar (ageForMonths) and not present in other types.
+        public Cheddar(int priceIfExtraToppings, int ageForMonths): base(priceIfExtraToppings) // we pass this value to the constructor of the base class by using : base(..param)
+        {
+            AgedForMonths = ageForMonths;
+            Console.Write("Constructor from Cheddar class: ");
+            
+        }
+
+        /*
+            The "base" keyword can be used not only to refer to the base class constructor, but any other base class member who is accessible in the derived class.         
+         */
+        //public override string Name => "Cheddar cheese";
+        public override string Name => $"{base.Name}, more specifically a Cheddar cheese aged for {AgedForMonths} months.";
+        public int AgedForMonths { get; }
+       
+        public void UseMethodFromBaseClass()
+        {
+            Console.WriteLine(PublicMethod());            
+            Console.WriteLine(ProtectedMethod()); 
+
+        }
+    }
+
+    //// derived class
+    public class TomatoSauce : Ingredient
+    {
+        public TomatoSauce(int priceIfExtraToppings) : base(priceIfExtraToppings)
+        {
+        }
+
+        public string Name => "Tomato sauce";
+        public int TomatoIn100Grams { get; }
+    }
+
+    //// derived class
+    public class Mozzarella : Ingredient
+    {
+        public Mozzarella(int priceIfExtraToppings) : base(priceIfExtraToppings)
+        {
+        }
+
+        public string Name => "Mozzarella";
+        public bool IsLight { get; }
+    }
+}
+
 /* 
     - ABSTRACTION - classes only exposes essential data and methods and hide the underlying details,
 
