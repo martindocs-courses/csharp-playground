@@ -108,7 +108,7 @@ using overridingMembers = OverridingBaseMembers;
 using inheritHierarchy = InheritanceHierarchy;
 using objectToString1 = ObjectToString1;
 using iheritConstructors = InheritedConstructors;
-using System.Collections.Generic;
+using abstractClass = AbstractClass;
 
 /* INHERITANCE */
 // ONE OBJECT (interface) to entities of different types 
@@ -260,6 +260,20 @@ Console.Write(inheritConstructor2.PriceIfExtraToppings);
 // he Name property for the Cheddar class now uses the Name property from the base class and adds a couple more words from itself.
 Console.WriteLine();
 Console.WriteLine(inheritConstructor);
+
+/* ABSTRACT CLASS */
+Console.WriteLine("\nAbstract class");
+/*
+    Abstract classes cannot be instantiated. They only serve as base classes for other, more concrete types.
+
+    The abstract keyword is used for classes and methods:
+    - Abstract class: is a restricted class that cannot be used to create objects (to access it, it must be inherited from another class).
+    - Abstract method: can only be used in an abstract class, and it does not have a body. The body is provided by the derived class (inherited from).
+ */
+//abstractClass.Animal animal = new abstractClass.Animal(); // not possible to create an object of the Animal class
+abstractClass.Pig pig = new abstractClass.Pig();
+pig.animalSound();
+
 
 Console.ReadKey();
 
@@ -668,6 +682,26 @@ namespace InheritedConstructors{
     }
 }
 
+namespace AbstractClass
+{
+    // An abstract class can have both abstract and regular methods
+    abstract class Animal
+    {
+        public abstract void animalSound();
+        public void sleep()
+        {
+            Console.WriteLine("Zzz");
+        }
+    }
+
+    class Pig : Animal
+    {
+        public override void animalSound()
+        {
+            Console.WriteLine("The pig says: honk!");
+        }
+    }
+}
 /* 
     - ABSTRACTION - classes only exposes essential data and methods and hide the underlying details,
 

@@ -1,8 +1,10 @@
 ﻿/* Navigation Notes
     
-    Enum                                                            : line 11
-    Up-casting & Down-casting                                       : line 
-        
+    Enum                                                            : line 20
+    Up-casting & Down-casting                                       : line 27
+    IS operator                                                     : line 38
+    NULL value                                                      : line 53
+    AS operator                                                     : line 80        
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -75,7 +77,6 @@ if(userInput is not null) // better solution
 //int age = null;
 
 /* AS operator */
-Console.WriteLine("\nAS operator");
 //asOperator.Ingredient asIngredient = 
 asOperator.Cheddar asCheddar = new asOperator.Cheddar(); // cast expression
 
@@ -86,16 +87,9 @@ asOperator.Ingredient asIngredient2 = new asOperator.Cheddar(); // cast expressi
     For the "as" operator, the result will simply be null. Because the result may be null it means we can only use this operator to cast to those types that can be assigned null. For example not use "as" on int type as int can't be assign null value.
  */
 // if we want to do any operations on this object, like printing its name, we should first check if it is not null, because if it is, we will get a NullReferenceException.
-asOperator.Cheddar asCheddar2 = new asOperator.ingredient as Cheddar;
-if(asCheddar2 is not null){
-    Console.WriteLine(asCheddar2.Name);
-}else{
-    Console.WriteLine("Conversion failed!");
-}
+
 
 Console.ReadKey();
-
-
 
 namespace Enum
 {
@@ -208,14 +202,8 @@ namespace NullValue{
     }
 }
 
-namespace AsOperator{
-    //Ingredient GenerateRandomIngredient()
-    //{
-    //    var random = new Random();
-    //    var number = random.Next(1, 4);
-    //    if (number == 1) { return new Cheddar(2, 13)}
-    //}
-
+namespace AsOperator {
+    
     public class Pizza
     {
         private List<Ingredient> _ingridients = new List<Ingredient>();
@@ -252,4 +240,6 @@ namespace AsOperator{
         public string Name => "Mozzarella";
         public bool IsLight { get; }
     }
+}
+
 
