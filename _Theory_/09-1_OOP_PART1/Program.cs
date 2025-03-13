@@ -1,6 +1,6 @@
 ﻿/* Navigation Notes
     
-    OOP PART 1                                                                      : line 46
+    OOP PART 1                                                                      
     - Encapsulation                                                                 : line 53
     Example of OOP with DataTime                                                    : line 126
     Create a class                                                                  : line 149 & 272
