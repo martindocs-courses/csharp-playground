@@ -1,13 +1,24 @@
 ﻿/* Navigation Notes
     
-    OOP PART 2                                                                  : line 18           
-    Polymorphism                                                                : line 20
-    - one object for different types                                            : line 104 & 140
-    Inheritance                                                                 : line 65 & 183
-    - Access to methods                                                         : line 112
-    - Access to fields                                                          : line 120
+    OOP PART 2                                                                             
+    Polymorphism theory                                                         : line 31
+    Inheritance                                                                 : line 76 & 125
+    - one object for different types                                            : line 126
+    - access to methods                                                         : line 134
+    - private & protected methods                                               : line 140
+    - access to fields                                                          : line 144
+    - overriding base class members                                             : line 158
+    - inheritance hierarchy                                                     : line 215
 
-    Abstraction                                                                 : line 251
+    System object and ToString() method                                         : line 234
+    Inherited constructors                                                      : line 253   
+    
+    Abstract classes & Methods                                                  : line 276
+    Static class & Methods                                                      : line 288
+    Sealed class & Methods                                                      : line 756
+    - reason for sealing an class or method                                     : line 803
+    Static sealed class                                                         : line 850
+
     Interface                                                                   : line 268
         
 
@@ -109,6 +120,7 @@ using inheritHierarchy = InheritanceHierarchy;
 using objectToString1 = ObjectToString1;
 using iheritConstructors = InheritedConstructors;
 using abstractClass = AbstractClass;
+using staticClass = StaticClassSealed;
 
 /* INHERITANCE */
 // ONE OBJECT (interface) to entities of different types 
@@ -219,7 +231,7 @@ inheritHierarchy.AddIngredients(new overridingMembers.Mozzarella());
 
 Console.WriteLine(inheritHierarchy.Describe());
 
-/* SYSTEM OBEJCT AND TO_STRING METHOD */
+/* SYSTEM OBJECT AND TO_STRING METHOD */
 Console.WriteLine("\nSystem.Object and ToString()");
 /*
     SYSTEM.OBJECT - Defined in the System namespace is the ultimate base class of all .NET classes. It is the root of the type hierarchy.
@@ -261,7 +273,7 @@ Console.Write(inheritConstructor2.PriceIfExtraToppings);
 Console.WriteLine();
 Console.WriteLine(inheritConstructor);
 
-/* ABSTRACT CLASS */
+/* ABSTRACT CLASS & METHODS */
 Console.WriteLine("\nAbstract class");
 /*
     Abstract classes cannot be instantiated. They only serve as base classes for other, more concrete types.
@@ -273,6 +285,11 @@ Console.WriteLine("\nAbstract class");
 //abstractClass.Animal animal = new abstractClass.Animal(); // not possible to create an object of the Animal class
 abstractClass.Pig pig = new abstractClass.Pig();
 pig.animalSound();
+
+/* STATIC CLASS & METHODS */
+// Static classes or method cannot be instantiated
+// but we can call any methods in static class explicitly
+    //var horse = Horse.horseSound();
 
 
 Console.ReadKey();
@@ -687,7 +704,40 @@ namespace AbstractClass
     // An abstract class can have both abstract and regular methods
     abstract class Animal
     {
-        public abstract void animalSound();
+        /* 
+            * abstract methods do not have implementation and they are empty 
+            * all abstract methods are simplicity virtual, and they must be overwritten in the derived class
+            * the abstract class do not have implementation as is always overridden, so there is no point to have body in the abstraction class.
+            * we do not have override the abstract method if the derived class is also abstract
+         */
+
+        /*
+            Difference between virtual modifier and abstract modifier:
+            
+            virtual:
+            * must have implementation 
+            * overriding is optional
+            
+            abstract:
+            * cant have an implementation
+            * overriding is obligatory
+         */
+
+        /*
+            ABSTRACT METHODS:
+            * if the base type should not or cannot provide any default implementation. By marking a method as abstract,
+            * By marking a method as abstract, we say all the derived types must provide their own implementation.
+            * Abstract methods are quite similar to the virtual methods and actually they are implicitly virtual.
+            * the derived non-abstract classes simply must override this method.
+            * abstract methods can be declared only in abstract classes
+            
+            VIRTUAL METHODS:
+            * if we mark a method as virtual, we say in the base class there is some default implementation. 
+            * If the derived class wants to override it, it is free to do so.
+            * virtual methods can belong to both abstract and non abstract types.
+         */
+
+        public abstract void animalSound(); 
         public void sleep()
         {
             Console.WriteLine("Zzz");
@@ -702,25 +752,113 @@ namespace AbstractClass
         }
     }
 }
-/* 
-    - ABSTRACTION - classes only exposes essential data and methods and hide the underlying details,
 
-        The abstract keyword is used for classes and methods: 
-         Abstract class: is a restricted class that cannot be used to create objects (to access it, it must be inherited from another class).
-         Abstract method: can only be used in an abstract class, and it does not have a body. The body is provided by the derived class (inherited from).
-    
-        abstract class Animal 
+namespace SealedClassMethods{
+    public abstract class Animal
+    {    
+        public abstract void animalSound();
+        public void sleep()
         {
-          public abstract void animalSound();
-          public void sleep() 
-          {
             Console.WriteLine("Zzz");
-          }
+        }
+        public abstract void Prepare();
+    }
+
+    public sealed class Pig : Animal
+    {
+        public override void animalSound()
+        {
+            Console.WriteLine("The pig says: honk!");
         }
 
-        From the example above, it is not possible to create an object of the Animal class. To access the abstract class, it must be inherited from another class.
+        public override void Prepare(){
+            Console.WriteLine("Prepare pork...");
+        }
+    }
 
-    - INTERFACE - is a completely "abstract class", which can only contain abstract methods and properties (with empty bodies). 
+    // 1. We cannot crate derived sub-class form sealed PIG class
+        //public class Ham: Pig{
+    
+        //}
+
+    // 2. Only virtual overridden methods can be sealed. It is a way of saying "I'm overriding this virtual method now, but I don't want any of the types derived from this type to be able to override it further.
+    public class Horse: Animal{
+        public override void animalSound(){
+            Console.WriteLine("Hyee");
+        }
+
+        public sealed override void Prepare(){
+            Console.WriteLine("Prepare horse...");
+        }
+    }
+
+    public class Donkey: Horse{
+
+        // We cannot override sealed method
+            //public override void Prepare(){
+
+            //}
+
+        /*
+            REASON FOR SEALING AN CLASS OR METHOD:
+            * may boost performance a bit, but it is such a tiny difference that in most cases it is not worth it.
+
+            * Sealing a class may raise some problems. If we can't inherit from it, it means that no specialized version of this class can be created.
+
+            * Sealing may also cause issues with testing.
+
+            * As a rule of thumb, we should avoid sealing our classes unless we are certain we know what we're doing.         
+         */
+    }
+}
+
+namespace StaticClassSealed
+{
+  
+    public class Animal
+    {
+        public virtual void animalSound(){
+        
+        }
+        public void sleep()
+        {
+            Console.WriteLine("Zzz");
+        }
+       
+    }
+
+    public class Pig : Animal
+    {
+        public override void animalSound()
+        {
+            Console.WriteLine("The pig says: honk!");
+        }
+        
+    }
+
+    public static class Horse{
+
+        public static string horseSound() => "Heyy";
+}
+
+// We cannot derived form static class
+//public class Donkey: Horse{
+
+//}
+
+/*
+    STATIC CLASSES SEALED:
+    * static classes may only contain static methods, and static methods cannot be overridden no matter if they belong to a static or non-static class.
+    * Why cannot static methods be overridden? Because the whole point of overriding is to have a specific implementation of a method used when executing on a specific instance.
+    * Static methods are not called on instances. They are called on a class as a whole. Since there are no instances, there is no picking an implementation specific to a certain type of the instance. It means overriding static methods doesn't make sense.
+    * Since static classes can only have static methods, there is no point in inheriting from static classes and that's the reason why they are always sealed.
+ */
+
+}
+
+
+/*
+   - INTERFACE - is a completely "abstract class", which can only contain abstract methods and properties (with empty bodies). 
 
         It is considered good practice to start with the letter "I" at the beginning of an interface, as it makes it easier for yourself and others to remember that it is an interface and not a class.
 
