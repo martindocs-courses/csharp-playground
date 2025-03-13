@@ -2,7 +2,7 @@
     
     OOP PART 2                                                                             
     Polymorphism theory                                                         : line 31
-    Inheritance                                                                 : line 76 & 125
+    Inheritance                                                                 : line 76 & 125 
     - one object for different types                                            : line 126
     - access to methods                                                         : line 134
     - private & protected methods                                               : line 140
