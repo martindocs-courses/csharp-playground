@@ -5,6 +5,7 @@
     IS operator                                                     : line 38
     NULL value                                                      : line 53
     AS operator                                                     : line 80        
+    Multi-line string                                               : line 
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -15,6 +16,10 @@ using UpcastingDowncasting;
 using casingConversion = UpcastingDowncasting;
 using nullValue = NullValue;
 using asOperator = AsOperator;
+using extMethods = ExtensionMethods; // Alias for the namespace
+
+using _10_Miscellaneous.Extensions;
+
 /* 
     ENUM:
     * An enum is a special "class" that represents a group of constants (unchangeable/read-only variables).
@@ -87,6 +92,37 @@ asOperator.Ingredient asIngredient2 = new asOperator.Cheddar(); // cast expressi
     For the "as" operator, the result will simply be null. Because the result may be null it means we can only use this operator to cast to those types that can be assigned null. For example not use "as" on int type as int can't be assign null value.
  */
 // if we want to do any operations on this object, like printing its name, we should first check if it is not null, because if it is, we will get a NullReferenceException.
+
+/* EXTENSION METHODS */
+// Allow us to seemingly add methods to an existing type without modifying these types' source code.
+// multi-line string literals
+Console.WriteLine("\nMultiline String");
+var multilineText = @" 
+    aaaaaa
+    bbbbbb
+    cccccc
+";
+
+//Console.WriteLine("Count of lines is " + CountLines(multilineText));
+Console.WriteLine("Count of lines is " + multilineText.CountLines()); // because is extension we could call as if it would be belongs to String class
+Console.WriteLine("Count of lines is " + StringExtensions.CountLines(multilineText)); // but is not belong to String class and to static extension class 
+/*
+    BENEFIT OF EXTENSION METHODS:
+    * Extension methods are very useful and allow us to add functionality to types that we don't have access to.
+    * Extension methods have another great benefit. They allow us to seemingly add methods to types that cannot have methods defined like enums. 
+    
+    NOTE:
+    * Extension methods enable us to seemingly add methods to existing types without creating a new derived type or modifying the original type.
+    * Extension methods are static methods, but we can use them as if they were instance methods on the extended type.
+ */
+
+//int CountLines(string input) =>
+//    input.Split(Environment.NewLine).Length;
+
+// EXTEND FUNCTIONALITY OF ENUMS WITH EXTENSION METHODS
+Console.WriteLine("\nExtend methods");
+Console.WriteLine("Next after spring is " + extMethods.Season.Spring.NextSeason());
+Console.WriteLine("Next after winter is " + extMethods.Season.Winter.NextSeason());
 
 
 Console.ReadKey();
@@ -242,4 +278,13 @@ namespace AsOperator {
     }
 }
 
+namespace ExtensionMethods{
+    public enum Season
+    {
+        Spring,
+        Summer,
+        Autumn,
+        Winter
+    }
+}
 
