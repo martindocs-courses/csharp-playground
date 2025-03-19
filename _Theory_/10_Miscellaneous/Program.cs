@@ -1,11 +1,13 @@
 ﻿/* Navigation Notes
     
-    Enum                                                            : line 20
-    Up-casting & Down-casting                                       : line 27
-    IS operator                                                     : line 38
-    NULL value                                                      : line 53
-    AS operator                                                     : line 80        
-    Multi-line string                                               : line 
+    Enum                                                            : line 28
+    Up-casting & Down-casting                                       : line 35
+    IS operator                                                     : line 46
+    NULL value                                                      : line 61
+    AS operator                                                     : line 88        
+    Extension Methods                                               : line 100 & 307
+    Multi-line string                                               : line 103
+    JSON                                                            : line 131 & 317
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -17,8 +19,10 @@ using casingConversion = UpcastingDowncasting;
 using nullValue = NullValue;
 using asOperator = AsOperator;
 using extMethods = ExtensionMethods; // Alias for the namespace
-
 using _10_Miscellaneous.Extensions;
+using jsonLib = JSONLib;
+using JSONLib;
+using System.Text.Json;
 
 /* 
     ENUM:
@@ -124,6 +128,28 @@ Console.WriteLine("\nExtend methods");
 Console.WriteLine("Next after spring is " + extMethods.Season.Spring.NextSeason());
 Console.WriteLine("Next after winter is " + extMethods.Season.Winter.NextSeason());
 
+/* JSON */
+Console.WriteLine("\nJSON format");
+var person = new jsonLib.Person
+{
+    FirstName = "John",
+    LastName = "Smith",
+    YearOfBirth = 1972
+};
+
+// Serialize() methods comes from the System.Text.Json namespace
+var asJson = JsonSerializer.Serialize(person); // Returns object as JSON string 
+Console.WriteLine("As JSON:");
+Console.WriteLine(asJson);
+
+var personJson =
+    "{\"FirstName\":\"John\",\"LastName\":\"Smith\",\"YearOfBirth\":1972}";
+
+// we must put the type of object we want to create <Person>
+var personFromJson = JsonSerializer.Deserialize<Person>(personJson); // Converting JSON back to C# object
+
+Console.WriteLine("\nAs C# object:");
+Console.WriteLine(personFromJson);
 
 Console.ReadKey();
 
@@ -285,6 +311,15 @@ namespace ExtensionMethods{
         Summer,
         Autumn,
         Winter
+    }
+}
+
+namespace JSONLib{
+    public class Person
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int YearOfBirth { get; set; }
     }
 }
 
