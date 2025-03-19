@@ -1,26 +1,28 @@
 ﻿/* Navigation Notes
     
     OOP PART 2                                                                             
-    Polymorphism theory                                                         : line 31
-    Inheritance                                                                 : line 76 & 125 
-    - one object for different types                                            : line 126
-    - access to methods                                                         : line 134
-    - private & protected methods                                               : line 140
-    - access to fields                                                          : line 144
-    - overriding base class members                                             : line 158
-    - inheritance hierarchy                                                     : line 215
+    Polymorphism theory                                                         : line 33
+    Inheritance                                                                 : line 78 & 128 
+    - one object for different types                                            : line 129
+    - access to methods                                                         : line 137
+    - private & protected methods                                               : line 143
+    - access to fields                                                          : line 147
+    - overriding base class members                                             : line 161
+    - inheritance hierarchy                                                     : line 218
 
-    System object and ToString() method                                         : line 234
-    Inherited constructors                                                      : line 253   
+    System object and ToString() method                                         : line 237
+    Inherited constructors                                                      : line 256   
     
-    Abstract classes & Methods                                                  : line 276
-    Static class & Methods                                                      : line 288
-    Sealed class & Methods                                                      : line 756
-    - reason for sealing an class or method                                     : line 803
-    Static sealed class                                                         : line 850
+    Abstract classes & Methods                                                  : line 279 & 711
+    Static class & Methods                                                      : line 292
+    Sealed class & Methods                                                      : line 765
+    - reason for sealing an class or method                                     : line 812
+    Static sealed class                                                         : line 859
 
-    Interface                                                                   : line 268
-        
+    Interface                                                                   : line 297 & 869
+    - difference between Interface class and Abstract class                     : line 937    
+    - on the conceptual level                                                   : line 951    
+    - technical differences                                                     : line 968    
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -121,6 +123,7 @@ using objectToString1 = ObjectToString1;
 using iheritConstructors = InheritedConstructors;
 using abstractClass = AbstractClass;
 using staticClass = StaticClassSealed;
+using interfaceClass = InterfaceClass;
 
 /* INHERITANCE */
 // ONE OBJECT (interface) to entities of different types 
@@ -291,6 +294,12 @@ pig.animalSound();
 // but we can call any methods in static class explicitly
     //var horse = Horse.horseSound();
 
+/* INTERFACE */
+Console.WriteLine("\nInterface class");
+
+var bird = new interfaceClass.Bird();
+
+bird.Tweet();
 
 Console.ReadKey();
 
@@ -856,7 +865,6 @@ namespace StaticClassSealed
 
 }
 
-
 /*
    - INTERFACE - is a completely "abstract class", which can only contain abstract methods and properties (with empty bodies). 
 
@@ -879,8 +887,102 @@ namespace StaticClassSealed
         * Interfaces can contain properties and methods, but not fields/variables
         * Interface members are by default abstract and public
         * An interface cannot contain a constructor (as it cannot be used to create objects) 
- 
- 
- 
+        
+        Why And When To Use Interfaces?
+        1) To achieve security - hide certain details and only show the important details of an object (interface).
+
+        2) C# does not support "multiple inheritance" (a class can only inherit from one base class). However, it can be achieved with interfaces, because the class can implement multiple interfaces. Note: To implement multiple interfaces, separate them with a comma.       
  */
 
+namespace InterfaceClass
+{
+    // The only thing that interfaces should contain are declarations of methods and properties.
+    public interface IFlyable
+    {
+        void Fly(); // Methods defined in the Interface class are implicit virtual, similar to abstract method in abstract classes
+    }
+
+    public class Bird : IFlyable
+    {
+        public void Tweet() =>
+            Console.WriteLine("Tweet, tweet!");
+
+        public void Fly() =>
+            Console.WriteLine("Flying using its wings.");
+    }
+
+    public class Kite : IFlyable
+    {
+        public void Fly() =>
+            Console.WriteLine("Flying carried by the wind.");
+    }
+
+    public interface IFuelable
+    {
+        void Fuel();
+    }
+
+    // We can implement multiple interfaces, but remember that we need implement all methods the interfaces have in derived class
+    public class Plane : IFlyable, IFuelable
+    {
+        public void Fly() =>
+            Console.WriteLine("Flying using jet propulsion.");
+
+        public void Fuel() =>
+            Console.WriteLine("Filling tanks with jet fuel.");
+    }
+}
+
+/*
+    DIFFERENCE BETWEEN INTERFACE CLASS AND ABSTRACT CLASS:
+    Interface:
+    * An interface defines what set of operations will be provided by any class implementing it.
+    * It does not provide any implementation on its own
+    * it doesn't contain any data.
+    
+    Abstract class:
+    * An abstract class is like a general blueprint for derived classes. It represents some general category of things.
+    * It may provide implementations of methods, contain fields, etc.
+    * It can also contain abstract methods, so methods with no implementations that have to be implemented in the derived types.
+    
+    Interface and Abstract class:
+    * Both interfaces and abstract classes are too abstract to be instantiated.
+    
+    ON THE CONCEPTUAL LEVEL:
+    Interface:
+    * an interface is an abstraction over behavior
+    * It defines what an object can do. 
+    * When you have a group of types that share similar behavior, they might have a common interface.
+    * For example, a bird, a kite, and a plane fly. So it makes sense for all of them to implement the IFlyable interface.
+    * When you are given an object implementing IFlyable interface, you may not be sure what it is, but you will know it is able to fly.
+    * When you try to find what some objects have in common and a VERB comes to mind, it means you probably want to use an interface.
+    
+    Abstract class: 
+    * an abstract class is an abstraction over alikeness.
+    * It defines what an object is.
+    * When you have a group of types and they all belong to some general category of things, they might inherit from the same abstract class.
+    * For example, a bird, a snake and a dog are all animals, so it makes sense for them to inherit from the Animal abstract class.
+    * When you are given an object that inherits from the Animal abstract class, you may not be sure how it behaves, but you know that it is some kind of animal.
+    * When you try to find what some objects have in common and a NOUN comes to mind, it means you probably want to use an abstract class.
+ 
+    TECHNICAL DIFFERENCES BETWEEN INTERFACES AND ABSTRACT CLASSES:
+    Interface:
+    * An interface is a set of definitions of methods.
+    * It does not provide any implementation, at least in the 99% of the cases.
+    * It specifies a contract that an implementing method will have to fulfill .When you implement an interface in your class it means you declare that this class will provide all the methods from this interface.
+    * All methods are implicitly public
+    * Methods cannot be sealed or static.
+    * Methods are implicitly virtual
+    * Can only contain methods or properties definitions
+    * A class can implement multiple interfaces
+
+    Abstract class:
+    * A type existing only to be derived from.
+    * Can provide any implementation on its own.
+    * Only abstract methods must be overridden in the derived types
+    * Non-abstract methods can have any access modifiers
+    * Can contain sealed and static methods
+    * Non-abstract methods are not implicitly virtual
+    * Can also have implementations, fields and constructors
+    * A class cannot inherit from multiple classes 
+ */
