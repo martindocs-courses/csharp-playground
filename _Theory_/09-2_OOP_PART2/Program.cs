@@ -174,7 +174,7 @@ Console.WriteLine($"Ingredient type non virtual: {nonVirtual2.Name}"); // => "So
     Ingredient ingredient = new Cheddar();
     Console.WriteLine(ingredient.Name);
 
-    We're getting diffrent result above because when we have a variable of a specific type, and we call some method or property on it, the internal engine of C# does this:
+    We're getting different result above because when we have a variable of a specific type, and we call some method or property on it, the internal engine of C# does this:
 
     * Checks if the method/prop is virtual
     * 
