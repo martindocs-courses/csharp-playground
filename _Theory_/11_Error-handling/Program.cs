@@ -1,21 +1,26 @@
 ﻿/* Navigation Notes
     
-    Runtime errors                                                      : line 31
+    Runtime errors                                                      : line 36
     Try-catch block
-    - single try-catch                                                  : line 47
-    - multiple try-catch                                                : line 81
-    - global try-catch                                                  : line 288
+    - single try-catch                                                  : line 52
+    - multiple try-catch                                                : line 86
+    - global try-catch                                                  : line 293
+    - code inside catch block                                           : line 310
+    
 
-    Explicitly throwing exception                                       : line 123
+    Explicitly throwing exception                                       : line 128 & 393
     Build-in exception types                                            
-    - most common exceptions                                            : line 324
-    - stack overflow exception and recursive method                     : line 167
+    - most common exceptions                                            : line 158 & 423
+    - stack overflow exception and recursive method                     : line 172
 
-    Precise exceptions                                                  : line 177
+    Precise exceptions                                                  : line 182
     Re-trowing an exception
-    - throw vs throw ex                                                 : line 238
-    - system.Exception object                                           : line 267
+    - throw vs throw ex                                                 : line 243
+    - system.Exception object                                           : line 281
 
+    Exception filters (WHEN keyword)                                    : line 328    
+    Custom exception                                                    : line 357 & 459
+    Smart usage of exceptions                                           : line 375
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -286,8 +291,102 @@ bool IsFirstElementPositiveThrow(IEnumerable<int> numbers)
  */
 
 /* GLOBAL TRY-CATCH BLOCK */
+/* 
+ * Global try-catch block that can catch an exception not caught elsewhere, show it to the user and then shut the application down gracefully.
+ * The global try-catch block should surround the entry point to the application. The entry point is the first method that is called and which then calls all other methods. In the console application it is the Main method in the Program class.
+ * Since this is the last resort of error handling, we must expect any exceptions. A global try-catch block is a special place where catching the System.Exception is fine. We must catch all types of exceptions because if we don't catch some of them, the application will crash.
+ 
+    try{
+        public static void Main(string[] args){
+            // Main program
+        }
+    }catch (Exception ex){
+        Console.WriteLine("Sorry the application experienced an unexpected error and will be closed. " + "Message error: " + ex.Message);
+        Console.WriteLine("Press any key...");  
+        Console.ReadKey();
+    }  
+*/
 
+/* CODE INSIDE CATCH BLOCK */
+/*
+    * Generally it is a bad practice to put any code that can possibly throw an exception inside a catch block. 
+    * The catch block should be simple.
+    * It may return some default value if this is how the method is designed, or print something to the console, log an error in some file or show some pop up to the user, example: 
+    * It is possible to create nested try-catch blocks, but it's not advised use nested try-catch blocks. Such code is messy and unreadable and might be really tricky to follow.
+        try{
+            ...
+        }catch(DividedByZeroException ex){
+            try{
+                // some code
+            }catch(FormatException ex){
+                // message
+            }
+        }
+ 
+*/
 
+/* EXCEPTION FILTERS (WHEN keyword) */
+
+try
+{
+    var dataFromWeb = ProcessHttpRequest("www.google.com");
+}
+catch (HttpRequestException ex) when (ex.Message.StartsWith("4")) // that will be handled before code below. Because of that, we should always put more specific filters on the top and more generic ones on the bottom.
+{
+    Console.WriteLine("Resource not available.");
+    throw;
+
+}catch (HttpRequestException ex) when (ex.Message == "403")
+{
+    Console.WriteLine("Resource not available.");
+    throw;
+}
+catch (HttpRequestException ex) when (ex.Message == "404")
+{
+    Console.WriteLine("Resource not found.");
+    throw;
+}
+catch (HttpRequestException ex) when (ex.Message == "500")
+{
+    Console.WriteLine("Server internal error.");
+    throw;
+}
+
+string ProcessHttpRequest(string adress) => "some data";
+
+/* CUSTOM EXCEPTION */
+try
+{
+    Console.WriteLine("\nCustom exception");   
+}
+catch (Exception)
+{
+    throw new CustomException("Server Error.", 500);    
+}
+
+/*
+    Exceptions do have a lot of downsides:
+    * they impact the performance of the application quite significantly. Of course, only if they are thrown. If we add a try-catch block but exceptions are not often thrown in the try the performance will hardly be impacted.
+    * exceptions make the code harder to follow. When an exception is thrown, the normal execution of the code is disrupted and we suddenly jump to a completely different place in the code, specifically to the first catch block that can handle this exception.
+    * Exceptions are a side effect of methods and, in a way, a hidden part of their signature. It may make the code harder to understand and maintain.
+ 
+*/
+
+/* SMART USAGE OF EXCEPTIONS */
+/*
+    Good practices regarding catching exceptions:
+    LOCALLY
+    * At the lowest possible level, which means locally, as close to the place of the exception throwing as possible, we should handle specific exception types.    
+    * We should do it only when we have something meaningful to do about them. For example, returning a default value from a method, retrying to perform some action or adding more information to the exception
+    * We should not perform catching logging here
+
+    GLOBALLY
+    * At the highest possible level, which means in the global catch block, we should catch all exceptions unhanded elsewhere so the application doesn't crash.
+    * We should show the exception to the user in some readable way and apologize for the application issue.
+    * We should also log this exception with all the details that may help us understand why it happened.
+    * The exception caught in the global catch block always means there is something wrong going on in our application.
+ 
+*/
 
 Console.ReadLine();
 
@@ -355,5 +454,32 @@ class BuildInExceptionTypesPerson
         YearOfBirth = yearOfBirth;
     }
 
+}
+
+public class CustomException : Exception
+{
+    public int StatusCodes { get; } // adding new prop 
+
+    /* base Constructors of Exception class */
+    public CustomException()
+    {
+    }
+
+    public CustomException(string? message) : base(message)
+    {
+    }
+
+    public CustomException(string? message, Exception? innerException) : base(message, innerException)
+    {
+    }
+
+    /* New constructors */
+    public CustomException(string message, int statusCodes) : base(message){
+        StatusCodes = statusCodes;
+    }
+
+    public CustomException(string message, int statusCodes, Exception innerException) : base(message, innerException){
+        StatusCodes = statusCodes;
+    }
 }
 
