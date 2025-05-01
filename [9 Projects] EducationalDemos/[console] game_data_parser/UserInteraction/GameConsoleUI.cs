@@ -1,6 +1,8 @@
-﻿using System.Text.Json;
+﻿using gameDataParser.Model;
+using gameDataParser.DataAccess;
+using System.Text.Json;
 
-namespace gameDataParser
+namespace gameDataParser.UserInteraction
 {
     public class GameConsoleUI
     {
