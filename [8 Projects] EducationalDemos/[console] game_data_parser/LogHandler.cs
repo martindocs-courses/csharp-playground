@@ -1,12 +1,13 @@
-﻿namespace game_data_parser
-{    
-    class LogHandler 
+﻿namespace gameDataParser
+{
+    class LogHandler
     {
-        const string PATH = "logger.txt";
+        private const string PATH = "logger.txt";
 
-        public void LogError(string message){            
+        public void LogError(string message)
+        {
 
-            string logEntry = $"[{DateTime.Now}]\nException message: {message}\n\n";
+            string logEntry = $"[{DateTime.Now}]{Environment.NewLine}Exception message: {message}{string.Concat(Enumerable.Repeat(Environment.NewLine, 2))}";
             File.AppendAllText(PATH, logEntry);
         }
     }

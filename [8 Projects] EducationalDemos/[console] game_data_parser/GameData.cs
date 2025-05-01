@@ -1,4 +1,4 @@
-﻿namespace game_data_parser
+﻿namespace gameDataParser
 {
     // It's used as the data model for reading/writing game info regardless of the file format (JSON, CSV, etc.)
     public class GameData
