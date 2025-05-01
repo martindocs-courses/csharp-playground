@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace game_data_parser
+namespace gameDataParser
 {
     // Generic interface for data parsing. Allows different parsing (e.g., JSON, XML, CSV) to be used interchangeably.
     // 'T' is the type of object the parser should produce from a raw data string.
@@ -13,10 +13,11 @@ namespace game_data_parser
 
     // JSON-specific implementation of the IDataPaser interface
     // This parser uses System.Text.Json to convert a JSON string into a list of GameData objects.
-    public class JsonDataParser : IDataPaser<GameData>{
+    public class JsonDataParser : IDataPaser<GameData>
+    {
 
         // Deserialize the raw JSON into a list of GameData objects.
         // This method may throw JsonException if the input is not valid JSON.
-        public List<GameData> Parse(string rawData) =>  JsonSerializer.Deserialize<List<GameData>>(rawData);
+        public List<GameData> Parse(string rawData) => JsonSerializer.Deserialize<List<GameData>>(rawData);
     }
 }

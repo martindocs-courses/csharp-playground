@@ -1,4 +1,4 @@
-﻿using game_data_parser;
+﻿using gameDataParser;
 
 var startGame = new GameConsoleUI();
 startGame.AskUser();

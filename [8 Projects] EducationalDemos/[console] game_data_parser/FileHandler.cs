@@ -1,48 +1,55 @@
 ﻿using System.Text.Json;
 
-namespace game_data_parser
+namespace gameDataParser
 {
-    public interface IFile{
-        public string FilePath{ get; }
-    }
-    public interface IReadable<T>: IFile {
-        List<T> ReadFromFile();
-    }     
-               
-    public class JSONFileReader : IReadable<GameData>
+    public interface IFile
     {
-        private readonly LogHandler logger = new LogHandler();
         public string FilePath { get; }
-        
+    }
+    public interface IFileReader<T> : IFile
+    {
+        List<T> ReadFromFile();
+    }
+
+    public class JSONFileReader : IFileReader<GameData>
+    {
+        private readonly LogHandler _logger = new LogHandler();
+        public string FilePath { get; }
+
         public JSONFileReader(string path)
         {
             FilePath = path;
         }
-                
-        public List<GameData> ReadFromFile() {
 
-            if(File.Exists(FilePath)){
+        public List<GameData> ReadFromFile()
+        {
 
-                string existingContent = File.ReadAllText(FilePath);                              
+            if (File.Exists(FilePath))
+            {
+
+                string existingContent = File.ReadAllText(FilePath);
 
                 try
                 {
                     var parser = new JsonDataParser();
-                    return parser.Parse(existingContent);                   
+                    return parser.Parse(existingContent);
                 }
                 catch (JsonException ex)
                 {
-                    logger.LogError(ex.ToString());
-                    Console.WriteLine($"JSON in the {FilePath} was not in a valid format. JSON body:\n{existingContent}");
-                    Console.WriteLine("Sorry! The application has experienced an unexpected error and will have to be closed.");
-                    throw; 
+                    _logger.LogError(ex.ToString());
+
+                    Console.WriteLine($"JSON in the {FilePath} was not in a valid format. JSON body:{Environment.NewLine}{existingContent}");
+
+                    Console.WriteLine($"{Environment.NewLine}Sorry! The application has experienced an unexpected error and will have to be closed.");
+                    throw;
                 }
                 catch (Exception ex)
                 {
-                    logger.LogError(ex.ToString());
+                    _logger.LogError(ex.ToString());
+
                     Console.WriteLine($"Unexpected error: {ex.Message}");
                     throw;
-                }                
+                }
             }
 
             throw new FileNotFoundException($"File '{FilePath}' was not found.");
