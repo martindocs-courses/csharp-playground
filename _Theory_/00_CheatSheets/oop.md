@@ -236,6 +236,31 @@
 
 * Good for immutable patterns.
 
+### 2.4. Properies with get-only setter
+```csharp
+    public class Person
+    {
+        public string Name { get; init; }
+    }
+
+    // Allowed:
+    var p = new Person { Name = "Alice" };
+
+    // Not allowed later:
+    p.Name = "Bob"; // ❌ Compile-time error
+```
+🔹 What it does:
+* You can set the property only during object initialization (i.e., when the object is being created).
+
+* After that, the property becomes `read-only` — just like a get-only property.
+
+🔹 Why use it?
+* It allows for immutability with flexibility
+
+* You can set properties easily when constructing the object.
+
+* But you prevent accidental changes later in the code.
+
 ### 2.4. Full Property with Logic
 ```csharp
     public class Account
