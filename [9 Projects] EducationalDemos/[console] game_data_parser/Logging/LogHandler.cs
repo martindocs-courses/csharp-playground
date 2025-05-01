@@ -1,4 +1,4 @@
-﻿namespace gameDataParser
+﻿namespace gameDataParser.Logging
 {
     class LogHandler
     {
@@ -6,7 +6,6 @@
 
         public void LogError(string message)
         {
-
             string logEntry = $"[{DateTime.Now}]{Environment.NewLine}Exception message: {message}{string.Concat(Enumerable.Repeat(Environment.NewLine, 2))}";
             File.AppendAllText(PATH, logEntry);
         }

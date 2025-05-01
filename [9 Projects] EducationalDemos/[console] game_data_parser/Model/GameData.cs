@@ -1,9 +1,9 @@
-﻿namespace gameDataParser
+﻿namespace gameDataParser.Model
 {
     // It's used as the data model for reading/writing game info regardless of the file format (JSON, CSV, etc.)
     public class GameData
     {
-        public string Title { get; set; }
+        public string? Title { get; set; }
         public int ReleaseYear { get; set; }
         public double Rating { get; set; }
 
