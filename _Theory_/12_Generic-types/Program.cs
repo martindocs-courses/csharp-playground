@@ -1,15 +1,22 @@
 ﻿/* Navigation Notes
     
-    Generic                                                         : line 
-    Simplified List                                                 : line 
-    Generic type                                                    : line
-    - default keyword                                               : line 
+    Generic                                                         : line 26
+    Simplified List                                                 : line 36 & 256
+    - adding elements to list                                       : line 70
+    - removing element from te list                                 : line 76   
 
-    Tuples                                                          : line 
-    ArrayList                                                       : line
-    - issue with ArrayList                                          : line 
+    Generic type                                                    : line 98 & 332
+    - default keyword                                               : line 375
 
-    Generics methods                                                : line
+    Tuples                                                          : line 115 & 415
+    - build-in tuples                                               : line 159
+
+    ArrayList                                                       : line 187
+    - issue with ArrayList                                          : line 212
+
+    Generics methods                                                : line 248
+    - one generic type parameter (extension method)                 : line 428 
+    - multiple type parameters                                      : line 439
 
     Tips:
     - press ctr + g in Visual Studio to jump to specific line.
@@ -207,8 +214,42 @@ foreach (var item in arryListInts)
     * If we use ArrayLists all over the place, our code will become filled with never-ending cast expressions and try-catch blocks, crowding the true meaning of the code.
 */
 
-/* GENERICS METHODS */
+/* GENERICS METHODS - ONE TYPE PARAMETER */
+var genericMethods = new List<int> { 1, 2, 3 };
 
+genericMethods.AddToFront<int>(55); // creating extension AddToFront method
+
+//genericMethods.AddToFront<int>(55); // We could add <int> to the method, but we don't need to specify it because the C# compiler infers that the type T is an int from the type of parameters.
+/*
+    Explanation Code above: genericMethods.AddToFront(55); 
+    * We're not really calling a method on the genericMethods object directly. 
+    * What the compiler actually does is rewrite this call into something:
+    
+        GenericMethodListExtension.AddToFront(genericMethods, 55);
+    
+    * The extension method is just a static method that the compiler makes it look like it's part of the type (List<T> in this case).
+    
+    No Instantiation?
+    * The method is declared static, it belongs to the class itself, not an instance.
+    * Static classes cannot be instantiated — that’s by design.
+    * Extension methods must live in static classes because they’re really just syntax sugar for calling static methods in a neat, readable way.
+    
+    Requirements for Extension Methods:
+    * The method must be in a static class.
+    * The method itself must be static.
+    * The first parameter must have the this keyword, e.g., this List<T> list.
+    
+    Extension methods let you:
+    * Add functionality to classes you don’t control (like built-in types).
+    * Keep code clean and readable.
+    * Make generic utilities reusable.
+*/
+
+/* GENERIC METHODS - MULTIPLE TYPE PARAMETERS */
+var genericMethods2 = new List<decimal> { 1.1m, 0.5m, 22.5m, 12m };
+
+// convert each decimal to int
+var multiInts = genericMethods2.ConvertTo<decimal, int>(); // extension method with multi type params and we either explicitly specify all the type parameters or none of them. The compiler cannot infer the target type. 
 
 Console.ReadLine();
 
@@ -384,5 +425,46 @@ public class SimpleTuple<T1, T2> // as generic witch two types
     }
 }
 
+// GENERIC METHODS - ONE TYPE PARAMETER
+static class GenericMethodListExtension
+{
 
+    // Extension method can only be defined in static classes
+    public static void AddToFront<T>(this List<T> list, T item) // uses the 'this' keyword before its first parameter: this List<T> list, which tells the compiler it's an extension method for List<T>
+    {
+        list.Insert(0, item);
+    }
+}
+
+// GENERIC METHODS - MULTIPLE TYPE PARAMETERS
+static class GenericExtension
+{
+    public static List<TTarget> ConvertTo<TSource, TTarget>(this List<TSource> input)
+    {
+        var result = new List<TTarget>();
+
+        foreach (var item in input)
+        {
+            /*
+                TYPE class:
+                * Is a class representing types. It contains properties like the type's name, namespace it belongs to, the base type or even the list of the type's constructors. 
+                * We can get the type object for any type by using the "typeof" keyword.
+
+                    Type dateTimeType = typeof(DateTime);    
+
+                * If we wanted to get the type object for some instance, not a specific class, we could do it like this.
+                
+                    var decimals = new List<decimal> { 1.1m, 0.5m, 22.5m, 12m };
+                    Type listOfDecimalsType = decimals.GetType();
+             
+            */
+
+            // this will throw exception if it's not possible to convert to other type
+            TTarget itemAfterCasting = 
+                (TTarget)Convert.ChangeType(item, typeof(TTarget));
+            result.Add(itemAfterCasting);
+        }
+        return result;
+    }
+}
 
