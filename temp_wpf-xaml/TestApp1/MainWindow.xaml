@@ -1,0 +1,39 @@
+﻿<Window x:Class="TestApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TestApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <!-- ver1 to access props -->
+        <TextBlock                   
+            Name="tbStatus"
+            FontSize="25" 
+        />
+
+        <!-- ver2 to access props -->
+        <TextBlock HorizontalAlignment="Center">
+            <TextBlock.Text>
+                Some Random Text
+            </TextBlock.Text>
+        </TextBlock>
+        
+        <Button 
+            Name="btnToggleRun" 
+            Height="50" 
+            Width="100" 
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            FontSize="25"
+            Content="Run"            
+            Click="btnToggleRun_Click" 
+        />
+        <!-- 
+        
+            // Subscribe to an event 
+            Click="btnRun_Click"        
+        -->
+    </Grid>
+</Window>
