@@ -1,0 +1,66 @@
+﻿<Window x:Class="Grid.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Grid"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <!-- by default the grid is responsive design -->
+        <Grid.RowDefinitions>
+            <!-- To make it static we need set the height -->
+            <!-- Menu bar -->
+            <RowDefinition Height="70" />
+            <!-- Content -->
+            <RowDefinition />
+            <!-- Footer -->
+            <RowDefinition Height="20" />
+        </Grid.RowDefinitions>
+
+        <Rectangle Fill="green" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>                
+                <!-- 
+                    Usually we use proportional amount of available space for column or row (*):
+                
+                    Example:
+                    Let’s say the total width is 1030 pixels:
+
+                    <Grid.ColumnDefinitions>
+                         <ColumnDefinition Width="100*" />   100 parts 
+                         <ColumnDefinition Width="*" />      or 1* part
+                         <ColumnDefinition Width="30" />     fixed (px)
+                    </Grid.ColumnDefinitions>
+                
+                    Step-by-step:
+                    * Total grid width: 1030px
+                    * Fixed column (30px) → remaining space: 1030 - 30 = 1000px
+                    * Star values total: 100 + 1 = 101 units
+
+                    Now calculate:
+                    * Column 1: 1000px * (100 / 101) ≈ 990.1px
+                    * Column 2: 1000px * (1 / 101) ≈ 9.9px
+                    * Column 3: 30px (unchanged) 
+                
+                    Also, split the numbers to either add-up to 1 or 100:
+                    <Grid.ColumnDefinitions>
+                         <ColumnDefinition Width="0.3*" />   
+                         <ColumnDefinition Width="0.6*" />     
+                         <ColumnDefinition Width="0.1*" />     
+                    </Grid.ColumnDefinitions>
+                
+                -->
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width="60*" />
+                <ColumnDefinition Width="20*" />               
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Fill="LightGray"/>           
+            <Rectangle Grid.Column="1" Fill="Gray"/>
+            <Rectangle Grid.Column="2" Fill="DarkGray"/>
+        </Grid>
+        <Rectangle Grid.Row="2" Fill="yellow" />
+    </Grid>
+</Window>
+    

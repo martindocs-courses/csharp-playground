@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04_Custom_text_control", "04_Custom_text_control.csproj", "{6A8734BA-A4AD-427E-8CD0-2372C16DCDCD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A8734BA-A4AD-427E-8CD0-2372C16DCDCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A8734BA-A4AD-427E-8CD0-2372C16DCDCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A8734BA-A4AD-427E-8CD0-2372C16DCDCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A8734BA-A4AD-427E-8CD0-2372C16DCDCD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B83AD9AC-2C4C-42AE-B966-ED08EB6DA27A}
+	EndGlobalSection
+EndGlobal

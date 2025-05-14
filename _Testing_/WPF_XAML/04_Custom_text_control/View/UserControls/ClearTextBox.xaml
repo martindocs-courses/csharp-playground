@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="CustomTextControl.View.UserControls.ClearTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CustomTextControl.View.UserControls"
+             mc:Ignorable="d"              
+             d:DesignHeight="40" d:DesignWidth="250"> 
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBox 
+            x:Name="txtInput" 
+            VerticalContentAlignment="Center" 
+            FontSize="16" 
+            FontWeight="Light" 
+            Background="Transparent" 
+            TextChanged="txtInput_TextChanged"
+        /> <!-- 
+                * By default zIdex="0" 
+                * TextChanged event to look for any change in the text box
+            -->
+
+        <!-- Text="hello there" replace by Text={Binding.prop} for binding data -->
+        <TextBlock 
+            x:Name="tbPlaceholder" 
+            Text="{Binding Placeholder}"
+            FontSize="16" 
+            FontWeight="Light" 
+            Foreground="DarkGray" 
+            VerticalAlignment="Center" 
+            Margin="5, 0, 0, 0" 
+            Panel.ZIndex="-1"
+        /> <!-- 
+                * By default all controllers have zIndex of 0. 
+                * The controller that is declared later will be on the top 
+            -->
+        
+        <Button 
+            x:Name="btnClear" 
+            Width="30" 
+            HorizontalAlignment="Right" 
+            Content="X" 
+            Background="Transparent" 
+            Foreground="LightGray" 
+            BorderThickness="0" 
+            Click="btnClear_Click"
+        />
+        
+    </Grid>
+</UserControl>
