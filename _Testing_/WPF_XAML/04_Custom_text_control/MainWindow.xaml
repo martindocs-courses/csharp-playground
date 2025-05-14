@@ -1,0 +1,24 @@
+﻿<Window x:Class="CustomTextControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CustomTextControl"
+        xmlns:userControls="clr-namespace:CustomTextControl.View.UserControls"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="400" Width="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <userControls:ClearTextBox Grid.Row="1" Placeholder="First Name" />
+        <userControls:ClearTextBox Grid.Row="2" Placeholder="Last Name" />
+        <userControls:ClearTextBox Grid.Row="3" Placeholder="Email" />
+        <userControls:ClearTextBox Grid.Row="4" Placeholder="Phone" />        
+    </Grid>
+</Window>

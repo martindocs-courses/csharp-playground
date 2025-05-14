@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace TestApp
+namespace _05_Data_binding
 {
     /// <summary>
     /// Interaction logic for App.xaml
