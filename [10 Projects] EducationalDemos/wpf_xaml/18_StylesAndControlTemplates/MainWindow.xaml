@@ -1,0 +1,56 @@
+﻿<Window x:Class="StylesAndControlTemplates.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StylesAndControlTemplates"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="250" Width="400" Background="#333333">
+    
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#222222" />
+            <Setter Property="Foreground" Value="#eeeeee" />
+            <!-- 
+                By only using basic Setters, we apply only to static styles. 
+                To react to user interactions like mouse hover, you need to use a Trigger inside the style. 
+             -->
+            <!-- For out style to work we need redefine the content template -->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <!-- To make it work we need find and empty new control template -->
+                        <Border Background="{TemplateBinding Background}"><!-- instead of hard-coded value Border Background="#222222" we can use TemplateBinding -->
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" /><!-- to show the content --> 
+                        </Border>
+                        <!-- The only caviar of create custom template if we start override default behavior we would need to override the rest i we need functional control -->
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#0052C1" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <!-- 
+            If we do not want start from scratch we could extract current style or current content template by itself form any control. To do that:
+            * press F4 to brining up properties window
+            * select in xaml any control or style we want extract
+            * scroll to 'Miscellaneous' ==> 'Style' ==> 'Convert to New resource...'  
+            * which add entire style
+        -->
+        <!-- 
+            Another way to implement styles is to use Microsoft website: https://learn.microsoft.com/en-us/dotnet/desktop/wpf/controls/control-styles-and-templates
+        
+        -->
+    </Window.Resources>
+    <Grid>
+        <ScrollViewer>
+            <Rectangle Height="1000" />
+        </ScrollViewer>
+
+        <Button Width="100" Height="50" Content="I'm a Button" />
+    </Grid>
+</Window>

@@ -1,0 +1,44 @@
+﻿<Window x:Class="GridSplitter.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GridSplitter"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />           
+            <RowDefinition />
+            <RowDefinition Height="5" /> <!-- where grid splitter goes  -->
+            <RowDefinition  Height="10" /> <!-- 1) if row has fixed height that means grid splinter will resize fixed height row/column in the space of * height of the row/col -->
+            <!-- 2) if both rows are as * size automatically then it adjust either row/col -->
+            <!-- 3) not recommended as that may confuse user is have both rows fixed height, and even worst if total is not equal to height or with of parent -->
+        </Grid.RowDefinitions>
+        
+        <!-- 
+            Grid splitter will split the row or column, so we can resize the column or row 
+        
+            By default 
+        -->
+        
+        <Rectangle  Fill="Red"/>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Rectangle Fill="Yellow" />
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch"/>
+            <Rectangle Grid.Column="2" Fill="Orange" />
+            <GridSplitter Grid.Column="3" HorizontalAlignment="Stretch"/>
+            <Rectangle Grid.Column="4" Fill="Green"/>
+        </Grid>  
+        
+        <GridSplitter Grid.Row="2" HorizontalAlignment="Stretch"/>
+        <Rectangle Grid.Row="3" Fill="Blue" />
+    </Grid>
+</Window>

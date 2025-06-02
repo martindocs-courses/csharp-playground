@@ -1,0 +1,70 @@
+﻿<Window x:Class="MVVM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVM"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="800">
+    <Grid>
+        <!--            
+            MVVM - Model - View - ViewModel
+        
+            Model - database
+            View - UI
+            ViewModel - helps your View get to your Model without coupling it together
+        
+                    UI Events
+            View ===============> ViewModel
+        
+                        Data Binding
+            ViewModel <==============> View   
+        
+                        Data Access
+            ViewModel <==============> Model
+               
+                    Model Events
+            Model <=============== ViewModel
+        
+        -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50*" />
+            <RowDefinition Height="50*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <StackPanel>
+                <TextBlock Text="View - ViewModel"  HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                <Image Source="C:\Users\Marcin.tatarski.PRISMMEDICALUK\Documents\Coding\C#\csharp-playground\[10 Projects] EducationalDemos\wpf_xaml\19_MVVM\bin\Debug\net8.0-windows\vvm.png" VerticalAlignment="Top" />
+                <Label  Content="Code Behind" FontWeight="Bold"/>
+                <Label  Content="* Generally avoided" />
+                <Label  Content="* No business logic" />
+                <Label  Content="* Used for View-specific logic" />
+            </StackPanel>
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="ViewModel - Model" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <Image Source="C:\Users\Marcin.tatarski.PRISMMEDICALUK\Documents\Coding\C#\csharp-playground\[10 Projects] EducationalDemos\wpf_xaml\19_MVVM\bin\Debug\net8.0-windows\vmm.png" />
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Right for you?" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <Label Content="" />
+                <!-- 
+                    What is the scope of the project:
+                    * if project is going to last a long time or have multiple developers/teams. Go with MVVM as it will provide isolation for testing and parallel development.
+                    * if the project is very small and it's only one or two developers, it might be right for it and it adding additional complexity, that you might not need it
+                    
+                    What does the future hold for the project:
+                    * it's one time of project and it's even going to grow or adding more features, more people or more time to work on it. Then go with MVVM.
+                    -->
+            </StackPanel>            
+            
+        </Grid>
+
+        <Image Source="C:\Users\Marcin.tatarski.PRISMMEDICALUK\Documents\Coding\C#\csharp-playground\[10 Projects] EducationalDemos\wpf_xaml\19_MVVM\bin\Debug\net8.0-windows\mvvm.png" />
+
+    </Grid>
+</Window>
