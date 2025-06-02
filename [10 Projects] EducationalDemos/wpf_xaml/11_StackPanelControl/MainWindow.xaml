@@ -1,0 +1,74 @@
+﻿<Window x:Class="StackPanelControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StackPanelControl"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="75" />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        
+        <!-- 
+            Stack Panel is a container that contains collection of children which arrange them in straight vertical (default) or horizontal line.            
+        -->
+        <!-- in this case elements are stacked from left to right -->
+        <StackPanel Orientation="Horizontal">
+            <Button Height="40" Width="75" Margin="2" Content="A" />
+            <Button Height="40" Width="75" Margin="2" Content="B" />
+            <Button Height="40" Width="75" Margin="2" Content="C" />
+            <Button Height="40" Width="75" Margin="2" Content="D" />
+            <Button Height="40" Width="75" Margin="2" Content="E" />
+        </StackPanel>
+        <!-- By default stack panel for vertical or horizontal alignment is stretch -->
+        <!-- in this case elements are stacked from top to bottom -->
+        <!-- Using width within Stack Panel creates static widths that is not changing when user resize the app window. -->
+        <StackPanel Grid.Row="1" HorizontalAlignment="Left">
+            <TextBox
+                Width="150"
+                Height="30"
+                Margin="2"
+            />
+            <TextBox
+                Width="150"
+                Height="30"
+                Margin="2"
+            />
+            <TextBox
+                Width="150"
+                Height="30"
+                Margin="2"
+            />
+            <TextBox
+                Width="150"
+                Height="30"
+                Margin="2"
+            />
+
+        </StackPanel>
+        
+        <!--
+            We can nest stack panel within stack panels  
+         -->
+        <StackPanel Grid.Row="2" Margin="0 15 0 0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Label: " />
+                <TextBox Width="200" />
+                <Button Width="100" Content="GO" Margin="5" />   
+            </StackPanel> 
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Label: " />
+                <TextBox Width="200" />
+                <Button Width="100" Content="GO" Margin="5" />   
+            </StackPanel>
+            <TextBox Width="100" Height="30" Margin="2" />
+            <TextBox Width="100" Height="30" Margin="2" />
+            <TextBox Width="100" Height="30" Margin="2" />
+        </StackPanel>
+
+    </Grid>
+</Window>

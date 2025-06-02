@@ -1,0 +1,54 @@
+﻿<Window x:Class="CustomWindow.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CustomWindow"
+        mc:Ignorable="d" WindowStyle="None" Background="Black" MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Title="MainWindow" Height="450" Width="800">
+    <!-- To remove default white strap at the top which is what left from removing title portion of the window  WindowStyle="None" -->
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0"  CornerRadius="15" CaptionHeight="0" />
+    </WindowChrome.WindowChrome>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button 
+                x:Name="btnMinimize" 
+                Content="_" 
+                Width="40" 
+                Height="40" 
+                Background="Transparent" 
+                BorderBrush="Transparent"
+                Foreground="White"
+                Click="btnMinimize_Click"
+            />
+            
+            <Button 
+                x:Name="btnMaximize" 
+                Content="⬜" 
+                Width="40" 
+                Height="40" 
+                Background="Transparent" 
+                BorderBrush="Transparent"
+                Foreground="White"
+                Click="btnMaximize_Click"
+            />  
+
+            <Button 
+                x:Name="btnClose" 
+                Content="X" 
+                Width="40" 
+                Height="40" 
+                Background="Transparent" 
+                BorderBrush="Transparent"
+                Foreground="White"
+                Click="btnClose_Click"
+            />
+        </StackPanel>
+    </Grid>
+</Window>

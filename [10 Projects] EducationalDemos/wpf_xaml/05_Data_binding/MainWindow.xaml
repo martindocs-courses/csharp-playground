@@ -1,0 +1,64 @@
+﻿<Window x:Class="DataBinding.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DataBinding"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBox 
+            Name="txtBox"
+            VerticalAlignment="Center" 
+            Width="250" 
+            Height="40" 
+            FontSize="16"
+            Text="{
+            Binding BoundText,
+            UpdateSourceTrigger=PropertyChanged,
+            Mode=OneWayToSource
+            }"            
+        />  
+        <!--
+            1) Nuisance with binding events:
+            * binding have more than just binding prop.
+            * it has also UpdateSourceTrigger and it's specific to each control and has default values
+            * alot prop has ProppertyChange, but for example text box has default as LostFocus, but until we click into another control or press a button the source trigger is not going to fire our event: UpdateSourceTrigger=PropertyChanged
+            * above useful for real time validation or mirror what is happening in the box
+            * if we do not want binding to fire until you leave the text box we don't use it
+        
+            2) Two way communication (Mode prop):
+            * when we need GUI to populate our prop (like for example button), but we do not want set our prop to automatically (text in the text box to other elements) update our GUI. We could explicitly set Mode=OneWayToSource ,so one way from the GUI to or source prop and not other way which is by default.
+        -->
+        <Button 
+            Grid.Row="1" 
+            Name="btnSet"
+            Content="Set"
+            Width="100"
+            Height="40"
+            Click="btnSet_Click"
+        />
+        <!-- 1) way to bind to an UI element -->
+        <Label 
+            Grid.Row="3"
+            Content="{Binding ElementName=txtBox, Path=Text}"
+        />
+        
+        <!-- 2) second way to bind to prop to code behind -->
+        <TextBlock 
+            Grid.Row="2" 
+            Name="tbResult"
+            FontSize="16"
+            VerticalAlignment="Center"
+            HorizontalAlignment="Center"
+            Text="{Binding BoundText}"
+        />
+    </Grid>
+</Window>

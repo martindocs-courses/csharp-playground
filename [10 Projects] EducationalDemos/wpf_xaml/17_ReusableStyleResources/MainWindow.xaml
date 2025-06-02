@@ -1,0 +1,49 @@
+﻿<Window x:Class="ReusableStyleResources.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReusableStyleResources"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <!-- 
+        * Using custom styles relies on scope. 
+        * For example scope for <Grid> and it children or <StaskPanel> or entire <Window> etc.           
+        * Instead of applying styles to in-line or in MainWindow, most common use case is to apply style to whole application:
+        - create new folder in root
+        - create new files for specific control aka. 'TextBoxStyles' or 'ButtonsStyles' etc. by adding 'Resource Dictionary (WPF)...' in newly created folder
+        - To merge all styles into application resources, adding in 'App.xmal':
+            <Application.Resources>
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="Styles/ButtonsStyles.xaml" />
+                        <ResourceDictionary Source="Styles/TextBoxStyles.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+                </ResourceDictionary>
+            </Application.Resources>
+    -->
+    
+    <Window.Resources><!-- If no style is apply to the control -->
+        <!-- moved to external styles -->        
+    </Window.Resources>
+    
+    <Grid>        
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="80" />
+        </Grid.RowDefinitions>
+
+        <StackPanel VerticalAlignment="Center">
+            <TextBox Width="300"/><!-- overrides the custom style -->
+            <TextBox />
+            <TextBox />
+            <Button Content="Normal" Margin="0,5,0,0" />
+            <Button Content="Not Normal" Margin="0,5,0,0" />
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Button Style="{StaticResource ConfirmationButton}" /><!-- apply style to a specific control -->
+        </Grid>
+        
+    </Grid>
+</Window>
