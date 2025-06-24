@@ -7,15 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
-    <Grid>       
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
         <!-- ver1 to access props -->
         <TextBlock                   
             Name="tbStatus"
-            FontSize="25" Grid.RowSpan="4" 
+            HorizontalAlignment="Center"
+            FontSize="25"  
+            
         />
 
         <!-- ver2 to access props -->
-        <TextBlock HorizontalAlignment="Center" Grid.RowSpan="4">
+        <TextBlock Grid.ColumnSpan="2" HorizontalAlignment="Center">
             <TextBlock.Text>
                 Some Random Text
             </TextBlock.Text>
