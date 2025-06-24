@@ -24,7 +24,7 @@ RollDice roll = new (random); // Inject Random into RollDice
 InputValidator validator = new (); // Create InputValidator
 
 // Create the Game object, injecting its dependencies and pass RollDice and InputValidator into the Game
-PlayGame game = new (roll, validator);
+PlayGame game = new (roll,  );
 
 // Create the UI object and inject Game into it and pass Game into GameConsoleUI
 var user = new GameConsoleUI(game);
