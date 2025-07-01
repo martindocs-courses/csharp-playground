@@ -28,7 +28,109 @@ Learn by Doing This
 •	Text Formatting & UI: Make it readable, immersive
 •	Design Thinking: Setting up for later OOP (classes like Player, Enemy, etc.) 
  */
-Console.WriteLine(CharacterCreation());
+
+using System.Text.Json;
+const string PATH = "monsters-library.json";
+const string PROMPTS_YES = "y";
+const string PROMPTS_NO = "n";
+
+string character = CharacterCreation();
+MainMenu();
+int characterAction = IsIntegerValid("> ");
+
+void CombatEncounter(int action, string character)
+{
+    switch(character){
+        case nameof(PlayerClasses.Warrior):
+            Console.WriteLine("");
+            break;
+        case nameof(PlayerClasses.Mage):
+            Console.WriteLine("");
+            break;
+        case nameof(PlayerClasses.Rogue):
+            Console.WriteLine("");
+            break;
+        default:
+            Console.WriteLine("");
+            break;
+    }
+}
+
+string GetPath(){
+    if(!File.Exists(PATH)){
+        ResetJSONFile();
+    }
+    return PATH;
+}
+
+void ResetJSONFile()
+{
+    bool coruptedFile = false;
+    while(!coruptedFile){
+        Console.WriteLine("JSON file corrupted do you want reset the file? [y/n]: ");
+        var resetFile = Console.ReadLine()?.ToLower();
+
+        if (resetFile == PROMPTS_YES)
+        {
+            File.WriteAllText(PATH, JsonSerializer.Serialize(new List<Dictionary<string, object>>()));
+            coruptedFile = true;
+        }
+        else if (resetFile == PROMPTS_NO)
+        {
+            Environment.Exit(0);
+        }
+        else
+        {
+            Console.WriteLine(Environment.NewLine + "Please choose options Yes [y] or No [n]." + Environment.NewLine);
+        }
+    }
+
+    Console.Clear();
+
+}
+
+int Randomizer(int monsterList){
+    Random random = new Random();
+    return random.Next(monsterList);
+}
+
+Dictionary<string, object> GetMonster(){
+
+    // implement random pic monster
+    // dictionary with monster type, health and dmg
+
+    var getFile = File.ReadAllText(GetPath());
+    var monsterList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(getFile);
+
+    int selectedMonster = Randomizer(monsterList.Count);
+
+    return monsterList[selectedMonster];
+}
+
+void LootingSystem(){
+
+}
+
+void InvertoryMenu(){
+
+}
+
+void MainMenu()
+{           
+    List<string> list = new List<string>()
+    {
+        "Explore the Forest",
+        "Visit the Village",
+        "Check Inventory",
+        "Rest",
+        "Save and Quit",
+    };
+
+    for (int i = 0; i < list.Count; i++)
+    {
+        Console.WriteLine($"{i+1}.{list[i]}");
+    }
+}
 
 string CharacterCreation(){
 
@@ -59,6 +161,8 @@ string CharacterCreation(){
         }
     }
 
+    Console.WriteLine("You are Ardin the Warrior. Your journey begins...");
+
     return characterClass; // Return player class as string
 }
 
@@ -74,6 +178,20 @@ string IsStringValid(string text){
         }
 
         return textInput;
+    }
+}
+
+int IsIntegerValid(string text){
+  
+    while(true){
+        Console.Write(text);
+        string? textInput = Console.ReadLine();
+        
+        if (!int.TryParse(textInput, out int value) && string.IsNullOrEmpty(textInput)){
+            continue;
+        }
+
+        return value;  
     }
 }
 
