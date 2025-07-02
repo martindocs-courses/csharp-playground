@@ -29,31 +29,124 @@ Learn by Doing This
 •	Design Thinking: Setting up for later OOP (classes like Player, Enemy, etc.) 
  */
 
+using System;
+using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
 const string PATH = "monsters-library.json";
 const string PROMPTS_YES = "y";
 const string PROMPTS_NO = "n";
 
-string character = CharacterCreation();
+var character = CharacterCreation();
 MainMenu();
-int characterAction = IsIntegerValid("> ");
+int characterDecision = IsIntegerValid("> ");
+CharacterAction(characterDecision);
 
-void CombatEncounter(int action, string character)
-{
-    switch(character){
+
+Dictionary<string, object> BaseCharacterStats(string characterType){
+    var baseStats = new Dictionary<string, object>()
+    {
+        {"characterHP" , 0},
+        {"characterDMG" , 0},
+        {"characterGold" , 0},
+        {"characterWepons" , ""},
+    };
+        
+    switch (characterType)
+    {
         case nameof(PlayerClasses.Warrior):
-            Console.WriteLine("");
+            baseStats["characterHP"] = 45;
+            baseStats["characterDMG"] = 65;
+            baseStats["characterGold"] = 0;
+            baseStats["characterWepons"] = "old rusty sword";
             break;
         case nameof(PlayerClasses.Mage):
-            Console.WriteLine("");
+            baseStats["characterHP"] = 20;
+            baseStats["characterDMG"] = 100;
+            baseStats["characterGold"] = 0;
+            baseStats["characterWepons"] = "tiny wand";           
             break;
         case nameof(PlayerClasses.Rogue):
-            Console.WriteLine("");
-            break;
-        default:
-            Console.WriteLine("");
+            baseStats["characterHP"] = 35;
+            baseStats["characterDMG"] = 70;
+            baseStats["characterGold"] = 0;
+            baseStats["characterWepons"] = "half broken dagger";          
             break;
     }
+
+    return baseStats;
+}
+
+
+void CharacterAction(int actions)
+{
+    switch(actions)
+    {
+        case 1:
+            CombatEncounter(character, GetRandomMonster());
+            break;
+        case 2:
+            Console.WriteLine("Village");
+            break;
+        case 3:
+            Console.WriteLine("Inventory");
+            break;
+        case 4:
+            Console.WriteLine("Rest");
+            break;
+        case 5:
+            Console.WriteLine("Save and Quit");
+            break;
+        default:
+            Console.WriteLine("Please choose options.");
+            break;
+    }
+}
+
+void CombatEncounter(Dictionary<string, object> character, Dictionary<string, JsonElement> monster)
+{
+    var monsterType = monster["monsterType"].GetString();
+    var monsterHP = monster["hp"].GetInt32();
+    var monsterDMG = monster["dmg"].GetInt32();
+
+    // we need cast to Dictionary because the retrieved value from the outer dictionary is stored as object and C# doesn't know what type it really is at runtime unless we tell it.
+    var characterHP1 = (Dictionary<string, object>)character["characterStats"];
+    var characterHP = characterHP1["characterHP"];
+    var characterDMG = characterHP1["characterDMG"];
+
+    Console.WriteLine($"You encounter a {monsterType}!");
+    Console.WriteLine($"{monster["monsterType"]} HP: {monsterHP}");
+    Console.WriteLine($"Your HP {characterHP}!");
+
+    Console.WriteLine(Environment.NewLine + "What will you do?");
+    string[] options = new string[] { "Attack", "Use Potion", "Run" };
+
+    for (int i = 0; i < options.Length; i++)
+    {
+        Console.WriteLine($"{i + 1}.{options[i]}");
+    }
+    int test = IsIntegerValid("> ");
+
+    switch (test)
+    {
+        case 1:
+            int yourDMG = Randomizer((int)characterDMG);
+            int mobDMG = Randomizer(monsterDMG); // (int)monsterDMG throws an error because monster["dmg"] is a JsonElement, not an int.
+
+            Console.WriteLine($"You strike for {yourDMG} damage!");
+            Console.WriteLine($"{monsterType} hits you for {mobDMG} damage.");
+
+            LifeCalculation(characterHP, yourDMG, monsterHP, mobDMG);
+
+            Console.WriteLine(Environment.NewLine + $"{monsterType} HP: {1}");
+            Console.WriteLine($"Your HP: {1}");
+            break;
+    }
+
+}
+
+void LifeCalculation(object characterHP, int yourDMG, object monsterHP, int mobDMG)
+{
+    Console.WriteLine(characterHP + " " + yourDMG + " " + monsterHP + " " + mobDMG);
 }
 
 string GetPath(){
@@ -89,29 +182,28 @@ void ResetJSONFile()
 
 }
 
-int Randomizer(int monsterList){
+int Randomizer(int count){
     Random random = new Random();
-    return random.Next(monsterList);
+    return random.Next(count);
 }
 
-Dictionary<string, object> GetMonster(){
-
-    // implement random pic monster
-    // dictionary with monster type, health and dmg
-
+Dictionary<string, JsonElement> GetRandomMonster(){
     var getFile = File.ReadAllText(GetPath());
-    var monsterList = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(getFile);
 
-    int selectedMonster = Randomizer(monsterList.Count);
+    // When deserialize JSON into a Dictionary<string, object>, System.Text.Json stores all values as JsonElement, not real primitives. You get JsonElement only when you deserialize to object. In this case, System.Text.Json doesn't know the specific types, so it puts everything as JsonElement, which is a flexible type that can represent any JSON value (number, string, object, array, etc.).
+    // Use Dictionary<string, JsonElement> to avoid casting
+    var monsters = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(getFile);
 
-    return monsterList[selectedMonster];
+    int selectedMonster = Randomizer(monsters.Count);
+
+    return monsters[selectedMonster];
 }
 
 void LootingSystem(){
 
 }
 
-void InvertoryMenu(){
+void Invertory(){
 
 }
 
@@ -132,7 +224,7 @@ void MainMenu()
     }
 }
 
-string CharacterCreation(){
+Dictionary<string, object> CharacterCreation(){
 
     string? characterClass = null;
     string? playerName = IsStringValid("Welcome, brave one! What's your name? ");
@@ -161,9 +253,16 @@ string CharacterCreation(){
         }
     }
 
-    Console.WriteLine("You are Ardin the Warrior. Your journey begins...");
+    Console.WriteLine($"You are {playerName} the {characterClass}. Your journey begins...");
 
-    return characterClass; // Return player class as string
+
+
+    return new Dictionary<string, object>(){
+        { "characterName", playerName },
+        { "characterClass", characterClass },
+        { "characterStats", BaseCharacterStats(characterClass) },
+
+    }; // Return player class object
 }
 
 // helper function for validation of string values
