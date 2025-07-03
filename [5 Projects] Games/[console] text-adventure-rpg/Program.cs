@@ -37,11 +37,26 @@ const string PROMPTS_YES = "y";
 const string PROMPTS_NO = "n";
 
 var character = CharacterCreation();
-MainMenu();
-int characterDecision = IsIntegerValid("> ");
-CharacterAction(characterDecision);
 
+// we need cast to Dictionary because the retrieved value from the outer dictionary is stored as object and C# doesn't know what type it really is at runtime unless we tell it.
+var characterStats = (Dictionary<string, object>)character["characterStats"];
+var characterName = character["characterName"];
+var characterClass = character["characterClass"];
+var characterHealth = characterStats["characterHP"];
+var characterDamage = characterStats["characterDMG"];
 
+var monsterHealth = 0;
+
+Console.WriteLine($"You are {characterName} the {characterClass}. Your journey begins...");
+
+bool game = false;
+while (!game)
+{
+    MainMenu();
+    int characterDecision = IsIntegerValid("> ");
+
+    CharacterActions(characterDecision);    
+}
 Dictionary<string, object> BaseCharacterStats(string characterType){
     var baseStats = new Dictionary<string, object>()
     {
@@ -76,13 +91,15 @@ Dictionary<string, object> BaseCharacterStats(string characterType){
     return baseStats;
 }
 
-
-void CharacterAction(int actions)
+void CharacterActions(int actions)
 {
     switch(actions)
     {
         case 1:
-            CombatEncounter(character, GetRandomMonster());
+            bool encounterWin = CombatEncounter(GetRandomMonster());
+            if(encounterWin == true){
+                LootingSystem();
+            }
             break;
         case 2:
             Console.WriteLine("Village");
@@ -95,58 +112,78 @@ void CharacterAction(int actions)
             break;
         case 5:
             Console.WriteLine("Save and Quit");
+            game = true;
             break;
         default:
             Console.WriteLine("Please choose options.");
             break;
     }
+
+    Thread.Sleep(2000); // Keep the last character message action for 2sec. before clear the screen
+    Console.Clear();
 }
 
-void CombatEncounter(Dictionary<string, object> character, Dictionary<string, JsonElement> monster)
+bool CombatEncounter(Dictionary<string, JsonElement> monster)
 {
     var monsterType = monster["monsterType"].GetString();
-    var monsterHP = monster["hp"].GetInt32();
+    monsterHealth = monster["hp"].GetInt32();
     var monsterDMG = monster["dmg"].GetInt32();
 
-    // we need cast to Dictionary because the retrieved value from the outer dictionary is stored as object and C# doesn't know what type it really is at runtime unless we tell it.
-    var characterHP1 = (Dictionary<string, object>)character["characterStats"];
-    var characterHP = characterHP1["characterHP"];
-    var characterDMG = characterHP1["characterDMG"];
+    bool defetMonster = false;
 
     Console.WriteLine($"You encounter a {monsterType}!");
-    Console.WriteLine($"{monster["monsterType"]} HP: {monsterHP}");
-    Console.WriteLine($"Your HP {characterHP}!");
+    Console.WriteLine($"{monster["monsterType"]} HP: {monsterHealth}"); 
+    Console.WriteLine($"Your HP {characterHealth}!");
 
-    Console.WriteLine(Environment.NewLine + "What will you do?");
-    string[] options = new string[] { "Attack", "Use Potion", "Run" };
-
-    for (int i = 0; i < options.Length; i++)
+    bool monsterBattle = false;
+    while(!monsterBattle)
     {
-        Console.WriteLine($"{i + 1}.{options[i]}");
+        Console.WriteLine(Environment.NewLine + "What will you do?");
+        string[] options = new string[] { "Attack", "Use Potion", "Run" };
+
+        for (int i = 0; i < options.Length; i++)
+        {
+            Console.WriteLine($"{i + 1}.{options[i]}");
+        }
+
+        int characterOptions = IsIntegerValid("> ");
+
+        switch (characterOptions)
+        {
+            case 1: // Attack
+                int yourDMG = Randomizer((int)characterDamage);
+                int mobDMG = Randomizer(monsterDMG); // (int)monsterDMG throws an error because monster["dmg"] is a JsonElement, not an int.
+
+                Console.WriteLine($"You strike for {yourDMG} damage!");
+                Console.WriteLine($"{monsterType} hits you for {mobDMG} damage.");
+
+                characterHealth = (int)characterHealth - mobDMG;
+                monsterHealth = (int)monsterHealth - yourDMG;
+
+                if((int)characterHealth < 0){
+                    Console.WriteLine("You die!");                    
+                    monsterBattle = true;
+                    return defetMonster;
+                }
+                else if(monsterHealth > 0){
+                    Console.WriteLine(Environment.NewLine + $"{monsterType} HP: {monsterHealth}");
+                    Console.WriteLine($"Your HP: {characterHealth}");
+                    continue;
+                }
+
+                Console.WriteLine($"You defeated the {monsterType}!");                
+                monsterBattle = true;
+                defetMonster = true;
+                break;
+            case 2: // use potion
+                // TODO: Implement use the potion
+                break;
+            case 3: // Run
+                monsterBattle = true;                
+                break;
+        }
     }
-    int test = IsIntegerValid("> ");
-
-    switch (test)
-    {
-        case 1:
-            int yourDMG = Randomizer((int)characterDMG);
-            int mobDMG = Randomizer(monsterDMG); // (int)monsterDMG throws an error because monster["dmg"] is a JsonElement, not an int.
-
-            Console.WriteLine($"You strike for {yourDMG} damage!");
-            Console.WriteLine($"{monsterType} hits you for {mobDMG} damage.");
-
-            LifeCalculation(characterHP, yourDMG, monsterHP, mobDMG);
-
-            Console.WriteLine(Environment.NewLine + $"{monsterType} HP: {1}");
-            Console.WriteLine($"Your HP: {1}");
-            break;
-    }
-
-}
-
-void LifeCalculation(object characterHP, int yourDMG, object monsterHP, int mobDMG)
-{
-    Console.WriteLine(characterHP + " " + yourDMG + " " + monsterHP + " " + mobDMG);
+    return defetMonster;
 }
 
 string GetPath(){
@@ -200,11 +237,13 @@ Dictionary<string, JsonElement> GetRandomMonster(){
 }
 
 void LootingSystem(){
-
+    Console.WriteLine("looting");
 }
 
 void Invertory(){
-
+    // update (int)gold
+    // update (string or object)inventory
+    Console.WriteLine("Inventory");
 }
 
 void MainMenu()
@@ -249,13 +288,13 @@ Dictionary<string, object> CharacterCreation(){
         }
         else
         {
-            Console.WriteLine("Please choose one of classes.");
+            Console.WriteLine("Please choose one of available classes.");
         }
     }
 
-    Console.WriteLine($"You are {playerName} the {characterClass}. Your journey begins...");
+    Console.Clear();
 
-
+    //Console.WriteLine($"You are {playerName} the {characterClass}. Your journey begins...");
 
     return new Dictionary<string, object>(){
         { "characterName", playerName },
@@ -295,7 +334,7 @@ int IsIntegerValid(string text){
 }
 
 
-Console.ReadLine();
+//Console.ReadLine();
 
 enum PlayerClasses
 {
