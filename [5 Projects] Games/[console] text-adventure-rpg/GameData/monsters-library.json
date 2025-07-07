@@ -1,0 +1,52 @@
+[
+  {
+    "monsterType": "Skeleton",
+    "hp": 20,
+    "dmg": 10
+  },
+  {
+    "monsterType": "Goblin",
+    "hp": 15,
+    "dmg": 8
+  },
+  {
+    "monsterType": "Orc",
+    "hp": 35,
+    "dmg": 15
+  },
+  {
+    "monsterType": "Troll",
+    "hp": 50,
+    "dmg": 12
+  },
+  {
+    "monsterType": "Vampire",
+    "hp": 40,
+    "dmg": 18
+  },
+  {
+    "monsterType": "Zombie",
+    "hp": 25,
+    "dmg": 6
+  },
+  {
+    "monsterType": "Witch",
+    "hp": 30,
+    "dmg": 14
+  },
+  {
+    "monsterType": "Dragon",
+    "hp": 100,
+    "dmg": 25
+  },
+  {
+    "monsterType": "Slime",
+    "hp": 10,
+    "dmg": 4
+  },
+  {
+    "monsterType": "Werewolf",
+    "hp": 45,
+    "dmg": 20
+  }
+]

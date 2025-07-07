@@ -44,14 +44,16 @@ var characterName = character["characterName"];
 var characterClass = character["characterClass"];
 var characterHealth = characterStats["characterHP"];
 var characterDamage = characterStats["characterDMG"];
+var characterGold = characterStats["characterGold"];
+var characterInventory = (Dictionary<string, int>)characterStats["characterInvertory"];
 
 var monsterHealth = 0;
 
-Console.WriteLine($"You are {characterName} the {characterClass}. Your journey begins...");
 
 bool game = false;
 while (!game)
 {
+    Console.WriteLine($"You are {characterName} the {characterClass}. Your journey begins...");
     MainMenu();
     int characterDecision = IsIntegerValid("> ");
 
@@ -64,6 +66,7 @@ Dictionary<string, object> BaseCharacterStats(string characterType){
         {"characterDMG" , 0},
         {"characterGold" , 0},
         {"characterWepons" , ""},
+        {"characterInvertory" , new Dictionary<string, int>()},
     };
         
     switch (characterType)
@@ -105,7 +108,7 @@ void CharacterActions(int actions)
             Console.WriteLine("Village");
             break;
         case 3:
-            Console.WriteLine("Inventory");
+            Invertory();
             break;
         case 4:
             Console.WriteLine("Rest");
@@ -119,7 +122,8 @@ void CharacterActions(int actions)
             break;
     }
 
-    Thread.Sleep(2000); // Keep the last character message action for 2sec. before clear the screen
+    Console.ReadLine();
+    //Thread.Sleep(3000); // Keep the last character message action for 2sec. before clear the screen
     Console.Clear();
 }
 
@@ -163,11 +167,14 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
                 if((int)characterHealth < 0){
                     Console.WriteLine("You die!");                    
                     monsterBattle = true;
+                    game = true; // End game
                     return defetMonster;
                 }
                 else if(monsterHealth > 0){
                     Console.WriteLine(Environment.NewLine + $"{monsterType} HP: {monsterHealth}");
                     Console.WriteLine($"Your HP: {characterHealth}");
+
+                    Console.WriteLine(Environment.NewLine + "[... battle continues ...]");
                     continue;
                 }
 
@@ -219,9 +226,9 @@ void ResetJSONFile()
 
 }
 
-int Randomizer(int count){
+int Randomizer(int count, int minCount = 0){
     Random random = new Random();
-    return random.Next(count);
+    return random.Next(minCount, count);
 }
 
 Dictionary<string, JsonElement> GetRandomMonster(){
@@ -237,13 +244,98 @@ Dictionary<string, JsonElement> GetRandomMonster(){
 }
 
 void LootingSystem(){
-    Console.WriteLine("looting");
+    var lootLibrary = new Dictionary<string, int>()
+    {
+        // Weapons
+        { "Rusted Iron Sword", 5 },
+        { "Goblin Tooth Dagger", 7 },
+        { "Enchanted Oak Staff", 12 },
+        { "Crossbow of the Silent Hunt", 15 },
+        { "Cracked Warhammer", 25 },
+        { "Shadowfang Blade", 17 },
+        { "Bone-handled Throwing Knife", 10 },
+        { "Flaming Torch", 28 },
+        { "Whispering Bow", 30 },
+        { "Cursed Blacksteel Axe", 34 },
+        // Potions 
+        { "Health Potion (Minor)", 10 },          
+        { "Health Potion (Major)", 20 },          
+        { "Healing  Salve", 30 },          
+    };
+   
+    var lootList = lootLibrary.ToList();
+    int loot = Randomizer(lootList.Count);  
+
+    int gold = Randomizer(50, 1);
+    characterGold = (int)characterGold + gold;
+
+    Console.WriteLine("Loot Found:");
+    Console.WriteLine($"- {gold} Gold");
+    Console.WriteLine($"- {lootList[loot].Key} (Damage: {lootList[loot].Value})");
+
+    bool equipCHaracter = false;
+    while(!equipCHaracter)
+    {
+        Console.WriteLine($"Add {lootList[loot].Key} to inventory? (Y/N)");
+
+        string equip = IsStringValid("> ");
+        if(equip == "y"){
+            characterInventory.Add(lootList[loot].Key, lootList[loot].Value);
+            Console.WriteLine("Inventory updated.");
+            equipCHaracter = true;
+        }else if (equip == "n")
+        {
+            return;
+        }
+        else
+        {
+            Console.WriteLine("Please enter Yes[y] or No[n].");
+        }
+    }
+
 }
 
 void Invertory(){
-    // update (int)gold
-    // update (string or object)inventory
-    Console.WriteLine("Inventory");
+    
+    Console.WriteLine("== Inventory ==");
+    if(characterInventory.ToList().Count > 0){
+        foreach (var (Key, Value) in characterInventory)
+        {
+            Console.WriteLine($"- {Key}");
+        }
+
+        while (true)
+        {
+
+            Console.WriteLine("1. Use Potion");
+            Console.WriteLine("2. Equip Weapon");
+            Console.WriteLine("3. Back");
+
+            int invetoryUse = IsIntegerValid("> ");
+
+            switch (invetoryUse)
+            {
+                case 1:
+                    Console.WriteLine("You used a Health Potion. +10 HP.");
+                    // TODO: implement add potion to character health
+                    //characterHealth = (int)characterHealth + 10;
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                default:
+                    Console.WriteLine("Please choose options form the list.");
+                    break;
+            }
+        }
+
+    }
+    else{
+        Console.WriteLine("empty");
+    }
+
+    
 }
 
 void MainMenu()
