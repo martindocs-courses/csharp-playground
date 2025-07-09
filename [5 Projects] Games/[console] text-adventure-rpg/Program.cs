@@ -30,6 +30,8 @@ Learn by Doing This
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
 const string PATH = "monsters-library.json";
@@ -66,7 +68,9 @@ Dictionary<string, object> BaseCharacterStats(string characterType){
         {"characterDMG" , 0},
         {"characterGold" , 0},
         {"characterWepons" , ""},
-        {"characterInvertory" , new Dictionary<string, int>()},
+        {"characterInvertory" , new Dictionary<string, int>(){
+            {"Health Potion", 0 },            
+        }},
     };
         
     switch (characterType)
@@ -135,9 +139,8 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
 
     bool defetMonster = false;
 
-    Console.WriteLine($"You encounter a {monsterType}!");
-    Console.WriteLine($"{monster["monsterType"]} HP: {monsterHealth}"); 
-    Console.WriteLine($"Your HP {characterHealth}!");
+    Console.WriteLine($"You enter the forest and encounter a {monsterType}!");
+    Console.WriteLine($"{monster["monsterType"]} HP: {monsterHealth} | Your HP: {characterHealth}");
 
     bool monsterBattle = false;
     while(!monsterBattle)
@@ -171,8 +174,7 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
                     return defetMonster;
                 }
                 else if(monsterHealth > 0){
-                    Console.WriteLine(Environment.NewLine + $"{monsterType} HP: {monsterHealth}");
-                    Console.WriteLine($"Your HP: {characterHealth}");
+                    Console.WriteLine(Environment.NewLine + $"{monsterType} HP: {monsterHealth} | Your HP: {characterHealth}");
 
                     Console.WriteLine(Environment.NewLine + "[... battle continues ...]");
                     continue;
@@ -258,9 +260,7 @@ void LootingSystem(){
         { "Whispering Bow", 30 },
         { "Cursed Blacksteel Axe", 34 },
         // Potions 
-        { "Health Potion (Minor)", 10 },          
-        { "Health Potion (Major)", 20 },          
-        { "Healing  Salve", 30 },          
+        { "Health Potion", 1 },        
     };
    
     var lootList = lootLibrary.ToList();
@@ -271,7 +271,7 @@ void LootingSystem(){
 
     Console.WriteLine("Loot Found:");
     Console.WriteLine($"- {gold} Gold");
-    Console.WriteLine($"- {lootList[loot].Key} (Damage: {lootList[loot].Value})");
+    Console.WriteLine($"- {lootList[loot].Key} {(lootList[loot].Key != "Health Potion" ? $"Damage: {lootList[loot].Value}" : lootList[loot].Value)}");
 
     bool equipCHaracter = false;
     while(!equipCHaracter)
@@ -280,7 +280,17 @@ void LootingSystem(){
 
         string equip = IsStringValid("> ");
         if(equip == "y"){
-            characterInventory.Add(lootList[loot].Key, lootList[loot].Value);
+            if(lootList[loot].Key == "Health Potion"){
+                characterInventory["Health Potion"] += 1;
+            }else{
+                if(characterInventory.ToList().Count > 1){
+                    var replaceWeapon = characterInventory.Where(item => item.Key != "Health Potion");
+                    characterInventory.Remove(replaceWeapon.ToList()[0].Key);
+                }
+                
+                characterInventory.Add(lootList[loot].Key, lootList[loot].Value);            
+            }
+
             Console.WriteLine("Inventory updated.");
             equipCHaracter = true;
         }else if (equip == "n")
@@ -297,44 +307,49 @@ void LootingSystem(){
 
 void Invertory(){
     
-    Console.WriteLine("== Inventory ==");
-    if(characterInventory.ToList().Count > 0){
-        foreach (var (Key, Value) in characterInventory)
-        {
-            Console.WriteLine($"- {Key}");
-        }
+    Console.WriteLine("== Inventory ==");   
 
-        while (true)
-        {
-
-            Console.WriteLine("1. Use Potion");
-            Console.WriteLine("2. Equip Weapon");
-            Console.WriteLine("3. Back");
-
-            int invetoryUse = IsIntegerValid("> ");
-
-            switch (invetoryUse)
-            {
-                case 1:
-                    Console.WriteLine("You used a Health Potion. +10 HP.");
-                    // TODO: implement add potion to character health
-                    //characterHealth = (int)characterHealth + 10;
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                default:
-                    Console.WriteLine("Please choose options form the list.");
-                    break;
-            }
-        }
-
+    if(characterInventory.ToList().Count > 1){
+        var weapon = characterInventory.Where(item => item.Key != "Health Potion");
+        
+        Console.WriteLine($"- {weapon.ToList()[0].Key} (Damage: {weapon.ToList()[0].Value})");
     }
-    else{
-        Console.WriteLine("empty");
-    }
+    Console.WriteLine($"- Health Potion {(             
+        characterInventory["Health Potion"] > 0 ? 
+        $"x{characterInventory["Health Potion"]}" : "0"
+    )}");   
+    Console.WriteLine($"- Gold: {characterGold}");
 
+    while (true)
+    {
+        Console.WriteLine("1. Use Potion");
+        Console.WriteLine("2. Equip Weapon");
+        Console.WriteLine("3. Back");
+
+        int invetoryUse = IsIntegerValid("> ");
+
+        switch (invetoryUse)
+        {
+            case 1:
+                if(characterInventory.ContainsKey("Health Potion") && characterInventory["Health Potion"] > 0){
+                    Console.WriteLine("You used a Health Potion. +10 HP.");                    
+                    characterHealth = (int)characterHealth + 10;
+                    characterInventory["Health Potion"] -= 1;
+                }
+                else{
+                    Console.WriteLine("You do not have a Health Potion.");     
+                }
+                    break;
+            case 2:
+                break;
+            case 3:
+                return;
+                //break;
+            default:
+                Console.WriteLine("Please choose options form the list.");
+                break;
+        }
+    }
     
 }
 
