@@ -114,7 +114,7 @@ void CharacterActions(int actions)
             Invertory();
             break;
         case 4:
-            Console.WriteLine("Rest");
+            Rest();
             break;
         case 5:
             Console.WriteLine("Save and Quit");
@@ -128,6 +128,12 @@ void CharacterActions(int actions)
     Console.ReadLine();
     //Thread.Sleep(3000); // Keep the last character message action for 2sec. before clear the screen
     Console.Clear();
+}
+
+void Rest()
+{
+    characterDamage = BaseCharacterStats((string)characterClass)["characterDMG"];
+    Console.WriteLine($"You're well rested. Your damage is back to {characterDamage}!");
 }
 
 bool CombatEncounter(Dictionary<string, JsonElement> monster)
