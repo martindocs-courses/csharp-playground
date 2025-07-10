@@ -42,15 +42,17 @@ var character = CharacterCreation();
 
 // we need cast to Dictionary because the retrieved value from the outer dictionary is stored as object and C# doesn't know what type it really is at runtime unless we tell it.
 var characterStats = (Dictionary<string, object>)character["characterStats"];
+
 var characterName = character["characterName"];
 var characterClass = character["characterClass"];
 var characterHealth = characterStats["characterHP"];
 var characterDamage = characterStats["characterDMG"];
 var characterGold = characterStats["characterGold"];
-var characterInventory = (Dictionary<string, int>)characterStats["characterInvertory"];
+var characterWeapon = characterStats["characterWepon"];
+var characterInvetory = (Dictionary<string, int>)characterStats["characterInvetory"];
+var characterHealthPotions = characterStats["characterPotion"];
 
 var monsterHealth = 0;
-
 
 bool game = false;
 while (!game)
@@ -67,31 +69,27 @@ Dictionary<string, object> BaseCharacterStats(string characterType){
         {"characterHP" , 0},
         {"characterDMG" , 0},
         {"characterGold" , 0},
-        {"characterWepons" , ""},
-        {"characterInvertory" , new Dictionary<string, int>(){
-            {"Health Potion", 0 },            
-        }},
+        {"characterWepon" , ""},
+        {"characterPotion" , 0},
+        {"characterInvetory", new Dictionary<string, int>() },
     };
         
     switch (characterType)
     {
         case nameof(PlayerClasses.Warrior):
-            baseStats["characterHP"] = 45;
-            baseStats["characterDMG"] = 65;
-            baseStats["characterGold"] = 0;
-            baseStats["characterWepons"] = "old rusty sword";
+            baseStats["characterHP"] = 50;
+            baseStats["characterDMG"] = 15;
+            baseStats["characterWepon"] = "Old Rusty Sword";
             break;
         case nameof(PlayerClasses.Mage):
-            baseStats["characterHP"] = 20;
-            baseStats["characterDMG"] = 100;
-            baseStats["characterGold"] = 0;
-            baseStats["characterWepons"] = "tiny wand";           
+            baseStats["characterHP"] = 30;
+            baseStats["characterDMG"] = 25;
+            baseStats["characterWepon"] = "Tiny Wand";           
             break;
         case nameof(PlayerClasses.Rogue):
-            baseStats["characterHP"] = 35;
-            baseStats["characterDMG"] = 70;
-            baseStats["characterGold"] = 0;
-            baseStats["characterWepons"] = "half broken dagger";          
+            baseStats["characterHP"] = 40;
+            baseStats["characterDMG"] = 20;
+            baseStats["characterWepon"] = "Half Broken Dagger";          
             break;
     }
 
@@ -133,6 +131,7 @@ void CharacterActions(int actions)
 
 bool CombatEncounter(Dictionary<string, JsonElement> monster)
 {
+    var characterCombatHP = characterHealth;
     var monsterType = monster["monsterType"].GetString();
     monsterHealth = monster["hp"].GetInt32();
     var monsterDMG = monster["dmg"].GetInt32();
@@ -140,7 +139,7 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
     bool defetMonster = false;
 
     Console.WriteLine($"You enter the forest and encounter a {monsterType}!");
-    Console.WriteLine($"{monster["monsterType"]} HP: {monsterHealth} | Your HP: {characterHealth}");
+    Console.WriteLine($"{monster["monsterType"]} HP: {monsterHealth}, DMG: {monsterDMG} | Your HP: {characterCombatHP}, DMG: {characterDamage}");
 
     bool monsterBattle = false;
     while(!monsterBattle)
@@ -164,17 +163,17 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
                 Console.WriteLine($"You strike for {yourDMG} damage!");
                 Console.WriteLine($"{monsterType} hits you for {mobDMG} damage.");
 
-                characterHealth = (int)characterHealth - mobDMG;
+                characterCombatHP = (int)characterCombatHP - mobDMG;
                 monsterHealth = (int)monsterHealth - yourDMG;
 
-                if((int)characterHealth < 0){
+                if((int)characterCombatHP < 0){
                     Console.WriteLine("You die!");                    
                     monsterBattle = true;
                     game = true; // End game
                     return defetMonster;
                 }
                 else if(monsterHealth > 0){
-                    Console.WriteLine(Environment.NewLine + $"{monsterType} HP: {monsterHealth} | Your HP: {characterHealth}");
+                    Console.WriteLine(Environment.NewLine + $"{monsterType} HP: {monsterHealth} | Your HP: {characterCombatHP}");
 
                     Console.WriteLine(Environment.NewLine + "[... battle continues ...]");
                     continue;
@@ -185,9 +184,19 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
                 defetMonster = true;
                 break;
             case 2: // use potion
-                // TODO: Implement use the potion
+                if((int)characterHealthPotions > 0){
+                    Console.WriteLine("You used a Health Potion. +10 HP.");
+                    characterCombatHP = (int)characterCombatHP + 10;
+                    characterStats["characterPotion"] = (int)characterStats["characterPotion"] - 1;
+                }else{
+                    Console.WriteLine("You do not have a Health Potion.");
+                }
                 break;
             case 3: // Run
+                int baseCharacterDamage = (int)characterDamage;
+                int damageReduction = (int)(Convert.ToDouble(characterDamage) * 0.1); // reduction by 10%
+                characterDamage = Math.Max(0, baseCharacterDamage - damageReduction); 
+                Console.WriteLine($"You run from the fight, and because of that your damage is decreasing by 10%.\nYour damage now: {characterDamage}");
                 monsterBattle = true;                
                 break;
         }
@@ -248,17 +257,113 @@ Dictionary<string, JsonElement> GetRandomMonster(){
 void LootingSystem(){
     var lootLibrary = new Dictionary<string, int>()
     {
-        // Weapons
-        { "Rusted Iron Sword", 5 },
-        { "Goblin Tooth Dagger", 7 },
-        { "Enchanted Oak Staff", 12 },
-        { "Crossbow of the Silent Hunt", 15 },
-        { "Cracked Warhammer", 25 },
-        { "Shadowfang Blade", 17 },
-        { "Bone-handled Throwing Knife", 10 },
-        { "Flaming Torch", 28 },
-        { "Whispering Bow", 30 },
-        { "Cursed Blacksteel Axe", 34 },
+        // Weapons, dmg:
+        // Weak: 5–15
+        // Mid: 16–35
+        // Strong: 36–100+
+        { "Rusted Iron Sword", 10 },
+        { "Sharpened Steel Axe", 16 },
+        { "Enchanted Staff", 22 },
+        { "Cursed Dagger", 14 },
+        { "Ancient Spellbook", 25 },
+        { "Legendary Warhammer", 35 },
+        { "Fine Short Sword", 12 },
+        { "Basic Wand", 8 },
+        { "Masterwork Battle Axe", 30 },
+        { "Poison Kris Blade", 18 },
+        { "Shadow Knife", 20 },
+        { "Crystal Orb", 24 },
+        { "Arcane Rod", 19 },
+        { "Cursed Spiked Mace", 22 },
+        { "Ancient Claymore", 28 },
+        { "Stiletto of Shadows", 17 },
+        { "Fine Crystal Scepter", 21 },
+        { "Masterwork Spellbook", 32 },
+        { "Sharpened Short Sword", 14 },
+        { "Legendary Arcane Rod", 34 },
+        { "Shadow Orb", 20 },
+        { "Godslayer Blade", 100 },
+        { "Oblivion Staff", 120 },
+        { "Assassin’s Doomfang", 98 },
+        { "Dagger of the Void", 92 },
+        { "Runed Deathwand", 85 },
+        { "Mythic Spiked Mace", 95 },
+        { "Heaven’s Claymore", 110 },
+        { "Ancient Staff of Ruin", 88 },
+        { "Witch King's Scepter", 90 },
+        { "Slayer’s Steel", 50 },
+        { "Titan Hammer", 75 },
+        { "Venomshadow Kris", 66 },
+        { "Master Assassin Blade", 80 },
+        { "Hellfire Orb", 95 },
+        { "Archmage’s Wand", 70 },
+        { "Fine Steel Axe", 17 },
+        { "Masterwork Short Sword", 22 },
+        { "Rusted Staff", 6 },
+        { "Shadow Staff", 23 },
+        { "Cursed Arcane Rod", 20 },
+        { "Enchanted Stiletto", 15 },
+        { "Crystal Spellbook", 29 },
+        { "Ancient Warhammer", 26 },
+        { "Poison Fang", 18 },
+        { "Fine Iron Sword", 14 },
+        { "Rusted Claymore", 12 },
+        { "Masterwork Steel Axe", 28 },
+        { "Legendary Crystal Orb", 35 },
+        { "Cursed Spellbook", 24 },
+        { "Shadow Short Sword", 19 },
+        { "Rusted Kris Blade", 11 },
+        { "Ancient Orb", 22 },
+        { "Enchanted Dagger", 16 },
+        { "Sharpened Wand", 13 },
+        { "Fine Warhammer", 20 },
+        { "Legendary Spiked Mace", 34 },
+        { "Basic Wand", 7 },
+        { "Rogue King's Fang", 87 },
+        { "Dagger of Infinite Night", 77 },
+        { "Divine Battle Axe", 102 },
+        { "Black Hole Spellbook", 99 },
+        { "Vampiric Shadow Blade", 68 },
+        { "Spectral Wand", 26 },
+        { "Bloodforged Sword", 55 },
+        { "Arcane Executioner", 120 },
+        { "Mage's Bane", 62 },
+        { "Enchanted Claymore", 36 },
+        { "The Final Stiletto", 84 },
+        { "Warlord’s Sledge", 89 },
+        { "Tombfang Dagger", 72 },
+        { "Hellborn Arcane Rod", 93 },
+        { "Draconic Staff", 100 },
+        { "Lich King's Blade", 97 },
+        { "Dark Priest Wand", 40 },
+        { "Corrupted Hammer", 79 },
+        { "Doomcaller Spellbook", 88 },
+        { "Twilight Kris", 63 },
+        { "Bloodsoaked Axe", 58 },
+        { "Eternal Flame Staff", 101 },
+        { "Frosted Fang", 37 },
+        { "Duskblade", 45 },
+        { "Wand of Calamity", 110 },
+        { "Hellfang Knife", 73 },
+        { "Plagued Iron Sword", 39 },
+        { "Blight Hammer", 67 },
+        { "Vortex Orb", 76 },
+        { "Bonecutter Axe", 41 },
+        { "Soulstealer Staff", 83 },
+        { "Nightpiercer Kris", 48 },
+        { "Sunblade", 95 },
+        { "Dagger of Silence", 38 },
+        { "Scepter of Chains", 49 },
+        { "Firebrand Sword", 59 },
+        { "Dagger of the Phoenix", 54 },
+        { "Abyssal Claymore", 90 },
+        { "Hammer of Judgement", 86 },
+        { "Wraithlord’s Rod", 80 },
+        { "Voidsteel Fang", 92 },
+        { "Lightless Orb", 108 },
+        { "Necromancer's Staff", 82 },
+        { "Obsidian Warhammer", 78 },
+        { "Finality Blade", 100 },
         // Potions 
         { "Health Potion", 1 },        
     };
@@ -273,26 +378,24 @@ void LootingSystem(){
     Console.WriteLine($"- {gold} Gold");
     Console.WriteLine($"- {lootList[loot].Key} {(lootList[loot].Key != "Health Potion" ? $"Damage: {lootList[loot].Value}" : lootList[loot].Value)}");
 
-    bool equipCHaracter = false;
-    while(!equipCHaracter)
+    bool equipCharacter = false;
+    while(!equipCharacter)
     {
         Console.WriteLine($"Add {lootList[loot].Key} to inventory? (Y/N)");
 
         string equip = IsStringValid("> ");
         if(equip == "y"){
             if(lootList[loot].Key == "Health Potion"){
-                characterInventory["Health Potion"] += 1;
-            }else{
-                if(characterInventory.ToList().Count > 1){
-                    var replaceWeapon = characterInventory.Where(item => item.Key != "Health Potion");
-                    characterInventory.Remove(replaceWeapon.ToList()[0].Key);
+                characterHealthPotions = (int)characterHealthPotions + 1;
+            }else{                
+                if(characterInvetory.ToList().Count > 0){
+                    characterInvetory.Clear();
                 }
-                
-                characterInventory.Add(lootList[loot].Key, lootList[loot].Value);            
+                characterInvetory.Add(lootList[loot].Key, lootList[loot].Value);         
             }
 
             Console.WriteLine("Inventory updated.");
-            equipCHaracter = true;
+            equipCharacter = true;
         }else if (equip == "n")
         {
             return;
@@ -307,16 +410,15 @@ void LootingSystem(){
 
 void Invertory(){
     
-    Console.WriteLine("== Inventory ==");   
+    Console.WriteLine("== Inventory ==");
 
-    if(characterInventory.ToList().Count > 1){
-        var weapon = characterInventory.Where(item => item.Key != "Health Potion");
-        
-        Console.WriteLine($"- {weapon.ToList()[0].Key} (Damage: {weapon.ToList()[0].Value})");
+    if(characterInvetory.ToList().Count > 0){
+        Console.WriteLine($"- {characterInvetory.ToList()[0].Key} (Damage: {characterInvetory.ToList()[0].Value})");
     }
-    Console.WriteLine($"- Health Potion {(             
-        characterInventory["Health Potion"] > 0 ? 
-        $"x{characterInventory["Health Potion"]}" : "0"
+
+    Console.WriteLine($"- Health Potion: {(
+        (int)characterHealthPotions > 0 ? 
+        $"x{characterHealthPotions}" : "0"
     )}");   
     Console.WriteLine($"- Gold: {characterGold}");
 
@@ -330,18 +432,30 @@ void Invertory(){
 
         switch (invetoryUse)
         {
-            case 1:
-                if(characterInventory.ContainsKey("Health Potion") && characterInventory["Health Potion"] > 0){
-                    Console.WriteLine("You used a Health Potion. +10 HP.");                    
+            case 1:                
+                if ((int)characterHealthPotions > 0)
+                {
+                    Console.WriteLine("You used a Health Potion. +10 HP.");
                     characterHealth = (int)characterHealth + 10;
-                    characterInventory["Health Potion"] -= 1;
-                }
-                else{
+                    characterHealthPotions = (int)characterStats["characterPotion"] - 1;
+                }else
+                {
                     Console.WriteLine("You do not have a Health Potion.");     
                 }
-                    break;
-            case 2:
+                
                 break;
+            case 2:
+                if(characterInvetory.ToList().Count > 0){
+
+                    characterWeapon = characterInvetory.ToList()[0].Key;
+                    characterDamage = characterInvetory.ToList()[0].Value;
+
+                    Console.WriteLine($"Equipped weapon: {characterWeapon} | DMG: {characterDamage}");
+                    characterInvetory.Clear();
+                }else{
+                    Console.WriteLine("Your inventory is empty.");
+                }
+                    break;
             case 3:
                 return;
                 //break;
@@ -401,8 +515,6 @@ Dictionary<string, object> CharacterCreation(){
 
     Console.Clear();
 
-    //Console.WriteLine($"You are {playerName} the {characterClass}. Your journey begins...");
-
     return new Dictionary<string, object>(){
         { "characterName", playerName },
         { "characterClass", characterClass },
@@ -439,9 +551,6 @@ int IsIntegerValid(string text){
         return value;  
     }
 }
-
-
-//Console.ReadLine();
 
 enum PlayerClasses
 {
