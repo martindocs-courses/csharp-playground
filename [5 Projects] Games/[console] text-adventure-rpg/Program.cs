@@ -34,8 +34,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
-// will look for relative path in bin\Debug\netX.X\data.json.
-//const string PATH = "monsters-library.json";
 // Use relative path going up to the project root
 const string PATH = @"..\..\..\GameData\monsters-library.json";
 const string PROMPTS_YES = "y";
