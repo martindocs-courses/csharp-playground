@@ -1,45 +1,22 @@
-﻿// Text Adventure Game – "Rogue Console RPG"
+﻿// Text Adventure Game – "Console RPG"
 // Player exploring a dungeon-like world, fighting enemies, looting, and managing inventory.
 
-/*
- Key Features
-•	Player has health, inventory, gold, weapons
-•	Enemies have random health/damage
-•	Loot: weapons, potions, gold
-•	Choices affect outcome
-•	Random encounters and items
-
-User Interactions:
-•	Choose character name
-•	Choose actions in the world (fight, explore, inventory, rest)
-•	Fight a monster (random HP/attack, turn-based)
-•	Pick up items and use them
-•	Save/Load game
-
-Learn by Doing This
-•	Control Flow: if, switch, while, for
-•	User Input & Output: Console.ReadLine, menus, decision-making
-•	Collections: List<T>, Dictionary<T, T>, maybe arrays
-•	Basic Algorithms: turn-based combat, inventory management
-•	Data Types & Parsing: int, string, bool, Random, etc.
-•	File I/O (optional): Save/load game progress (JSON)
-•	DRY & Method Extraction: Write reusable functions
-•	Data Validation: Don't crash when user types garbage
-•	Text Formatting & UI: Make it readable, immersive
-•	Design Thinking: Setting up for later OOP (classes like Player, Enemy, etc.) 
- */
-
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
+using System.Xml.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 // Use relative path going up to the project root
-const string PATH = @"..\..\..\GameData\monsters-library.json";
+const string MONSTER_LIBRARY_PATH = @"..\..\..\GameData\monsters-library.json";
+const string LOOT_LIBRARY_PATH = @"..\..\..\GameData\loot-library.json";
+const string CHARACTER_PATH = @"..\..\..\CharacterData\characters.json";
 const string PROMPTS_YES = "y";
 const string PROMPTS_NO = "n";
 
-var character = CharacterCreation();
+bool continueGame = ContinueGame(out Dictionary<string, object> character);
+if (!continueGame)
+{
+    character = CharacterCreation();    
+}
 
 // we need cast to Dictionary because the retrieved value from the outer dictionary is stored as object and C# doesn't know what type it really is at runtime unless we tell it.
 var characterStats = (Dictionary<string, object>)character["characterStats"];
@@ -50,8 +27,8 @@ var characterHealth = characterStats["characterHP"];
 var characterDamage = characterStats["characterDMG"];
 var characterGold = characterStats["characterGold"];
 var characterWeapon = characterStats["characterWepon"];
-var characterInvetory = (Dictionary<string, int>)characterStats["characterInvetory"];
 var characterHealthPotions = characterStats["characterPotion"];
+var characterInvetory = (Dictionary<string, int>)characterStats["characterInvetory"];
 
 var monsterHealth = 0;
 
@@ -102,22 +79,28 @@ void CharacterActions(int actions)
     switch(actions)
     {
         case 1:
-            bool encounterWin = CombatEncounter(GetRandomMonster());
-            if(encounterWin == true){
-                LootingSystem();
+            try{
+                bool encounterWin = CombatEncounter(GetRandomMonster());
+                    if(encounterWin == true){
+                        try{
+                            LootingSystem();
+                        }catch(JsonException ex){
+                            Console.WriteLine("Looting Library is empty. Please populate the data before proceeding with the game.\nThe Loot Library is located in GameData\\ folder");
+                        }
+                    }
+            }catch(ArgumentOutOfRangeException ex){
+                Console.WriteLine("Monster Library is empty. Please populate the data before proceeding with the game.\nThe Monster Library is located in GameData\\ folder");
             }
-            break;
+            break;        
         case 2:
-            Console.WriteLine("Village");
-            break;
-        case 3:
             Invertory();
             break;
-        case 4:
+        case 3:
             Rest();
             break;
-        case 5:
+        case 4:
             Console.WriteLine("Save and Quit");
+            //SaveCharacterStatus();
             game = true;
             break;
         default:
@@ -125,9 +108,13 @@ void CharacterActions(int actions)
             break;
     }
 
-    Console.ReadLine();
-    //Thread.Sleep(3000); // Keep the last character message action for 2sec. before clear the screen
+    Console.ReadLine();    
     Console.Clear();
+}
+
+void SaveCharacterStatus(Dictionary<string, int> inventory, int potions, int gold, string weapon, int currentDamage)
+{
+    
 }
 
 void Rest()
@@ -186,7 +173,7 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
                     continue;
                 }
 
-                Console.WriteLine($"You defeated the {monsterType}!");                
+                Console.WriteLine(Environment.NewLine + $"You defeated the {monsterType}!");                
                 monsterBattle = true;
                 defetMonster = true;
                 break;
@@ -211,23 +198,24 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
     return defetMonster;
 }
 
-string GetPath(){
-    if(!File.Exists(PATH)){
-        ResetJSONFile();
+string GetPath(string path){
+    if(!File.Exists(path)){
+        ResetJSONFile(path);
     }
-    return PATH;
+    return path;
 }
 
-void ResetJSONFile()
+void ResetJSONFile(string path)
 {
+    string jsonFile = path.Substring(18);
     bool coruptedFile = false;
     while(!coruptedFile){
-        Console.WriteLine("JSON file corrupted do you want reset the file? [y/n]: ");
+        Console.WriteLine(Environment.NewLine + $"The '{jsonFile}' file is corrupted. Do you want reset the file? [y/n]: ");
         var resetFile = Console.ReadLine()?.ToLower();
 
         if (resetFile == PROMPTS_YES)
         {
-            File.WriteAllText(PATH, JsonSerializer.Serialize(new List<Dictionary<string, object>>()));
+            File.WriteAllText(path, JsonSerializer.Serialize(new List<Dictionary<string, object>>()));
             coruptedFile = true;
         }
         else if (resetFile == PROMPTS_NO)
@@ -250,174 +238,76 @@ int Randomizer(int count, int minCount = 0){
 }
 
 Dictionary<string, JsonElement> GetRandomMonster(){
-    var getFile = File.ReadAllText(GetPath());
+    try
+    {
+        var getFile = File.ReadAllText(GetPath(MONSTER_LIBRARY_PATH));
 
-    // When deserialize JSON into a Dictionary<string, object>, System.Text.Json stores all values as JsonElement, not real primitives. You get JsonElement only when you deserialize to object. In this case, System.Text.Json doesn't know the specific types, so it puts everything as JsonElement, which is a flexible type that can represent any JSON value (number, string, object, array, etc.).
-    // Use Dictionary<string, JsonElement> to avoid casting
-    var monsters = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(getFile);
+        // When deserialize JSON into a Dictionary<string, object>, System.Text.Json stores all values as JsonElement, not real primitives. You get JsonElement only when you deserialize to object. In this case, System.Text.Json doesn't know the specific types, so it puts everything as JsonElement, which is a flexible type that can represent any JSON value (number, string, object, array, etc.).
+        // Use Dictionary<string, JsonElement> to avoid casting
+        var monsters = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(getFile);
 
-    int selectedMonster = Randomizer(monsters.Count);
+        int selectedMonster = Randomizer(monsters.Count);
 
-    return monsters[selectedMonster];
+        return monsters[selectedMonster];
+    }
+    catch (ArgumentOutOfRangeException ex)
+    {
+        throw;
+    }
 }
 
 void LootingSystem(){
-    var lootLibrary = new Dictionary<string, int>()
-    {
-        // Weapons, dmg:
-        // Weak: 5–15
-        // Mid: 16–35
-        // Strong: 36–100+
-        { "Rusted Iron Sword", 10 },
-        { "Sharpened Steel Axe", 16 },
-        { "Enchanted Staff", 22 },
-        { "Cursed Dagger", 14 },
-        { "Ancient Spellbook", 25 },
-        { "Legendary Warhammer", 35 },
-        { "Fine Short Sword", 12 },
-        { "Basic Wand", 8 },
-        { "Masterwork Battle Axe", 30 },
-        { "Poison Kris Blade", 18 },
-        { "Shadow Knife", 20 },
-        { "Crystal Orb", 24 },
-        { "Arcane Rod", 19 },
-        { "Cursed Spiked Mace", 22 },
-        { "Ancient Claymore", 28 },
-        { "Stiletto of Shadows", 17 },
-        { "Fine Crystal Scepter", 21 },
-        { "Masterwork Spellbook", 32 },
-        { "Sharpened Short Sword", 14 },
-        { "Legendary Arcane Rod", 34 },
-        { "Shadow Orb", 20 },
-        { "Godslayer Blade", 100 },
-        { "Oblivion Staff", 120 },
-        { "Assassin’s Doomfang", 98 },
-        { "Dagger of the Void", 92 },
-        { "Runed Deathwand", 85 },
-        { "Mythic Spiked Mace", 95 },
-        { "Heaven’s Claymore", 110 },
-        { "Ancient Staff of Ruin", 88 },
-        { "Witch King's Scepter", 90 },
-        { "Slayer’s Steel", 50 },
-        { "Titan Hammer", 75 },
-        { "Venomshadow Kris", 66 },
-        { "Master Assassin Blade", 80 },
-        { "Hellfire Orb", 95 },
-        { "Archmage’s Wand", 70 },
-        { "Fine Steel Axe", 17 },
-        { "Masterwork Short Sword", 22 },
-        { "Rusted Staff", 6 },
-        { "Shadow Staff", 23 },
-        { "Cursed Arcane Rod", 20 },
-        { "Enchanted Stiletto", 15 },
-        { "Crystal Spellbook", 29 },
-        { "Ancient Warhammer", 26 },
-        { "Poison Fang", 18 },
-        { "Fine Iron Sword", 14 },
-        { "Rusted Claymore", 12 },
-        { "Masterwork Steel Axe", 28 },
-        { "Legendary Crystal Orb", 35 },
-        { "Cursed Spellbook", 24 },
-        { "Shadow Short Sword", 19 },
-        { "Rusted Kris Blade", 11 },
-        { "Ancient Orb", 22 },
-        { "Enchanted Dagger", 16 },
-        { "Sharpened Wand", 13 },
-        { "Fine Warhammer", 20 },
-        { "Legendary Spiked Mace", 34 },
-        { "Basic Wand", 7 },
-        { "Rogue King's Fang", 87 },
-        { "Dagger of Infinite Night", 77 },
-        { "Divine Battle Axe", 102 },
-        { "Black Hole Spellbook", 99 },
-        { "Vampiric Shadow Blade", 68 },
-        { "Spectral Wand", 26 },
-        { "Bloodforged Sword", 55 },
-        { "Arcane Executioner", 120 },
-        { "Mage's Bane", 62 },
-        { "Enchanted Claymore", 36 },
-        { "The Final Stiletto", 84 },
-        { "Warlord’s Sledge", 89 },
-        { "Tombfang Dagger", 72 },
-        { "Hellborn Arcane Rod", 93 },
-        { "Draconic Staff", 100 },
-        { "Lich King's Blade", 97 },
-        { "Dark Priest Wand", 40 },
-        { "Corrupted Hammer", 79 },
-        { "Doomcaller Spellbook", 88 },
-        { "Twilight Kris", 63 },
-        { "Bloodsoaked Axe", 58 },
-        { "Eternal Flame Staff", 101 },
-        { "Frosted Fang", 37 },
-        { "Duskblade", 45 },
-        { "Wand of Calamity", 110 },
-        { "Hellfang Knife", 73 },
-        { "Plagued Iron Sword", 39 },
-        { "Blight Hammer", 67 },
-        { "Vortex Orb", 76 },
-        { "Bonecutter Axe", 41 },
-        { "Soulstealer Staff", 83 },
-        { "Nightpiercer Kris", 48 },
-        { "Sunblade", 95 },
-        { "Dagger of Silence", 38 },
-        { "Scepter of Chains", 49 },
-        { "Firebrand Sword", 59 },
-        { "Dagger of the Phoenix", 54 },
-        { "Abyssal Claymore", 90 },
-        { "Hammer of Judgement", 86 },
-        { "Wraithlord’s Rod", 80 },
-        { "Voidsteel Fang", 92 },
-        { "Lightless Orb", 108 },
-        { "Necromancer's Staff", 82 },
-        { "Obsidian Warhammer", 78 },
-        { "Finality Blade", 100 },
-        // Potions 
-        { "Health Potion", 1 },        
-    };
-   
-    var lootList = lootLibrary.ToList();
-    int loot = Randomizer(lootList.Count);  
 
-    int gold = Randomizer(50, 1);
-    characterGold = (int)characterGold + gold;
+    try{
+        var getFile = File.ReadAllText(GetPath(LOOT_LIBRARY_PATH));
+        var lootLibrary = JsonSerializer.Deserialize<Dictionary<string, int>>(getFile);
 
-    Console.WriteLine("Loot Found:");
-    Console.WriteLine($"- {gold} Gold");
-    Console.WriteLine($"- {lootList[loot].Key} {(lootList[loot].Key != "Health Potion" ? $"Damage: {lootList[loot].Value}" : lootList[loot].Value)}");
+        var lootList = lootLibrary.ToList();
+        int loot = Randomizer(lootList.Count);  
 
-    bool equipCharacter = false;
-    while(!equipCharacter)
-    {
-        Console.WriteLine($"Add {lootList[loot].Key} to inventory? (Y/N)");
+        int gold = Randomizer(50, 1);
+        characterGold = (int)characterGold + gold;
 
-        string equip = IsStringValid("> ");
-        if(equip == "y"){
-            if(lootList[loot].Key == "Health Potion"){
-                characterHealthPotions = (int)characterHealthPotions + 1;
-            }else{                
-                if(characterInvetory.ToList().Count > 0){
-                    characterInvetory.Clear();
+        Console.WriteLine("Loot Found:");
+        Console.WriteLine($"- {gold} Gold");
+        Console.WriteLine($"- {lootList[loot].Key} {(lootList[loot].Key != "Health Potion" ? $"Damage: {lootList[loot].Value}" : lootList[loot].Value)}");
+
+        bool equipCharacter = false;
+        while(!equipCharacter)
+        {
+            Console.WriteLine($"Add {lootList[loot].Key} to inventory? (Y/N)");
+
+            string equip = IsStringValid("> ");
+            if(equip == "y"){
+                if(lootList[loot].Key == "Health Potion"){
+                    characterHealthPotions = (int)characterHealthPotions + 1;
+                }else{                
+                    if(characterInvetory.ToList().Count > 0){
+                        characterInvetory.Clear();
+                    }
+                    characterInvetory.Add(lootList[loot].Key, lootList[loot].Value);         
                 }
-                characterInvetory.Add(lootList[loot].Key, lootList[loot].Value);         
-            }
 
-            Console.WriteLine("Inventory updated.");
-            equipCharacter = true;
-        }else if (equip == "n")
-        {
-            return;
+                Console.WriteLine("Inventory updated.");
+                equipCharacter = true;
+            }else if (equip == "n")
+            {
+                return;
+            }
+            else
+            {
+                Console.WriteLine("Please enter Yes[y] or No[n].");
+            }
         }
-        else
-        {
-            Console.WriteLine("Please enter Yes[y] or No[n].");
-        }
+    }catch(JsonException ex){
+        throw;
     }
 
 }
 
 void Invertory(){
     
-    Console.WriteLine("== Inventory ==");
+    Console.WriteLine(Environment.NewLine + "== Inventory ==");
 
     if(characterInvetory.ToList().Count > 0){
         Console.WriteLine($"- {characterInvetory.ToList()[0].Key} (Damage: {characterInvetory.ToList()[0].Value})");
@@ -431,7 +321,7 @@ void Invertory(){
 
     while (true)
     {
-        Console.WriteLine("1. Use Potion");
+        Console.WriteLine(Environment.NewLine + "1. Use Potion");
         Console.WriteLine("2. Equip Weapon");
         Console.WriteLine("3. Back");
 
@@ -445,6 +335,7 @@ void Invertory(){
                     Console.WriteLine("You used a Health Potion. +10 HP.");
                     characterHealth = (int)characterHealth + 10;
                     characterHealthPotions = (int)characterStats["characterPotion"] - 1;
+                    return;
                 }else
                 {
                     Console.WriteLine("You do not have a Health Potion.");     
@@ -457,12 +348,12 @@ void Invertory(){
                     characterWeapon = characterInvetory.ToList()[0].Key;
                     characterDamage = characterInvetory.ToList()[0].Value;
 
-                    Console.WriteLine($"Equipped weapon: {characterWeapon} | DMG: {characterDamage}");
-                    characterInvetory.Clear();
+                    Console.WriteLine(Environment.NewLine + $"Equipped weapon: {characterWeapon} | DMG: {characterDamage}");
+                    return;
                 }else{
                     Console.WriteLine("Your inventory is empty.");
                 }
-                    break;
+                break;
             case 3:
                 return;
                 //break;
@@ -478,8 +369,7 @@ void MainMenu()
 {           
     List<string> list = new List<string>()
     {
-        "Explore the Forest",
-        "Visit the Village",
+        "Explore the Forest",       
         "Check Inventory",
         "Rest",
         "Save and Quit",
@@ -528,6 +418,68 @@ Dictionary<string, object> CharacterCreation(){
         { "characterStats", BaseCharacterStats(characterClass) },
 
     }; // Return player class object
+}
+
+
+bool ContinueGame(out Dictionary<string, object> character){
+    character = new Dictionary<string, object>();
+
+    var getFile = File.ReadAllText(GetPath(CHARACTER_PATH));
+    var listOfCharacters = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(getFile);
+        
+    var charactersCount = listOfCharacters.Count;
+    Console.WriteLine("== Saved characters ==");
+
+    for (int i = 0; i < charactersCount; i++)
+    {
+        string? name = listOfCharacters[i]["characterName"].GetString();
+        string classType = listOfCharacters[i]["classType"].GetString();
+
+        Console.WriteLine($"{i+1}.{name}, class: {classType}");
+    }
+
+    Console.WriteLine($"{charactersCount+1}.Restart game");
+
+    var continueGame = IsIntegerValid("> ");
+    
+    if(continueGame != charactersCount + 1){
+
+        string? name = listOfCharacters[continueGame - 1]["characterName"].GetString(); // Returns the actual string value from the JSON, if the JsonElement is of type String. If the element is not a string, it will throw an exception.
+        string? classType = listOfCharacters[continueGame - 1]["classType"].ToString(); // Returns the JSON representation of the element — regardless of its actual type. Can be used on any JsonElement, but the result may not be unpredictable.
+        int health = listOfCharacters[continueGame - 1]["data"].GetProperty("health").GetInt32();
+        int damage = listOfCharacters[continueGame - 1]["data"].GetProperty("damage").GetInt32();
+        int gold = listOfCharacters[continueGame - 1]["data"].GetProperty("gold").GetInt32();
+        string weapon = listOfCharacters[continueGame - 1]["data"].GetProperty("weapon").ToString();
+        int healthPotions = listOfCharacters[continueGame - 1]["data"].GetProperty("healthPotions").GetInt32();
+        string invetoryWeapon = listOfCharacters[continueGame - 1]["data"].GetProperty("inventory").GetProperty("weapon").ToString();
+        int invetoryWeaponDmg = listOfCharacters[continueGame - 1]["data"].GetProperty("inventory").GetProperty("dmg").GetInt32();
+
+        character = new Dictionary<string, object>
+        {
+            { "characterName", name },
+            { "characterClass", classType },
+            { "characterStats", new Dictionary<string, object>()
+                {
+                    {"characterHP" , health},
+                    {"characterDMG" , damage},
+                    {"characterGold" , gold},
+                    {"characterWepon" , weapon},
+                    {"characterPotion" , healthPotions},
+                    {"characterInvetory", new Dictionary<string, int>()
+                        {
+                            {invetoryWeapon, invetoryWeaponDmg}
+                        } 
+                    }
+                } 
+            },
+        };
+
+
+        return true;
+    }else{
+        return false;
+    }
+    
 }
 
 // helper function for validation of string values
