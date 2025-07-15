@@ -1,0 +1,18 @@
+[
+  { 
+    "characterName": "Magnus", 
+    "classType": "Warrior", 
+    "data": {
+      "health": 50, 
+      "damage": 50, 
+      "gold": 25, 
+      "weapon": "CharacterWeapon", 
+      "healthPotions": 1, 
+      "inventory": {
+        "weapon" : "InvetoryWeapon",
+        "dmg" : 52
+      }    
+    } 
+  }
+  
+]
