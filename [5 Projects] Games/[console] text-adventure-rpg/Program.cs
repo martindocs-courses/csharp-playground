@@ -3,7 +3,9 @@
 
 using System;
 using System.Text.Json;
+using System.Linq;
 using System.Xml.Linq;
+using static System.Net.Mime.MediaTypeNames;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 // Use relative path going up to the project root
 const string MONSTER_LIBRARY_PATH = @"..\..\..\GameData\monsters-library.json";
@@ -12,10 +14,21 @@ const string CHARACTER_PATH = @"..\..\..\CharacterData\characters.json";
 const string PROMPTS_YES = "y";
 const string PROMPTS_NO = "n";
 
-bool continueGame = ContinueGame(out Dictionary<string, object> character);
-if (!continueGame)
+var character = new Dictionary<string, object>();
+try
 {
-    character = CharacterCreation();    
+    bool continueGame = ContinueGame(out character);
+    if (!continueGame)
+    {
+        character = CharacterCreation();    
+    }
+}
+catch (JsonException ex) {
+    if(ex is JsonException){
+        ResetJSONFile(CHARACTER_PATH);        
+    }
+    
+    character = CharacterCreation();            
 }
 
 // we need cast to Dictionary because the retrieved value from the outer dictionary is stored as object and C# doesn't know what type it really is at runtime unless we tell it.
@@ -100,7 +113,7 @@ void CharacterActions(int actions)
             break;
         case 4:
             Console.WriteLine("Save and Quit");
-            //SaveCharacterStatus();
+            SaveCharacterStatus();
             game = true;
             break;
         default:
@@ -112,9 +125,32 @@ void CharacterActions(int actions)
     Console.Clear();
 }
 
-void SaveCharacterStatus(Dictionary<string, int> inventory, int potions, int gold, string weapon, int currentDamage)
+void SaveCharacterStatus()
 {
-    
+    var getFile = File.ReadAllText(GetPath(CHARACTER_PATH));
+    var listOfCharacters = JsonSerializer.Deserialize<List<Dictionary<string, object>>>(getFile);
+
+    var newCharacter = new Dictionary<string, object>(){
+        { "characterName", characterName},
+        { "characterClass", characterClass},
+        {"characterStats", new Dictionary<string, object>()
+            {
+                {"characterHP" , characterHealth},
+                {"characterDMG" , characterDamage},
+                {"characterGold" , characterGold},
+                {"characterWepon" , characterWeapon},
+                {"characterPotion" , characterHealthPotions},
+                {"characterInvetory", characterInvetory}
+            }
+        }
+    };
+
+    listOfCharacters.Add(newCharacter);
+
+    var options = new JsonSerializerOptions{WriteIndented = true};
+
+    var updatedCharacters = JsonSerializer.Serialize(listOfCharacters, options);
+    File.WriteAllText(CHARACTER_PATH, updatedCharacters);
 }
 
 void Rest()
@@ -180,8 +216,8 @@ bool CombatEncounter(Dictionary<string, JsonElement> monster)
             case 2: // use potion
                 if((int)characterHealthPotions > 0){
                     Console.WriteLine("You used a Health Potion. +10 HP.");
-                    characterCombatHP = (int)characterCombatHP + 10;
-                    characterStats["characterPotion"] = (int)characterStats["characterPotion"] - 1;
+                    characterCombatHP = (int)characterCombatHP + 10;                    
+                    characterHealthPotions = (int)characterStats["characterPotion"] - 1;
                 }else{
                     Console.WriteLine("You do not have a Health Potion.");
                 }
@@ -275,9 +311,9 @@ void LootingSystem(){
         bool equipCharacter = false;
         while(!equipCharacter)
         {
-            Console.WriteLine($"Add {lootList[loot].Key} to inventory? (Y/N)");
+            Console.WriteLine($"Add {lootList[loot].Key} to inventory? (y/n)");
 
-            string equip = IsStringValid("> ");
+            string equip = IsStringValid("> ").ToLower();
             if(equip == "y"){
                 if(lootList[loot].Key == "Health Potion"){
                     characterHealthPotions = (int)characterHealthPotions + 1;
@@ -309,7 +345,8 @@ void Invertory(){
     
     Console.WriteLine(Environment.NewLine + "== Inventory ==");
 
-    if(characterInvetory.ToList().Count > 0){
+    if(characterInvetory.ToList().Count > 0 && characterInvetory.ToList()[0].Key != "")
+    {
         Console.WriteLine($"- {characterInvetory.ToList()[0].Key} (Damage: {characterInvetory.ToList()[0].Value})");
     }
 
@@ -423,63 +460,105 @@ Dictionary<string, object> CharacterCreation(){
 
 bool ContinueGame(out Dictionary<string, object> character){
     character = new Dictionary<string, object>();
+    bool startNewGame = false;
 
-    var getFile = File.ReadAllText(GetPath(CHARACTER_PATH));
-    var listOfCharacters = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(getFile);
-        
-    var charactersCount = listOfCharacters.Count;
-    Console.WriteLine("== Saved characters ==");
+    try{
+        var getFile = File.ReadAllText(GetPath(CHARACTER_PATH));
+        var listOfCharacters = JsonSerializer.Deserialize<List<Dictionary<string, JsonElement>>>(getFile);
+        var charactersCount = listOfCharacters.Count;
 
-    for (int i = 0; i < charactersCount; i++)
-    {
-        string? name = listOfCharacters[i]["characterName"].GetString();
-        string classType = listOfCharacters[i]["classType"].GetString();
-
-        Console.WriteLine($"{i+1}.{name}, class: {classType}");
-    }
-
-    Console.WriteLine($"{charactersCount+1}.Restart game");
-
-    var continueGame = IsIntegerValid("> ");
+        if(charactersCount > 0){
     
-    if(continueGame != charactersCount + 1){
+            Console.WriteLine("Do you want continue the game with saved characters? [y/n] ");
+            while (!startNewGame)
+            {
+                string continueOldGame = IsStringValid("> ").ToLower();               
 
-        string? name = listOfCharacters[continueGame - 1]["characterName"].GetString(); // Returns the actual string value from the JSON, if the JsonElement is of type String. If the element is not a string, it will throw an exception.
-        string? classType = listOfCharacters[continueGame - 1]["classType"].ToString(); // Returns the JSON representation of the element — regardless of its actual type. Can be used on any JsonElement, but the result may not be unpredictable.
-        int health = listOfCharacters[continueGame - 1]["data"].GetProperty("health").GetInt32();
-        int damage = listOfCharacters[continueGame - 1]["data"].GetProperty("damage").GetInt32();
-        int gold = listOfCharacters[continueGame - 1]["data"].GetProperty("gold").GetInt32();
-        string weapon = listOfCharacters[continueGame - 1]["data"].GetProperty("weapon").ToString();
-        int healthPotions = listOfCharacters[continueGame - 1]["data"].GetProperty("healthPotions").GetInt32();
-        string invetoryWeapon = listOfCharacters[continueGame - 1]["data"].GetProperty("inventory").GetProperty("weapon").ToString();
-        int invetoryWeaponDmg = listOfCharacters[continueGame - 1]["data"].GetProperty("inventory").GetProperty("dmg").GetInt32();
-
-        character = new Dictionary<string, object>
-        {
-            { "characterName", name },
-            { "characterClass", classType },
-            { "characterStats", new Dictionary<string, object>()
+                if (continueOldGame == "y")
                 {
-                    {"characterHP" , health},
-                    {"characterDMG" , damage},
-                    {"characterGold" , gold},
-                    {"characterWepon" , weapon},
-                    {"characterPotion" , healthPotions},
-                    {"characterInvetory", new Dictionary<string, int>()
-                        {
-                            {invetoryWeapon, invetoryWeaponDmg}
-                        } 
+                    Console.WriteLine("== Saved characters ==");
+
+                    for (int i = 0; i < charactersCount; i++)
+                    {
+                        string? name = listOfCharacters[i]["characterName"].GetString();
+                        string classType = listOfCharacters[i]["characterClass"].GetString();
+
+                        Console.WriteLine($"{i + 1}.{name}, class: {classType}");
                     }
-                } 
-            },
-        };
 
+                    Console.WriteLine($"{charactersCount + 1}.Restart game");
 
-        return true;
-    }else{
-        return false;
+                    bool startNewGameOptions = false;
+                    while (!startNewGameOptions)
+                    {
+                        var savedCharacters = IsIntegerValid("> ");
+
+                        if (savedCharacters == 0){
+                            Console.WriteLine(Environment.NewLine + "Please select saved character or restart the game");
+                            continue;
+                        }
+
+                        if (savedCharacters != charactersCount + 1)
+                        {
+
+                            string? name = listOfCharacters[savedCharacters - 1]["characterName"].GetString(); // Returns the actual string value from the JSON, if the JsonElement is of type String. If the element is not a string, it will throw an exception.
+                            string? classType = listOfCharacters[savedCharacters - 1]["characterClass"].ToString(); // Returns the JSON representation of the element — regardless of its actual type. Can be used on any JsonElement, but the result may not be unpredictable.
+                            int health = listOfCharacters[savedCharacters - 1]["characterStats"].GetProperty("characterHP").GetInt32();
+                            int damage = listOfCharacters[savedCharacters - 1]["characterStats"].GetProperty("characterDMG").GetInt32();
+                            int gold = listOfCharacters[savedCharacters - 1]["characterStats"].GetProperty("characterGold").GetInt32();
+                            string weapon = listOfCharacters[savedCharacters - 1]["characterStats"].GetProperty("characterWepon").ToString();
+                            int healthPotions = listOfCharacters[savedCharacters - 1]["characterStats"].GetProperty("characterPotion").GetInt32();
+
+                            var inventoryJson = listOfCharacters[savedCharacters - 1]["characterStats"].GetProperty("characterInvetory");
+                            string invetoryWeapon = "";
+                            int invetoryWeaponDmg = 0;                            
+
+                            if (inventoryJson.EnumerateObject().Any())
+                            {
+                                invetoryWeapon = inventoryJson.EnumerateObject().First().Name;
+                                invetoryWeaponDmg = inventoryJson.EnumerateObject().First().Value.GetInt32();                            
+                            }
+
+                            character.Add("characterName", name);
+                            character.Add("characterClass", classType);
+                            character.Add("characterStats", new Dictionary<string, object>()
+                        {
+                            {"characterHP" , health},
+                            {"characterDMG" , damage},
+                            {"characterGold" , gold},
+                            {"characterWepon" , weapon},
+                            {"characterPotion" , healthPotions},
+                            {"characterInvetory", new Dictionary<string, int>()
+                                {
+                                    {invetoryWeapon, invetoryWeaponDmg}
+                                }
+                            }
+                        });
+
+                            startNewGame = true;
+                            startNewGameOptions = true;
+                        }
+                        else if (savedCharacters == charactersCount + 1)
+                        {
+                            break;
+                        }
+                    }
+
+                    break;
+
+                }else if(continueOldGame == "n"){
+                    break;
+                }else{
+                    Console.WriteLine("Please choose [y/n] options." + Environment.NewLine);
+                }
+            }
+        }
+
+    }catch(JsonException ex){
+        throw;
     }
-    
+
+    return startNewGame;
 }
 
 // helper function for validation of string values

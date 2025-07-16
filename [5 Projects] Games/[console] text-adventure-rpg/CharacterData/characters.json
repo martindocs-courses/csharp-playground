@@ -1,18 +1,28 @@
 [
-  { 
-    "characterName": "Magnus", 
-    "classType": "Warrior", 
-    "data": {
-      "health": 50, 
-      "damage": 50, 
-      "gold": 25, 
-      "weapon": "CharacterWeapon", 
-      "healthPotions": 1, 
-      "inventory": {
-        "weapon" : "InvetoryWeapon",
-        "dmg" : 52
-      }    
-    } 
+  {
+    "characterName": "asww",
+    "characterClass": "Warrior",
+    "characterStats": {
+      "characterHP": 50,
+      "characterDMG": 15,
+      "characterGold": 0,
+      "characterWepon": "Old Rusty Sword",
+      "characterPotion": 0,
+      "characterInvetory": {}
+    }
+  },
+  {
+    "characterName": "ewwewwe",
+    "characterClass": "Warrior",
+    "characterStats": {
+      "characterHP": 50,
+      "characterDMG": 15,
+      "characterGold": 16,
+      "characterWepon": "Old Rusty Sword",
+      "characterPotion": 0,
+      "characterInvetory": {
+        "Nightpiercer Kris": 48
+      }
+    }
   }
-  
 ]
