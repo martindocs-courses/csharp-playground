@@ -7,25 +7,12 @@ var userInteraction = new UserInteraction(contactBook, validStringInput, validNu
 ContactBookMenu menu = new ContactBookMenu(validNumericInput, userInteraction);
 menu.BooksMenu();
 
-//ContactBook contacts = new ContactBook();
-//contacts.AddContact("Martin", "1223403", "martin@gmail.com");
-//contacts.AddContact("Adam", "5615445", "adam@gmail.com");
-//contacts.AddContact("Bob", "9468415", "bob@gmail.com");
-
-//contacts.ShowAllContact();
-
-//contacts.RemoveContact("bob@gmail.com");
-//contacts.ShowAllContact();
-
-//contacts.EditContact(1, "Magda", "1223403", "magda@gmail.com");
-//contacts.ShowAllContact();
-
 public class Contact{
 
     //public string Name { get; private set; } // other option to access prop in other class is by set prop to public , but restrict access to only get prop but not private set. so we do not need ovveride the ToString method
-    public string Name { get; private set; } 
-    public string PhoneNumber { get; private set; }
-    public string Email { get; private set; }
+    public string Name { get; set; } 
+    public string PhoneNumber { get; set; }
+    public string Email { get; set; }
 
     public Contact(string name, string phone, string email)
     {
@@ -36,28 +23,47 @@ public class Contact{
 
     // If we use private prop, the only way to access/show props in other class is by override ToString method
     public override string ToString() => $"{Name.PadRight(10)} | {PhoneNumber.PadRight(10)} | {Email.PadRight(10)}";
-    
 }
 
 public class ContactBook 
 {
     private List<Contact> _contacts = new List<Contact>();
+    private StringInputValidator _inputValidator = new StringInputValidator();
         
     public void AddContact(string name, string phone, string email){
         _contacts.Add(new Contact(name, phone, email));       
     }
 
-    public void EditContact(int id, string name, string phone, string email){
+    public void EditContact(int id)
+    {
 
-        if (_contacts.Count > 0) { 
+        if (_contacts.Count > 0) {
+            string name = "";
+            string phone = "";
+            string email = "";
+
             for (int i = 0; i < _contacts.Count; i++)
             {
-                if(i+1 == id){
-                    _contacts[i] = new Contact(name, phone, email);
+                if(i+1 == id){                    
+                    
+                    Console.WriteLine($"Current contact: {string.Join(" ", $"Name: {_contacts[i].Name}, Phone Number: {_contacts[i].PhoneNumber}, Email: {_contacts[i].Email}")}");
+
+                    name = _inputValidator.UserInput("Please provide new Name: ");
+                    phone = _inputValidator.UserInput("Please provide new Phone Number: ");
+                    email = _inputValidator.UserInput("Please provide new Email: ");
+
+                    if (name != "" || phone != "" || email != "")
+                    {
+                        _contacts[i].Name = name;
+                        _contacts[i].PhoneNumber = phone;
+                        _contacts[i].Email = email;
+                    }
                 }
-            }
+            }            
 
             Console.WriteLine(Environment.NewLine + "Contact updated!" + Environment.NewLine);
+        }else{
+            Console.WriteLine("No contacts.");
         }
     }
 
@@ -71,8 +77,7 @@ public class ContactBook
                 if ((i+1) == id)
                 {
                     _contacts.Remove(_contacts[i]);
-                }else{
-                    Console.WriteLine("Contact not found.");
+                    break;
                 }
             }
             Console.WriteLine(Environment.NewLine + "Contact removed!" + Environment.NewLine);
@@ -151,16 +156,23 @@ public class UserInteraction{
                 _contacts.AddContact(name, phone, email);
                 break;
             case (int)Menu.Remove:
-                var input = _stringInput.UserInput("Please provide contact ID: ");
+                var contactToRemove = _stringInput.UserInput("Please provide contact ID: ");
                 
-                if(int.TryParse(input, out int id)){
-                    _contacts.RemoveContact(id);
+                if(int.TryParse(contactToRemove, out int removeID)){
+                    _contacts.RemoveContact(removeID);
                 }
                 break;
             case (int)Menu.Display:
                 _contacts.ShowAllContact();
                 break;            
             case (int)Menu.Edit:
+                var contactToEdit = _stringInput.UserInput("Please provide contact ID: ");
+
+                if (int.TryParse(contactToEdit, out int editID))
+                {
+                    _contacts.EditContact(editID);
+                }
+
                 break;            
         }        
     }
