@@ -1074,7 +1074,7 @@ var car = new Car { Make = "Ford", Model = "Mustang" };
 - [12.2. new Keyword (Hiding Members)](#122-new-keyword-hiding-members)
 - [12.3. override Keyword](#123-override-keyword)
 - [12.4. When to Use sealed, new, override](#124-when-to-use-sealed-new-override)
-- [12.5. Expression-bodied members (=>)](#125-expression-bodied-members)
+- [12.5. Expression-bodied members](#125-expression-bodied-members)
 
 ### 12.1. sealed Keyword
 ```csharp
@@ -1117,7 +1117,7 @@ var car = new Car { Make = "Ford", Model = "Mustang" };
 
 * override: Polymorphic method replacement.
 
-### 12.5. Expression-bodied members (=>)
+### 12.5. Expression-bodied members
 💡What Are Expression-Bodied Members?
 In C#, you can use => (lambda-style syntax) to write concise one-liner members, like:
 
