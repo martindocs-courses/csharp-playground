@@ -1074,6 +1074,7 @@ var car = new Car { Make = "Ford", Model = "Mustang" };
 - [12.2. new Keyword (Hiding Members)](#122-new-keyword-hiding-members)
 - [12.3. override Keyword](#123-override-keyword)
 - [12.4. When to Use sealed, new, override](#124-when-to-use-sealed-new-override)
+- [12.5. Expression-bodied members (=>)](#125-expression-bodied-members)
 
 ### 12.1. sealed Keyword
 ```csharp
@@ -1115,3 +1116,74 @@ var car = new Car { Make = "Ford", Model = "Mustang" };
 * new: When deliberately hiding a member.
 
 * override: Polymorphic method replacement.
+
+### 12.5. Expression-bodied members (=>)
+💡What Are Expression-Bodied Members?
+In C#, you can use => (lambda-style syntax) to write concise one-liner members, like:
+
+* Methods
+
+* Properties
+
+* Constructors
+
+* Finalizers
+
+* Indexers
+
+* Getters / Setters
+
+Use Cases of Expression-Bodied Members
+Here are all the places where expression bodies can be used:
+
+#### 12.5.1. Methods
+```csharp  
+    public string GetGreeting() => "Hello!";
+    
+    Equivalent to:
+    public string GetGreeting()
+    {
+        return "Hello!";
+    }
+```
+#### 12.5.2. Properties (read-only)
+```csharp
+
+    public int Age => 30;
+    Or:
+
+
+    public List<MenuItem> MenuItems => _menuItem;
+```
+#### 12.5.3. Property Getters / Setters
+```csharp
+    private int _value;
+    public int Value
+    {
+        get => _value;
+        set => _value = value;
+    }
+```
+#### 12.5.4. Constructors
+```csharp
+    public MyClass(string name) => Name = name;
+
+    Equivalent to:
+    public MyClass(string name)
+    {
+        Name = name;
+    }
+```
+#### 12.5.5. Finalizers (rare)
+```csharp
+    ~MyClass() => Console.WriteLine("Destroyed");
+```
+#### 12.5.6. Indexers
+```csharp
+    public string this[int index] => _names[index];
+```
+#### 12.5.7. Local functions
+Even inside a method, you can do this:
+```csharp
+    void Greet() => Console.WriteLine("Hi!");
+```
