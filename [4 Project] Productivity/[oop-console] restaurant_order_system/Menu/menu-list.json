@@ -1,0 +1,492 @@
+[
+    {
+    "ID": 1,
+    "Name": "Bruschetta",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 5.99,
+    "Category": "Appetizer",
+    "Toppings": [
+      "tomato",
+      "garlic",
+      "basil"
+    ] 
+  },
+  {
+    "ID": 2,
+    "Name": "Stuffed Mushrooms",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 6.50,
+    "Category": "Appetizer",
+    "Toppings": [
+      "herbs",
+      "cheese"
+    ]
+  },
+  {
+    "ID": 3,
+    "Name": "Garlic Bread",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 4.25,
+    "Category": "Appetizer",
+    "Toppings": [
+      "mozzarella",
+      "chili flakes",
+      "parsley"
+    ]
+  },
+  {
+    "ID": 4,
+    "Name": "Mozzarella Sticks",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 6.75,
+    "Category": "Appetizer",
+    "Toppings": [
+      "marinara",
+      "parmesan"
+    ]    
+  },
+  {
+    "ID": 5,
+    "Name": "Spring Rolls",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 5.50,
+    "Category": "Appetizer",
+    "Toppings": [
+       "plum sauce",
+       "cilantro"
+    ]
+  },
+  {
+    "ID": 6,
+    "Name": "Chicken Wings",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 7.25,
+    "Category": "Appetizer",
+    "Toppings": [
+       "buffalo",
+       "bbq",
+       "ranch"
+    ]
+  },
+  {
+    "ID": 7,
+    "Name": "Caprese Salad",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 6.80,
+    "Category": "Appetizer",
+    "Toppings": [
+       "basil",
+       "balsamic glaze"
+    ]
+  },
+  {
+    "ID": 8,
+    "Name": "Deviled Eggs",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 5.10,
+    "Category": "Appetizer",
+    "Toppings": [
+       "paprika",
+       "chives"
+    ]
+  },
+  {
+    "ID": 9,
+    "Name": "Garlic Bread #2",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 4.30,
+    "Category": "Appetizer",
+    "Toppings": [
+       "mozzarella",
+       "chili flakes",
+       "parsley"
+    ]
+  },
+  {
+    "ID": 10,
+    "Name": "Spring Rolls #2",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 5.60,
+    "Category": "Appetizer",
+    "Toppings": [
+       "plum sauce",
+       "cilantro"
+    ]
+  },
+  {
+    "ID": 11,
+    "Name": "Chicken Wings #2",
+    "Description": "A delicious starter to whet your appetite.",
+    "Price": 7.00,
+    "Category": "Appetizer",
+    "Toppings": [
+       "buffalo",
+       "bbq",
+       "ranch"
+    ]
+  },
+  {
+    "ID": 12,
+    "Name": "Beef Burger",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 10.99,
+    "Category": "Main",
+    "Toppings": [
+       "cheddar",
+       "jalapeño",
+       "bacon"
+    ]
+  },
+  {
+    "ID": 13,
+    "Name": "Beef Burger #2",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 11.25,
+    "Category": "Main",
+    "Toppings": [
+       "cheddar",
+       "jalapeño",
+       "bacon"
+    ]
+  },
+  {
+    "ID": 14,
+    "Name": "Chicken Alfredo #2",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 13.80,
+    "Category": "Main",
+    "Toppings": [
+       "parmesan",
+       "black pepper"
+    ]
+  },
+  {
+    "ID": 15,
+    "Name": "Fish and Chips #2",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 12.00,
+    "Category": "Main",
+    "Toppings": [
+       "tartar sauce",
+       "lemon"
+    ]
+  },
+  {
+    "ID": 16,
+    "Name": "Spaghetti Bolognese",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 12.50,
+    "Category": "Main",
+    "Toppings": [
+       "parmesan",
+       "chili flakes"
+    ]
+  },
+  {
+    "ID": 17,
+    "Name": "Grilled Salmon",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 14.25,
+    "Category": "Main",
+    "Toppings": [
+       "lemon butter",
+       "dill"
+    ]
+  },
+  {
+    "ID": 18,
+    "Name": "Veggie Burrito",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 9.80,
+    "Category": "Main",
+    "Toppings": [
+       "sour cream",
+       "salsa"
+    ]
+  },
+  {
+    "ID": 19,
+    "Name": "Steak Frites",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 16.00,
+    "Category": "Main",
+    "Toppings": [
+       "peppercorn sauce",
+       "garlic butter"
+    ]
+  },
+  {
+    "ID": 20,
+    "Name": "Chicken Alfredo",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 13.45,
+    "Category": "Main",
+    "Toppings": [
+       "parmesan",
+       "black pepper"
+    ]
+  },
+  {
+    "ID": 21,
+    "Name": "Fish and Chips",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 11.75,
+    "Category": "Main",
+    "Toppings": [
+       "tartar sauce",
+       "lemon"
+    ]
+  },
+  {
+    "ID": 22,
+    "Name": "Tofu Stir Fry",
+    "Description": "A hearty dish for a satisfying meal.",
+    "Price": 10.20,
+    "Category": "Main",
+    "Toppings": [
+       "soy sauce",
+       "sesame seeds"
+    ]
+  },
+  {
+    "ID": 23,
+    "Name": "Cheesecake",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 6.00,
+    "Category": "Dessert",
+    "Toppings": [
+       "strawberry sauce",
+       "whipped cream"
+    ]
+  },
+  {
+    "ID": 24,
+    "Name": "Apple Pie",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 5.75,
+    "Category": "Dessert",
+    "Toppings": [
+       "vanilla ice cream",
+       "cinnamon"
+    ]
+  },
+  {
+    "ID": 25,
+    "Name": "Tiramisu",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 6.50,
+    "Category": "Dessert",
+    "Toppings": [
+       "cocoa powder",
+       "espresso drizzle"
+    ]
+  },
+  {
+    "ID": 26,
+    "Name": "Ice Cream Sundae",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 4.99,
+    "Category": "Dessert",
+    "Toppings": [
+       "chocolate syrup",
+       "sprinkles",
+       "nuts"
+    ]
+  },
+  {
+    "ID": 27,
+    "Name": "Pecan Tart",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 5.85,
+    "Category": "Dessert",
+    "Toppings": [
+       "whipped cream"
+    ]
+  },
+  {
+    "ID": 28,
+    "Name": "Brownie",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 4.60,
+    "Category": "Dessert",
+    "Toppings": [
+       "chocolate chips",
+       "caramel drizzle"
+    ]
+  },
+  {
+    "ID": 29,
+    "Name": "Fruit Salad",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 4.25,
+    "Category": "Dessert",
+    "Toppings": [
+       "mint",
+       "honey"
+    ]
+  },
+  {
+    "ID": 30,
+    "Name": "Creme Brulee",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 6.25,
+    "Category": "Dessert",
+    "Toppings": [
+       "caramelized sugar",
+       "berries"
+    ]
+  },
+  {
+    "ID": 31,
+    "Name": "Tiramisu #2",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 6.40,
+    "Category": "Dessert",
+    "Toppings": [
+       "cocoa powder",
+       "espresso drizzle"
+    ]
+  },
+  {
+    "ID": 32,
+    "Name": "Ice Cream Sundae #2",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 5.10,
+    "Category": "Dessert",
+    "Toppings": [
+       "chocolate syrup",
+       "sprinkles",
+       "nuts"
+    ]
+  },
+  {
+    "ID": 33,
+    "Name": "Brownie #2",
+    "Description": "A sweet treat to end your meal.",
+    "Price": 4.75,
+    "Category": "Dessert",
+    "Toppings": [
+       "chocolate chips",
+       "caramel drizzle"
+    ]
+  },
+  {
+    "ID": 34,
+    "Name": "Orange Juice",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 2.75,
+    "Category": "Drink",
+    "Toppings": [
+       "ice",
+       "lemon slice"
+    ]
+  },
+  {
+    "ID": 35,
+    "Name": "Iced Tea",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 2.60,
+    "Category": "Drink",
+    "Toppings": [
+       "lemon slice",
+       "mint"
+    ]
+  },
+  {
+    "ID": 36,
+    "Name": "Espresso",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 2.40,
+    "Category": "Drink",
+    "Toppings": [
+       "extra shot"
+    ]
+  },
+  {
+    "ID": 37,
+    "Name": "Latte",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 3.25,
+    "Category": "Drink",
+    "Toppings": [
+       "vanilla syrup",
+       "caramel syrup"
+    ]
+  },
+  {
+    "ID": 38,
+    "Name": "Smoothie",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 3.95,
+    "Category": "Drink",
+    "Toppings": [
+       "chia seeds",
+       "protein powder"
+    ]
+  },
+  {
+    "ID": 39,
+    "Name": "Sparkling Water",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 2.00,
+    "Category": "Drink",
+    "Toppings": [
+       "lime wedge"
+    ]
+  },
+  {
+    "ID": 40,
+    "Name": "Hot Chocolate",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 3.10,
+    "Category": "Drink",
+    "Toppings": [
+       "marshmallows",
+       "whipped cream"
+    ]
+  },
+  {
+    "ID": 41,
+    "Name": "Latte #2",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 3.35,
+    "Category": "Drink",
+    "Toppings": [
+       "hazelnut syrup",
+       "cinnamon"
+    ]
+  },
+  {
+    "ID": 42,
+    "Name": "Smoothie #2",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 4.10,
+    "Category": "Drink",
+    "Toppings": [
+       "flax seeds",
+       "protein powder"
+    ]
+  },
+  {
+    "ID": 43,
+    "Name": "Hot Chocolate #2",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 3.25,
+    "Category": "Drink",
+    "Toppings": [
+       "marshmallows",
+       "whipped cream"
+    ]
+  },
+  {
+    "ID": 44,
+    "Name": "Coca-Cola",
+    "Description": "A refreshing beverage to accompany your food.",
+    "Price": 2.50,
+    "Category": "Drink",
+    "Toppings": [
+       "ice",
+       "lemon wedge"
+    ]
+  }
+]
