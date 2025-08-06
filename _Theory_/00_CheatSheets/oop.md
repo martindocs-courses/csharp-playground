@@ -58,14 +58,14 @@
 ```csharp
     public class Person
     {
-        private string name;
+        private string _name;
 
         public Person(string name)
         {
-            this.name = name;
+            _name = name;            
         }
 
-        public void SayHello() => Console.WriteLine($"Hi, I'm {name}");
+        public void SayHello() => Console.WriteLine($"Hi, I'm {_name}");
     }
 ```
 
@@ -93,14 +93,14 @@
 ```csharp
     public class BankAccount
     {
-        private decimal balance;
+        private decimal _balance;
 
         public void Deposit(decimal amount)
         {
-            if (amount > 0) balance += amount;
+            if (amount > 0) _balance += amount;
         }
 
-        public decimal GetBalance() => balance;
+        public decimal GetBalance() => _balance;
     }
 ```
 
@@ -200,7 +200,7 @@
         public string Name;
 
         // Private field (preferred)
-        private int age;
+        private int _age;
     }
 
 ```
@@ -265,15 +265,15 @@
 ```csharp
     public class Account
     {
-        private decimal balance;
+        private decimal Balance;
 
         public decimal Balance
         {
-            get { return balance; }
+            get { return Balance; }
             set
             {
                 if (value >= 0)
-                    balance = value;
+                    Balance = value;
             }
         }
     }
@@ -576,14 +576,14 @@ var car = new Car { Make = "Ford", Model = "Mustang" };
 ```csharp
     public class Vehicle
     {
-        protected int speed;
+        protected int Speed;
 
-        public void Accelerate() => speed += 10;
+        public void Accelerate() => Speed += 10;
     }
 
     public class Car : Vehicle
     {
-        public void ShowSpeed() => Console.WriteLine($"Speed: {speed}");
+        public void ShowSpeed() => Console.WriteLine($"Speed: {Speed}");
     }
 ```
 💡 Protected = visible to child classes, but not outside.
@@ -796,14 +796,14 @@ var car = new Car { Make = "Ford", Model = "Mustang" };
 ```csharp
     public class Account
     {
-        private double balance;
+        private double _balance;
 
         public void Deposit(double amount)
         {
-            if (amount > 0) balance += amount;
+            if (amount > 0) _balance += amount;
         }
 
-        public double GetBalance() => balance;
+        public double GetBalance() => _balance;
     }
 ```
 💡 Encapsulating data ensures controlled access, preventing invalid state changes.
@@ -836,14 +836,14 @@ var car = new Car { Make = "Ford", Model = "Mustang" };
 ```csharp
     public class User
     {
-        private string password;
+        private string Password;
 
         public void SetPassword(string value)
         {
-            if (value.Length >= 8) password = value;
+            if (value.Length >= 8) Password = value;
         }
 
-        public bool CheckPassword(string input) => password == input;
+        public bool CheckPassword(string input) => Password == input;
     }
 ```
 💡 Use access modifiers (private, public, protected) to enforce visibility rules.
@@ -931,9 +931,9 @@ var car = new Car { Make = "Ford", Model = "Mustang" };
 ```csharp
     public class Car
     {
-        private int speed;
+        private int _speed;
 
-        public void SetSpeed(int s) { speed = s; }
+        public void SetSpeed(int s) { _speed = s; }
     }
 ```
 💡 Only accessible within the same class.
@@ -1153,15 +1153,15 @@ Here are all the places where expression bodies can be used:
     Or:
 
 
-    public List<MenuItem> MenuItems => _menuItem;
+    public List<MenuItem> MenuItems => MenuItem;
 ```
 #### 12.5.3. Property Getters / Setters
 ```csharp
-    private int _value;
+    private int Value;
     public int Value
     {
-        get => _value;
-        set => _value = value;
+        get => Value;
+        set => Value = value;
     }
 ```
 #### 12.5.4. Constructors
