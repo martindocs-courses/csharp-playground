@@ -26,7 +26,7 @@ using System.Reflection.Metadata;
 using project1 = OOP_Polymorphism.Document_Renderer;
 using project2 = OOP_Polymorphism.Shape_Area_Calculator;
 
-// PROJECT 1
+// PROJECT 1 - ver1
 //var documentRender = new project1.Document();
 
 // Base Class References Can Point to Derived Objects
@@ -36,6 +36,7 @@ using project2 = OOP_Polymorphism.Shape_Area_Calculator;
 //documentPdf.Render();
 //documentWord.Render();
 
+// PROJECT 1 - ver2
 //var docRender = new project1.DocumentRender();
 //docRender.Render();
 
