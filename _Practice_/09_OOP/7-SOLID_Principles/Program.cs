@@ -9,7 +9,8 @@ using srp_project1 = OOP_SOLID_Principles.SRP_Invoice_Generator;
 using srp_project2 = OOP_SOLID_Principles.SRP_Logger;
 
 using ocp_project1 = OOP_SOLID_Principles.OCP_Invoice_Tax_Calculator;
-using OOP_SOLID_Principles.OCP_Invoice_Tax_Calculator;
+using ocp_project2 = OOP_SOLID_Principles.OCP_AreaOfShape;
+
 
 /*
     S - Single Responsibility Principle (SRP):
@@ -42,6 +43,16 @@ using OOP_SOLID_Principles.OCP_Invoice_Tax_Calculator;
 */
 
 // PROJECT (OCP) 1
-var invoiceTax = new ocp_project1.TaxService(new VatTaxCalculator());
-var invoice = new Invoice { Total = 10000m };
-Console.WriteLine(invoiceTax.GetTax(invoice));
+//var invoiceTax = new ocp_project1.TaxService(new ocp_project1.VatTaxCalculator());
+//var invoice = new ocp_project1.Invoice { Total = 10000m };
+//Console.WriteLine(invoiceTax.GetTax(invoice));
+
+// PROJECT (OCP) 2
+var circle = new ocp_project2.Circle(100);
+var shapeCalculator = new ocp_project2.GetShape(circle);
+shapeCalculator.CalculateArea();
+
+/*
+    L - Liskov Substitution Principle (LSP):
+    * A class should have only one reason to change. Which means that a class should have only one job or responsibility
+*/
