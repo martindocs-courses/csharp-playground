@@ -1,0 +1,352 @@
+[
+  {
+    "id": 1,
+    "title": "Midnight Horizon",
+    "artist": "Luna Vale",
+    "genre": "Synthwave",
+    "durationSeconds": 234
+  },
+  {
+    "id": 2,
+    "title": "Echoes of Tomorrow",
+    "artist": "Nova Skye",
+    "genre": "Electronic",
+    "durationSeconds": 198
+  },
+  {
+    "id": 3,
+    "title": "Crimson Dust",
+    "artist": "The Solars",
+    "genre": "Rock",
+    "durationSeconds": 217
+  },
+  {
+    "id": 4,
+    "title": "Starlight Serenade",
+    "artist": "Aria Blake",
+    "genre": "Pop",
+    "durationSeconds": 205
+  },
+  {
+    "id": 5,
+    "title": "Rain on Neon",
+    "artist": "Echo Drift",
+    "genre": "Chillwave",
+    "durationSeconds": 245
+  },
+  {
+    "id": 6,
+    "title": "Into the Wild",
+    "artist": "Roam Atlas",
+    "genre": "Indie Rock",
+    "durationSeconds": 210
+  },
+  {
+    "id": 7,
+    "title": "Glitch Heart",
+    "artist": "Pixel Shade",
+    "genre": "EDM",
+    "durationSeconds": 199
+  },
+  {
+    "id": 8,
+    "title": "Lunar Tide",
+    "artist": "Celestine",
+    "genre": "Ambient",
+    "durationSeconds": 322
+  },
+  {
+    "id": 9,
+    "title": "Golden Mirage",
+    "artist": "Sahara Bloom",
+    "genre": "World",
+    "durationSeconds": 281
+  },
+  {
+    "id": 10,
+    "title": "Velvet Shadows",
+    "artist": "Obsidian Muse",
+    "genre": "Jazz",
+    "durationSeconds": 256
+  },
+  {
+    "id": 11,
+    "title": "Digital Dreams",
+    "artist": "Neon Ghost",
+    "genre": "Synthpop",
+    "durationSeconds": 228
+  },
+  {
+    "id": 12,
+    "title": "Storm Chaser",
+    "artist": "Zephyr Wild",
+    "genre": "Rock",
+    "durationSeconds": 240
+  },
+  {
+    "id": 13,
+    "title": "Through the Fog",
+    "artist": "Hollow Lakes",
+    "genre": "Indie Folk",
+    "durationSeconds": 213
+  },
+  {
+    "id": 14,
+    "title": "Pulse",
+    "artist": "Rhythm Core",
+    "genre": "Techno",
+    "durationSeconds": 191
+  },
+  {
+    "id": 15,
+    "title": "Whispers",
+    "artist": "Luma Ray",
+    "genre": "R&B",
+    "durationSeconds": 231
+  },
+  {
+    "id": 16,
+    "title": "Neon Alley",
+    "artist": "Sky Noir",
+    "genre": "Lo-fi",
+    "durationSeconds": 198
+  },
+  {
+    "id": 17,
+    "title": "Black River",
+    "artist": "The Hollow Pines",
+    "genre": "Alternative",
+    "durationSeconds": 220
+  },
+  {
+    "id": 18,
+    "title": "Prism",
+    "artist": "Aether Code",
+    "genre": "Electronic",
+    "durationSeconds": 206
+  },
+  {
+    "id": 19,
+    "title": "Runaway Light",
+    "artist": "Sonic Bloom",
+    "genre": "Pop Rock",
+    "durationSeconds": 215
+  },
+  {
+    "id": 20,
+    "title": "Desert Bloom",
+    "artist": "Mira Sol",
+    "genre": "Acoustic",
+    "durationSeconds": 244
+  },
+  {
+    "id": 21,
+    "title": "Frozen Sky",
+    "artist": "Arctic Flow",
+    "genre": "Ambient",
+    "durationSeconds": 278
+  },
+  {
+    "id": 22,
+    "title": "Static Emotion",
+    "artist": "Bitwave",
+    "genre": "Synthpop",
+    "durationSeconds": 230
+  },
+  {
+    "id": 23,
+    "title": "Fire Within",
+    "artist": "Ash Ember",
+    "genre": "Rock",
+    "durationSeconds": 208
+  },
+  {
+    "id": 24,
+    "title": "Wildflowers",
+    "artist": "Indigo June",
+    "genre": "Folk",
+    "durationSeconds": 225
+  },
+  {
+    "id": 25,
+    "title": "Skyline Drive",
+    "artist": "MetroPulse",
+    "genre": "Electronic",
+    "durationSeconds": 250
+  },
+  {
+    "id": 26,
+    "title": "Ghost Notes",
+    "artist": "Silent Theory",
+    "genre": "Jazz",
+    "durationSeconds": 263
+  },
+  {
+    "id": 27,
+    "title": "Broken Signal",
+    "artist": "Neo Static",
+    "genre": "EDM",
+    "durationSeconds": 201
+  },
+  {
+    "id": 28,
+    "title": "Canvas Sky",
+    "artist": "Painted Echo",
+    "genre": "Indie Pop",
+    "durationSeconds": 212
+  },
+  {
+    "id": 29,
+    "title": "Steel Veins",
+    "artist": "Rust Empire",
+    "genre": "Industrial",
+    "durationSeconds": 246
+  },
+  {
+    "id": 30,
+    "title": "Wanderlust",
+    "artist": "Nomad Heart",
+    "genre": "Pop",
+    "durationSeconds": 218
+  },
+  {
+    "id": 31,
+    "title": "Crystalline",
+    "artist": "Echo Realm",
+    "genre": "Ambient",
+    "durationSeconds": 260
+  },
+  {
+    "id": 32,
+    "title": "Burn the Sky",
+    "artist": "Nova Riot",
+    "genre": "Alt Rock",
+    "durationSeconds": 238
+  },
+  {
+    "id": 33,
+    "title": "Dust & Silence",
+    "artist": "Gray Horizon",
+    "genre": "Post-Rock",
+    "durationSeconds": 276
+  },
+  {
+    "id": 34,
+    "title": "Honey & Steel",
+    "artist": "Velvet Roots",
+    "genre": "Blues Rock",
+    "durationSeconds": 254
+  },
+  {
+    "id": 35,
+    "title": "Celestial Fall",
+    "artist": "Aurelia",
+    "genre": "Classical Crossover",
+    "durationSeconds": 289
+  },
+  {
+    "id": 36,
+    "title": "Parallax",
+    "artist": "Quantum Drift",
+    "genre": "Electronica",
+    "durationSeconds": 227
+  },
+  {
+    "id": 37,
+    "title": "Nocturne Drive",
+    "artist": "Shadow Coast",
+    "genre": "Synthwave",
+    "durationSeconds": 235
+  },
+  {
+    "id": 38,
+    "title": "Seafoam Eyes",
+    "artist": "Tide Bloom",
+    "genre": "Dream Pop",
+    "durationSeconds": 211
+  },
+  {
+    "id": 39,
+    "title": "Iron Petals",
+    "artist": "The Orchid Crown",
+    "genre": "Gothic Rock",
+    "durationSeconds": 243
+  },
+  {
+    "id": 40,
+    "title": "Cascade",
+    "artist": "Lucent Flow",
+    "genre": "Chillhop",
+    "durationSeconds": 193
+  },
+  {
+    "id": 41,
+    "title": "Sunken Truths",
+    "artist": "Deep Signal",
+    "genre": "Downtempo",
+    "durationSeconds": 273
+  },
+  {
+    "id": 42,
+    "title": "Feral Light",
+    "artist": "Crimson Arc",
+    "genre": "Metal",
+    "durationSeconds": 264
+  },
+  {
+    "id": 43,
+    "title": "Mirror Maze",
+    "artist": "Reflekt",
+    "genre": "Electronic",
+    "durationSeconds": 226
+  },
+  {
+    "id": 44,
+    "title": "Before the Storm",
+    "artist": "Silent Ember",
+    "genre": "Orchestral",
+    "durationSeconds": 299
+  },
+  {
+    "id": 45,
+    "title": "Flicker",
+    "artist": "Pulse Theory",
+    "genre": "House",
+    "durationSeconds": 208
+  },
+  {
+    "id": 46,
+    "title": "Twilight Frequency",
+    "artist": "Aether Drive",
+    "genre": "Trance",
+    "durationSeconds": 240
+  },
+  {
+    "id": 47,
+    "title": "Gravity Fade",
+    "artist": "Nova Drift",
+    "genre": "Chillwave",
+    "durationSeconds": 259
+  },
+  {
+    "id": 48,
+    "title": "Glass Garden",
+    "artist": "Seraphine Vale",
+    "genre": "Art Pop",
+    "durationSeconds": 224
+  },
+  {
+    "id": 49,
+    "title": "Night Circuit",
+    "artist": "Voltage Bloom",
+    "genre": "Synthpop",
+    "durationSeconds": 239
+  },
+  {
+    "id": 50,
+    "title": "Aurora Pulse",
+    "artist": "Lumen Sky",
+    "genre": "Future Bass",
+    "durationSeconds": 252
+  }
+]
